@@ -31,10 +31,10 @@ export const users = pgTable("users", {
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
-  // 자빠돌이/꼬돌이 시스템
-  propagatorScore: integer("propagator_score").default(0), // 전도사 점수
-  propagatorRank: varchar("propagator_rank", { length: 50 }).default("새싹"), // 새싹, 전도사, 마스터
-  successfulRecommendations: integer("successful_recommendations").default(0), // 성공한 추천 수
+  // 러브트리 가드너 시스템
+  propagatorScore: integer("propagator_score").default(0), // 가드너 점수
+  propagatorRank: varchar("propagator_rank", { length: 50 }).default("새싹 가드너"), // 새싹 가드너, 정원사, 마스터 가드너, 레전드 가드너
+  successfulRecommendations: integer("successful_recommendations").default(0), // 성공한 입덕 유도 수
   totalWatchTime: integer("total_watch_time").default(0), // 총 시청 시간 (분)
   dailyVideoCount: integer("daily_video_count").default(0), // 하루 영상 수
   lastActiveDate: timestamp("last_active_date"),
@@ -158,6 +158,25 @@ export const shares = pgTable("shares", {
   platform: varchar("platform", { length: 50 }).notNull(), // 'twitter', 'facebook', 'instagram', 'kakao', 'link'
   shareUrl: text("share_url"),
   viewCount: integer("view_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// 입덕 성공 기록 (러브트리 가드너 포인트 시스템)
+export const conversions = pgTable("conversions", {
+  id: serial("id").primaryKey(),
+  gardenerId: varchar("gardener_id").references(() => users.id).notNull(), // 가드너 (추천한 사람)
+  convertedUserId: varchar("converted_user_id").references(() => users.id).notNull(), // 입덕한 사람
+  loveTreeId: integer("love_tree_id").references(() => loveTrees.id).notNull(), // 어떤 러브트리로 입덕했는지
+  pointsEarned: integer("points_earned").default(10), // 획득 포인트
+  conversionType: varchar("conversion_type", { length: 50 }).default("heart_reaction"), // heart_reaction, follow, share
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// 가드너 팔로우 시스템 (Felix 가드너가 새로운 인물 올릴 때 알림)
+export const gardenerFollows = pgTable("gardener_follows", {
+  id: serial("id").primaryKey(),
+  followerId: varchar("follower_id").references(() => users.id).notNull(), // 팔로워
+  gardenerId: varchar("gardener_id").references(() => users.id).notNull(), // 팔로우당하는 가드너
   createdAt: timestamp("created_at").defaultNow(),
 });
 
