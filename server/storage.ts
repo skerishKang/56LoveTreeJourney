@@ -141,28 +141,34 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getPopularLoveTrees(limit = 10): Promise<(LoveTree & { user: User; itemCount: number; likeCount: number })[]> {
-    const result = await db
-      .select({
-        loveTree: loveTrees,
-        user: users,
-        itemCount: sql<number>`count(distinct ${loveTreeItems.id})`,
-        likeCount: sql<number>`count(distinct ${likes.id})`,
-      })
-      .from(loveTrees)
-      .innerJoin(users, eq(loveTrees.userId, users.id))
-      .leftJoin(loveTreeItems, eq(loveTrees.id, loveTreeItems.loveTreeId))
-      .leftJoin(likes, eq(loveTreeItems.id, likes.loveTreeItemId))
-      .where(eq(loveTrees.isPublic, true))
-      .groupBy(loveTrees.id, users.id)
-      .orderBy(desc(sql`count(distinct ${likes.id})`))
-      .limit(limit);
+    try {
+      const result = await db
+        .select({
+          loveTree: loveTrees,
+          user: users,
+          itemCount: sql<number>`count(distinct ${loveTreeItems.id})`,
+          likeCount: sql<number>`count(distinct ${likes.id})`,
+        })
+        .from(loveTrees)
+        .innerJoin(users, eq(loveTrees.userId, users.id))
+        .leftJoin(loveTreeItems, eq(loveTrees.id, loveTreeItems.loveTreeId))
+        .leftJoin(likes, eq(loveTreeItems.id, likes.loveTreeItemId))
+        .where(eq(loveTrees.isPublic, true))
+        .groupBy(loveTrees.id, users.id)
+        .orderBy(desc(sql`count(distinct ${likes.id})`))
+        .limit(limit);
 
-    return result.map((row) => ({
-      ...row.loveTree,
-      user: row.user,
-      itemCount: row.itemCount,
-      likeCount: row.likeCount,
-    }));
+      return result.map((row) => ({
+        ...row.loveTree,
+        user: row.user,
+        itemCount: row.itemCount,
+        likeCount: row.likeCount,
+      }));
+    } catch (error) {
+      console.error("Error in getPopularLoveTrees:", error);
+      // Return empty array if no data yet
+      return [];
+    }
   }
 
   // Love Tree Item operations

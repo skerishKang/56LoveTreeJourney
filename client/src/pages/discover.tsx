@@ -15,11 +15,11 @@ export default function Discover() {
     queryFn: () => api.getPopularLoveTrees(20),
   });
 
-  const filteredTrees = popularTrees?.filter((tree: any) =>
+  const filteredTrees = popularTrees && Array.isArray(popularTrees) ? popularTrees.filter((tree: any) =>
     tree.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tree.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tree.targetPerson?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) : [];
 
   return (
     <div className="min-h-screen bg-soft-pink">
