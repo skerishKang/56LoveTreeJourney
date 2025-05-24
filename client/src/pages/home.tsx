@@ -445,6 +445,11 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
+                {/* 자빠돌이/꼬돌이 대시보드 */}
+                <div className="mt-6">
+                  <PropagatorDashboard />
+                </div>
               </div>
             );
           }
