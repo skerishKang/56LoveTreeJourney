@@ -11,6 +11,8 @@ import {
   follows,
   notifications,
   shares,
+  conversionTracking,
+  propagatorStats,
   type User,
   type UpsertUser,
   type LoveTree,
@@ -28,6 +30,10 @@ import {
   type Notification,
   type Share,
   type InsertShare,
+  type ConversionTracking,
+  type InsertConversionTracking,
+  type PropagatorStats,
+  type InsertPropagatorStats,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, and, or, isNull } from "drizzle-orm";
@@ -101,6 +107,12 @@ export interface IStorage {
   getShortsVideos(category?: string): Promise<any[]>;
   createShortsVideo(shorts: any): Promise<any>;
   createShortsRecommendation(recommendation: any): Promise<any>;
+
+  // 자빠돌이/꼬돌이 추적 시스템
+  trackConversion(recommenderId: string, convertedUserId: string, loveTreeId: number, conversionType: string): Promise<ConversionTracking>;
+  getPropagatorStats(userId: string): Promise<PropagatorStats | undefined>;
+  updatePropagatorStats(userId: string): Promise<PropagatorStats>;
+  getPropagatorRankings(limit?: number): Promise<(PropagatorStats & { user: User })[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -509,6 +521,128 @@ export class DatabaseStorage implements IStorage {
       .update(shares)
       .set({ viewCount: sql`${shares.viewCount} + 1` })
       .where(eq(shares.id, shareId));
+  }
+
+  // Shorts videos operations (기존 기능 유지)
+  async getShortsVideos(category?: string): Promise<any[]> {
+    return []; // 임시 구현
+  }
+
+  async createShortsVideo(shorts: any): Promise<any> {
+    return {}; // 임시 구현
+  }
+
+  async createShortsRecommendation(recommendation: any): Promise<any> {
+    return {}; // 임시 구현
+  }
+
+  // 자빠돌이/꼬돌이 추적 시스템 구현
+  async trackConversion(recommenderId: string, convertedUserId: string, loveTreeId: number, conversionType: string): Promise<ConversionTracking> {
+    // 변환 추적 기록
+    const [tracking] = await db
+      .insert(conversionTracking)
+      .values({
+        recommenderId,
+        convertedUserId,
+        loveTreeId,
+        conversionType,
+      })
+      .returning();
+
+    // 추천자의 통계 업데이트
+    await this.updatePropagatorStats(recommenderId);
+
+    return tracking;
+  }
+
+  async getPropagatorStats(userId: string): Promise<PropagatorStats | undefined> {
+    const [stats] = await db
+      .select()
+      .from(propagatorStats)
+      .where(eq(propagatorStats.userId, userId));
+    
+    return stats;
+  }
+
+  async updatePropagatorStats(userId: string): Promise<PropagatorStats> {
+    // 총 변환 횟수 계산
+    const totalConversionsResult = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(conversionTracking)
+      .where(eq(conversionTracking.recommenderId, userId));
+    
+    const totalConversions = totalConversionsResult[0]?.count || 0;
+
+    // 이번 달 변환 횟수 계산
+    const thisMonth = new Date();
+    thisMonth.setDate(1);
+    thisMonth.setHours(0, 0, 0, 0);
+    
+    const monthlyConversionsResult = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(conversionTracking)
+      .where(
+        and(
+          eq(conversionTracking.recommenderId, userId),
+          sql`${conversionTracking.createdAt} >= ${thisMonth}`
+        )
+      );
+    
+    const monthlyConversions = monthlyConversionsResult[0]?.count || 0;
+
+    // 등급 계산
+    let rank = "새싹 자빠돌이";
+    if (totalConversions >= 100) rank = "레전드 자빠돌이";
+    else if (totalConversions >= 50) rank = "마스터 자빠돌이";
+    else if (totalConversions >= 20) rank = "베테랑 자빠돌이";
+    else if (totalConversions >= 5) rank = "중급 자빠돌이";
+
+    // 신뢰도 점수 계산 (총 변환 횟수 + 이번 달 활동도)
+    const trustScore = totalConversions * 10 + monthlyConversions * 5;
+
+    // 기존 통계 업데이트 또는 새로 생성
+    const [stats] = await db
+      .insert(propagatorStats)
+      .values({
+        userId,
+        totalConversions,
+        monthlyConversions,
+        rank,
+        trustScore,
+      })
+      .onConflictDoUpdate({
+        target: propagatorStats.userId,
+        set: {
+          totalConversions,
+          monthlyConversions,
+          rank,
+          trustScore,
+          lastUpdated: new Date(),
+        },
+      })
+      .returning();
+
+    return stats;
+  }
+
+  async getPropagatorRankings(limit = 20): Promise<(PropagatorStats & { user: User })[]> {
+    const rankings = await db
+      .select({
+        id: propagatorStats.id,
+        userId: propagatorStats.userId,
+        totalConversions: propagatorStats.totalConversions,
+        monthlyConversions: propagatorStats.monthlyConversions,
+        rank: propagatorStats.rank,
+        trustScore: propagatorStats.trustScore,
+        lastUpdated: propagatorStats.lastUpdated,
+        user: users,
+      })
+      .from(propagatorStats)
+      .innerJoin(users, eq(propagatorStats.userId, users.id))
+      .orderBy(desc(propagatorStats.trustScore))
+      .limit(limit);
+
+    return rankings;
   }
 }
 

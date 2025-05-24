@@ -456,3 +456,39 @@ export type ShortsVideo = typeof shortsVideos.$inferSelect;
 export type InsertShortsVideo = z.infer<typeof insertShortsVideoSchema>;
 export type ShortsRecommendation = typeof shortsRecommendations.$inferSelect;
 export type InsertShortsRecommendation = z.infer<typeof insertShortsRecommendationSchema>;
+
+// 자빠돌이/꼬돌이 추적 시스템 - 추천으로 입덕시킨 횟수 추적
+export const conversionTracking = pgTable("conversion_tracking", {
+  id: serial("id").primaryKey(),
+  recommenderId: varchar("recommender_id").notNull().references(() => users.id), // 추천한 사람 (자빠돌이/꼬돌이)
+  convertedUserId: varchar("converted_user_id").notNull().references(() => users.id), // 입덕한 사람
+  loveTreeId: integer("love_tree_id").notNull().references(() => loveTrees.id), // 추천한 러브트리
+  conversionType: varchar("conversion_type", { length: 20 }).notNull(), // "love_tree_view", "follow", "complete"
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// 자빠돌이/꼬돌이 랭킹 시스템
+export const propagatorStats = pgTable("propagator_stats", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  totalConversions: integer("total_conversions").default(0), // 총 입덕시킨 횟수
+  monthlyConversions: integer("monthly_conversions").default(0), // 이번 달 입덕시킨 횟수
+  rank: varchar("rank", { length: 20 }).default("새싹 자빠돌이"), // 자빠돌이 등급
+  trustScore: integer("trust_score").default(0), // 신뢰도 점수
+  lastUpdated: timestamp("last_updated").defaultNow(),
+});
+
+export const insertConversionTrackingSchema = createInsertSchema(conversionTracking).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPropagatorStatsSchema = createInsertSchema(propagatorStats).omit({
+  id: true,
+  lastUpdated: true,
+});
+
+export type ConversionTracking = typeof conversionTracking.$inferSelect;
+export type InsertConversionTracking = z.infer<typeof insertConversionTrackingSchema>;
+export type PropagatorStats = typeof propagatorStats.$inferSelect;
+export type InsertPropagatorStats = z.infer<typeof insertPropagatorStatsSchema>;

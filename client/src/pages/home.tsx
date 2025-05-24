@@ -406,10 +406,41 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  {/* 설명 */}
-                  <div className="mt-4 flex items-center space-x-2 text-xs text-gray-600">
-                    <span>💡</span>
-                    <span>콘텐츠를 추가해서 러브트리를 완성해보세요!</span>
+                  {/* 주요 기능 설명 */}
+                  <div className="mt-4 space-y-3">
+                    <div className="text-xs font-medium text-gray-700 mb-2">🌟 주요 기능</div>
+                    
+                    <div className="space-y-2 text-xs text-gray-600">
+                      <div className="flex items-start space-x-2">
+                        <span className="text-blue-500">📺</span>
+                        <span>유튜브에서 영상 추가 버튼으로 러브트리에 자동 추가</span>
+                      </div>
+                      
+                      <div className="flex items-start space-x-2">
+                        <span className="text-green-500">📝</span>
+                        <span>영상 옆/위/아래에 설명과 감상 추가 가능</span>
+                      </div>
+                      
+                      <div className="flex items-start space-x-2">
+                        <span className="text-pink-500">💖</span>
+                        <span>완성 시 폴인럽 단계로 업그레이드 (공개/비공개 선택)</span>
+                      </div>
+                      
+                      <div className="flex items-start space-x-2">
+                        <span className="text-purple-500">🏷️</span>
+                        <span>태그별 정리 가능 (예: #귀여움, #섹시함)</span>
+                      </div>
+                      
+                      <div className="flex items-start space-x-2">
+                        <span className="text-orange-500">🎯</span>
+                        <span>자빠돌이/꼬돌이: 추천 러브트리로 입덕시킨 횟수 순위</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2 text-xs text-gray-600 pt-2 border-t border-gray-100">
+                      <span>💡</span>
+                      <span>지금 바로 러브트리를 시작해보세요!</span>
+                    </div>
                   </div>
                 </div>
               </div>
