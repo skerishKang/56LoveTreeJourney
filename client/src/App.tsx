@@ -11,6 +11,7 @@ import Community from "@/pages/community";
 import Profile from "@/pages/profile";
 import AddContent from "@/pages/add-content";
 import CategoryHub from "@/pages/category-hub";
+import LoveTreeTemplates from "@/pages/love-tree-templates";
 import NotFound from "@/pages/not-found";
 
 function Router() {

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Crown, Heart, Sparkles, Play, Plus, Maximize2 } from "lucide-react";
+import { Crown, Heart, Sparkles, Play, Plus, Maximize2, Star } from "lucide-react";
 import { Link } from "wouter";
 
 interface TreeNode {
