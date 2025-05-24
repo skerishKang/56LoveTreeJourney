@@ -17,6 +17,7 @@ import GoodsCollectionPage from "@/pages/goods-collection-page";
 import FanActivitiesPage from "@/pages/fan-activities-page";
 import SubscriptionManagerPage from "@/pages/subscription-manager-page";
 import ShortsPage from "@/pages/shorts";
+import LoveTreeFullscreen from "@/pages/love-tree-fullscreen";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -52,6 +53,7 @@ function Router() {
           <Route path="/fan-activities" component={FanActivitiesPage} />
           <Route path="/subscription-manager" component={SubscriptionManagerPage} />
           <Route path="/shorts" component={ShortsPage} />
+          <Route path="/love-tree/:id" component={LoveTreeFullscreen} />
         </>
       )}
       <Route component={NotFound} />

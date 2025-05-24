@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { api } from "@/lib/api";
 import LoveTreeProgress from "@/components/love-tree-progress";
 import NewSeedAlert from "@/components/new-seed-alert";
@@ -26,6 +27,7 @@ import { Link } from "wouter";
 
 export default function Home() {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
   const [viewMode, setViewMode] = useState<"timeline" | "mindmap">("mindmap");
   const [selectedTag, setSelectedTag] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -314,10 +316,10 @@ export default function Home() {
                 <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'h-96'} border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 relative transition-all duration-300`}>
                   {/* 전체화면 버튼 */}
                   <button 
-                    onClick={() => setIsFullscreen(!isFullscreen)}
+                    onClick={() => setLocation(`/love-tree/${currentLoveTree?.id || 1}`)}
                     className="absolute top-3 right-3 z-10 bg-white/90 hover:bg-white text-gray-700 px-3 py-1 rounded-full text-xs font-medium shadow-lg transition-all"
                   >
-                    {isFullscreen ? '📱 작게보기' : '🖥️ 전체화면'}
+                    🖥️ 전체화면
                   </button>
                   
                   {viewMode === "mindmap" ? (
