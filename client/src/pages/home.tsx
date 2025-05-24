@@ -7,6 +7,7 @@ import RecommendedShorts from "@/components/recommended-shorts";
 import LoveTreeTimeline from "@/components/love-tree-timeline";
 import LoveTreeMindmap from "@/components/love-tree-mindmap";
 import EnhancedLoveTree from "@/components/enhanced-love-tree";
+import InteractiveMindmap from "@/components/interactive-mindmap";
 import PopularTrees from "@/components/popular-trees";
 import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import ShareLoveTree from "@/components/share-love-tree";
 import PropagatorStats from "@/components/propagator-stats";
+import PropagatorDashboard from "@/components/propagator-dashboard";
 import YouTubeExtensionGuide from "@/components/youtube-extension-guide";
 import TagFilter from "@/components/tag-filter";
 import BottomNavigation from "@/components/bottom-navigation";
@@ -308,9 +310,9 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div>
+                <div className="h-96 border border-gray-200 rounded-lg overflow-hidden">
                   {viewMode === "mindmap" ? (
-                    <EnhancedLoveTree loveTreeId={currentLoveTree.id} />
+                    <InteractiveMindmap loveTreeId={currentLoveTree.id} />
                   ) : (
                     <LoveTreeTimeline loveTreeId={currentLoveTree.id} />
                   )}
