@@ -7,7 +7,7 @@ import RecommendedShorts from "@/components/recommended-shorts";
 import LoveTreeTimeline from "@/components/love-tree-timeline";
 import LoveTreeMindmap from "@/components/love-tree-mindmap";
 import PopularTrees from "@/components/popular-trees";
-import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone } from "lucide-react";
+import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,11 +25,11 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<"timeline" | "mindmap">("mindmap");
   const [selectedTag, setSelectedTag] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAllCategories, setShowAllCategories] = useState(false);
   const [sectionOrder, setSectionOrder] = useState([
     "myLoveTree",
     "popularCategories", 
     "popularTrees",
-    "fanActivities",
     "propagatorStats",
     "recommendations"
   ]);
@@ -220,23 +220,78 @@ export default function Home() {
                   <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { name: "K-pop", icon: "🎤", count: "1.2K", color: "from-pink-400 to-purple-500" },
-                    { name: "드라마", icon: "📺", count: "890", color: "from-blue-400 to-cyan-500" },
-                    { name: "애니메이션", icon: "🎨", count: "645", color: "from-orange-400 to-red-500" },
-                    { name: "유튜버", icon: "📹", count: "432", color: "from-green-400 to-emerald-500" }
-                  ].map((category) => (
-                    <Card key={category.name} className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-3">
-                        <div className={`w-8 h-8 bg-gradient-to-r ${category.color} rounded-lg flex items-center justify-center mb-2`}>
-                          <span className="text-lg">{category.icon}</span>
-                        </div>
-                        <h4 className="font-semibold text-gray-800">{category.name}</h4>
-                        <p className="text-sm text-gray-600">{category.count}개 러브트리</p>
+                <div className="space-y-4">
+                  {/* 기본 카테고리 */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { name: "K-pop", icon: "🎤", count: "1.2K", color: "from-pink-400 to-purple-500", type: "산업" },
+                      { name: "드라마", icon: "📺", count: "890", color: "from-blue-400 to-cyan-500", type: "작품" },
+                      { name: "아이돌", icon: "✨", count: "2.1K", color: "from-purple-400 to-pink-500", type: "인물" },
+                      { name: "애니메이션", icon: "🎨", count: "645", color: "from-orange-400 to-red-500", type: "작품" }
+                    ].map((category) => (
+                      <Card key={category.name} className="hover:shadow-md transition-shadow cursor-pointer">
+                        <CardContent className="p-3">
+                          <div className={`w-8 h-8 bg-gradient-to-r ${category.color} rounded-lg flex items-center justify-center mb-2`}>
+                            <span className="text-lg">{category.icon}</span>
+                          </div>
+                          <h4 className="font-semibold text-gray-800">{category.name}</h4>
+                          <p className="text-xs text-gray-500 mb-1">{category.type}</p>
+                          <p className="text-sm text-gray-600">{category.count}개 러브트리</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  {/* 확장 카테고리 */}
+                  {showAllCategories && (
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        { name: "배우", icon: "🎭", count: "567", color: "from-emerald-400 to-teal-500", type: "인물" },
+                        { name: "영화", icon: "🎬", count: "789", color: "from-indigo-400 to-blue-500", type: "작품" },
+                        { name: "유튜버", icon: "📹", count: "432", color: "from-green-400 to-emerald-500", type: "인물" },
+                        { name: "음악", icon: "🎵", count: "1.5K", color: "from-rose-400 to-pink-500", type: "산업" },
+                        { name: "게임", icon: "🎮", count: "234", color: "from-cyan-400 to-blue-500", type: "산업" },
+                        { name: "웹툰", icon: "📖", count: "345", color: "from-yellow-400 to-orange-500", type: "작품" },
+                        { name: "스포츠", icon: "⚽", count: "178", color: "from-lime-400 to-green-500", type: "산업" },
+                        { name: "요리", icon: "👨‍🍳", count: "123", color: "from-amber-400 to-yellow-500", type: "산업" }
+                      ].map((category) => (
+                        <Card key={category.name} className="hover:shadow-md transition-shadow cursor-pointer">
+                          <CardContent className="p-3">
+                            <div className={`w-8 h-8 bg-gradient-to-r ${category.color} rounded-lg flex items-center justify-center mb-2`}>
+                              <span className="text-lg">{category.icon}</span>
+                            </div>
+                            <h4 className="font-semibold text-gray-800">{category.name}</h4>
+                            <p className="text-xs text-gray-500 mb-1">{category.type}</p>
+                            <p className="text-sm text-gray-600">{category.count}개 러브트리</p>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* 더보기/접기 버튼 */}
+                  <div className="flex justify-center">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowAllCategories(!showAllCategories)}
+                      className="text-gray-600 hover:text-gray-800"
+                    >
+                      {showAllCategories ? "접기" : "더보기"}
+                      <ChevronRight className={`w-4 h-4 ml-1 transition-transform ${showAllCategories ? "rotate-90" : ""}`} />
+                    </Button>
+                  </div>
+
+                  {/* 카테고리 요청하기 */}
+                  <div className="text-center">
+                    <Card className="bg-gradient-to-r from-love-light to-soft-pink border-dashed border-2 border-love-pink/30 hover:border-love-pink/50 transition-colors cursor-pointer">
+                      <CardContent className="p-4">
+                        <div className="text-2xl mb-2">💡</div>
+                        <h4 className="font-semibold text-gray-800 mb-1">새 카테고리 요청</h4>
+                        <p className="text-sm text-gray-600">원하는 분야가 없나요? 요청해주세요!</p>
                       </CardContent>
                     </Card>
-                  ))}
+                  </div>
                 </div>
               </div>
             );
@@ -265,69 +320,7 @@ export default function Home() {
             );
           }
 
-          // 팬활동 섹션
-          if (sectionId === "fanActivities") {
-            return (
-              <div 
-                key={`${sectionId}-${index}`}
-                className="px-4 py-4 bg-white border border-gray-100 rounded-lg mx-4 my-2"
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, index)}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
-                    <Star className="w-5 h-5 text-yellow-500" />
-                    <span>팬활동</span>
-                  </h3>
-                  <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <Link href="/community-tracker">
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-3 text-center">
-                        <Users className="w-6 h-6 mx-auto mb-2 text-blue-500" />
-                        <p className="text-sm font-medium">커뮤니티 활동</p>
-                        <p className="text-xs text-gray-500">SNS 팬 커뮤니티</p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                  
-                  <Link href="/goods-collection">
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-3 text-center">
-                        <Gift className="w-6 h-6 mx-auto mb-2 text-purple-500" />
-                        <p className="text-sm font-medium">굿즈 컬렉션</p>
-                        <p className="text-xs text-gray-500">소중한 굿즈 관리</p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                  
-                  <Link href="/fan-activities">
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-3 text-center">
-                        <Gamepad2 className="w-6 h-6 mx-auto mb-2 text-green-500" />
-                        <p className="text-sm font-medium">팬 활동 일지</p>
-                        <p className="text-xs text-gray-500">콘서트 & 이벤트</p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                  
-                  <Link href="/subscription-manager">
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-3 text-center">
-                        <Smartphone className="w-6 h-6 mx-auto mb-2 text-cyan-500" />
-                        <p className="text-sm font-medium">구독 서비스</p>
-                        <p className="text-xs text-gray-500">버블, 위버스 등</p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </div>
-              </div>
-            );
-          }
+
 
           // 자빠돌이 스테이터스 섹션
           if (sectionId === "propagatorStats" && user) {
