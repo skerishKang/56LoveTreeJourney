@@ -270,6 +270,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Share routes
+  app.post('/api/love-trees/:loveTreeId/share', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const loveTreeId = parseInt(req.params.loveTreeId);
+      const { platform, shareUrl } = req.body;
+
+      const share = await storage.createShare({
+        userId,
+        loveTreeId,
+        platform,
+        shareUrl,
+      });
+
+      res.json(share);
+    } catch (error) {
+      console.error("Error creating share:", error);
+      res.status(500).json({ message: "Failed to create share" });
+    }
+  });
+
+  app.get('/api/love-trees/:loveTreeId/shares', async (req, res) => {
+    try {
+      const loveTreeId = parseInt(req.params.loveTreeId);
+      const shares = await storage.getLoveTreeShares(loveTreeId);
+      res.json(shares);
+    } catch (error) {
+      console.error("Error fetching shares:", error);
+      res.status(500).json({ message: "Failed to fetch shares" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

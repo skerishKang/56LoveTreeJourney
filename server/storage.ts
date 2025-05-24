@@ -10,6 +10,7 @@ import {
   loveTreeTags,
   follows,
   notifications,
+  shares,
   type User,
   type UpsertUser,
   type LoveTree,
@@ -25,6 +26,8 @@ import {
   type Tag,
   type InsertTag,
   type Notification,
+  type Share,
+  type InsertShare,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, and, or, isNull } from "drizzle-orm";
@@ -82,6 +85,11 @@ export interface IStorage {
   // Follow operations
   followLoveTree(followerId: string, loveTreeId: number): Promise<void>;
   unfollowLoveTree(followerId: string, loveTreeId: number): Promise<void>;
+
+  // Share operations
+  createShare(share: InsertShare): Promise<Share>;
+  getLoveTreeShares(loveTreeId: number): Promise<Share[]>;
+  incrementShareView(shareId: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -398,6 +406,30 @@ export class DatabaseStorage implements IStorage {
     await db
       .delete(follows)
       .where(and(eq(follows.followerId, followerId), eq(follows.followingLoveTreeId, loveTreeId)));
+  }
+
+  // Share operations
+  async createShare(share: InsertShare): Promise<Share> {
+    const [newShare] = await db
+      .insert(shares)
+      .values(share)
+      .returning();
+    return newShare;
+  }
+
+  async getLoveTreeShares(loveTreeId: number): Promise<Share[]> {
+    return await db
+      .select()
+      .from(shares)
+      .where(eq(shares.loveTreeId, loveTreeId))
+      .orderBy(desc(shares.createdAt));
+  }
+
+  async incrementShareView(shareId: number): Promise<void> {
+    await db
+      .update(shares)
+      .set({ viewCount: sql`${shares.viewCount} + 1` })
+      .where(eq(shares.id, shareId));
   }
 }
 

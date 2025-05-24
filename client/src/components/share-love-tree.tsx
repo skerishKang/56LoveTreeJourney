@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Share2, Copy, MessageCircle, Heart, Link } from "lucide-react";
-import { SiTwitter, SiFacebook, SiInstagram, SiKakaotalk } from "react-icons/si";
+import { SiX, SiFacebook, SiInstagram } from "react-icons/si";
 import { useToast } from "@/hooks/use-toast";
 import { LoveTree } from "@shared/schema";
 
@@ -100,10 +100,10 @@ export default function ShareLoveTree({ loveTree, trigger }: ShareLoveTreeProps)
             <div className="grid grid-cols-2 gap-3">
               <Button
                 onClick={shareToTwitter}
-                className="bg-[#1DA1F2] hover:bg-[#1a91da] text-white"
+                className="bg-black hover:bg-gray-800 text-white"
               >
-                <SiTwitter className="w-4 h-4 mr-2" />
-                트위터
+                <SiX className="w-4 h-4 mr-2" />
+                X (트위터)
               </Button>
               
               <Button
@@ -118,7 +118,7 @@ export default function ShareLoveTree({ loveTree, trigger }: ShareLoveTreeProps)
                 onClick={shareToKakao}
                 className="bg-[#FEE500] hover:bg-[#e6ce00] text-black"
               >
-                <SiKakaotalk className="w-4 h-4 mr-2" />
+                <MessageCircle className="w-4 h-4 mr-2" />
                 카카오톡
               </Button>
               
