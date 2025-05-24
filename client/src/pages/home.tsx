@@ -193,53 +193,80 @@ export default function Home() {
                   <span className="text-lg">🔥</span>
                 </h4>
                 <div className="grid grid-cols-3 gap-3 mb-4">
-                  {/* 쇼츠 1 - 전국 캠프송 */}
+                  {/* 쇼츠 1 - 정국 */}
                   <div className="relative group cursor-pointer">
-                    <div className="aspect-[9/16] bg-gradient-to-br from-green-400 to-green-600 rounded-lg overflow-hidden">
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                        <Play className="w-6 h-6 text-white" />
+                    <div className="aspect-[9/16] bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg overflow-hidden">
+                      {/* 실제 영상 썸네일 느낌 */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                          <Play className="w-6 h-6 text-white ml-1" />
+                        </div>
+                      </div>
+                      {/* 정국 이미지 느낌 */}
+                      <div className="absolute top-4 left-4 right-4 text-center">
+                        <div className="text-4xl mb-2">🎤</div>
+                        <div className="text-white font-bold text-sm">정국</div>
                       </div>
                       <div className="absolute bottom-2 left-2 right-2">
                         <div className="flex items-center space-x-1 text-white mb-1">
-                          <Heart className="w-3 h-3" />
+                          <Heart className="w-3 h-3 fill-current" />
                           <span className="text-xs font-medium">1.2k</span>
                         </div>
-                        <p className="text-xs text-white/90 font-medium">전국 캠프송</p>
-                        <p className="text-xs text-white/70">@army_forever</p>
+                        <p className="text-xs text-white/90 font-medium">정국 보컬 모음</p>
+                        <p className="text-xs text-white/70">@jungkook_vocal</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* 쇼츠 2 - 넷플릭스 브랜딩 */}
+                  {/* 쇼츠 2 - 약한영웅 금성제 */}
                   <div className="relative group cursor-pointer">
-                    <div className="aspect-[9/16] bg-gradient-to-br from-red-500 to-red-700 rounded-lg overflow-hidden">
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                        <Play className="w-6 h-6 text-white" />
+                    <div className="aspect-[9/16] bg-gradient-to-br from-orange-500 to-red-600 rounded-lg overflow-hidden">
+                      {/* 실제 영상 썸네일 느낌 */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                          <Play className="w-6 h-6 text-white ml-1" />
+                        </div>
+                      </div>
+                      {/* 약한영웅 금성제 이미지 느낌 */}
+                      <div className="absolute top-4 left-4 right-4 text-center">
+                        <div className="text-4xl mb-2">🥊</div>
+                        <div className="text-white font-bold text-sm">금성제</div>
                       </div>
                       <div className="absolute bottom-2 left-2 right-2">
                         <div className="flex items-center space-x-1 text-white mb-1">
-                          <Heart className="w-3 h-3" />
+                          <Heart className="w-3 h-3 fill-current" />
                           <span className="text-xs font-medium">856</span>
                         </div>
-                        <p className="text-xs text-white/90 font-medium">넷플릭스 브랜딩2</p>
-                        <p className="text-xs text-white/70">@stay_with_skz</p>
+                        <p className="text-xs text-white/90 font-medium">약한영웅 금성제</p>
+                        <p className="text-xs text-white/70">@weak_hero_fan</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* 쇼츠 3 - 인천 덕스 웰컴 */}
+                  {/* 쇼츠 3 - 필릭스 */}
                   <div className="relative group cursor-pointer">
-                    <div className="aspect-[9/16] bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg overflow-hidden">
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                        <Play className="w-6 h-6 text-white" />
+                    <div className="aspect-[9/16] bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg overflow-hidden">
+                      {/* 실제 영상 썸네일 느낌 */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                          <Play className="w-6 h-6 text-white ml-1" />
+                        </div>
+                      </div>
+                      {/* 필릭스 이미지 느낌 */}
+                      <div className="absolute top-4 left-4 right-4 text-center">
+                        <div className="text-4xl mb-2">✨</div>
+                        <div className="text-white font-bold text-sm">필릭스</div>
                       </div>
                       <div className="absolute bottom-2 left-2 right-2">
                         <div className="flex items-center space-x-1 text-white mb-1">
-                          <Heart className="w-3 h-3" />
+                          <Heart className="w-3 h-3 fill-current" />
                           <span className="text-xs font-medium">2.1k</span>
                         </div>
-                        <p className="text-xs text-white/90 font-medium">인천 덕스 웰컴</p>
-                        <p className="text-xs text-white/70">@newyears_fan</p>
+                        <p className="text-xs text-white/90 font-medium">필릭스 댄스 모음</p>
+                        <p className="text-xs text-white/70">@felix_dance</p>
                       </div>
                     </div>
                   </div>
