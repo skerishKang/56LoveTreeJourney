@@ -390,6 +390,14 @@ export class DatabaseStorage implements IStorage {
     return newRecommendation;
   }
 
+  async getRecommendation(recommendationId: number): Promise<Recommendation | undefined> {
+    const [recommendation] = await db
+      .select()
+      .from(recommendations)
+      .where(eq(recommendations.id, recommendationId));
+    return recommendation;
+  }
+
   async selectRecommendation(recommendationId: number, newItemData: InsertLoveTreeItem): Promise<LoveTreeItem> {
     // Mark recommendation as selected
     await db

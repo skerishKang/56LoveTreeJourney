@@ -282,12 +282,17 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
                           )}
                           
                           {node.isShining && (
-                            <div className="absolute -top-3 -right-3 z-40">
-                              <Sparkles className="w-6 h-6 text-yellow-300 animate-bounce" />
-                              <div className="absolute -bottom-8 -right-3 text-sm text-yellow-600 font-bold whitespace-nowrap">
-                                ✨ 핫한 영상!
+                            <>
+                              <div className="absolute -top-3 -right-3 z-40">
+                                <div className="bg-tree-green text-white px-2 py-1 rounded-full text-xs font-bold animate-pulse shadow-lg">
+                                  HOT
+                                </div>
                               </div>
-                            </div>
+                              <div className="absolute inset-0 border-4 border-tree-green rounded-lg animate-pulse shadow-xl shadow-tree-green/30"></div>
+                              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-sm text-tree-green font-bold whitespace-nowrap">
+                                🔥 다른 가드너도 선택!
+                              </div>
+                            </>
                           )}
                         </div>
                       </div>
