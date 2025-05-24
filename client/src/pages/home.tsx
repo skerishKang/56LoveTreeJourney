@@ -384,7 +384,7 @@ export default function Home() {
             );
           }
 
-          // 자빠돌이 스테이터스 섹션
+          // 러브트리 가드너 스테이터스 섹션
           if (sectionId === "propagatorStats" && user) {
             return (
               <div 
@@ -396,7 +396,9 @@ export default function Home() {
                 onDrop={(e) => handleDrop(e, index)}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">자빠돌이 스테이터스</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+                    🌳 <span>러브트리 가드너</span>
+                  </h3>
                   <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
                 </div>
                 <PropagatorStats user={user} />

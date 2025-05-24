@@ -43,11 +43,11 @@ export default function PropagatorStats({ user }: PropagatorStatsProps) {
       </CardHeader>
       
       <CardContent className="space-y-4">
-        {/* 전도사 점수 */}
+        {/* 가드너 점수 */}
         <div className="flex items-center justify-between p-3 bg-gradient-to-r from-love-pink/10 to-love-dark/10 rounded-xl">
           <div className="flex items-center space-x-2">
             <TrendingUp className="w-4 h-4 text-love-pink" />
-            <span className="text-sm font-medium text-gray-700">전도사 점수</span>
+            <span className="text-sm font-medium text-gray-700">가드너 점수</span>
           </div>
           <span className="text-lg font-bold bg-gradient-to-r from-love-pink to-love-dark bg-clip-text text-transparent">
             {user.propagatorScore?.toLocaleString() || 0}

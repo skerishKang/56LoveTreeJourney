@@ -36,6 +36,10 @@ export interface IStorage {
   // User operations (mandatory for Replit Auth)
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
+  
+  // Gardener system operations
+  updateGardenerPoints(userId: string, points: number): Promise<User>;
+  updateGardenerRank(userId: string): Promise<User>;
 
   // Love Tree operations
   getUserLoveTrees(userId: string): Promise<LoveTree[]>;
@@ -111,6 +115,57 @@ export class DatabaseStorage implements IStorage {
         },
       })
       .returning();
+    return user;
+  }
+
+  // Gardener system operations
+  async updateGardenerPoints(userId: string, points: number): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        propagatorScore: sql`${users.propagatorScore} + ${points}`,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    // Check if rank should be updated
+    await this.updateGardenerRank(userId);
+    
+    return user;
+  }
+
+  async updateGardenerRank(userId: string): Promise<User> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId));
+    
+    if (!user) throw new Error("User not found");
+    
+    const score = user.propagatorScore || 0;
+    let newRank = "새싹 가드너";
+    
+    if (score >= 151) {
+      newRank = "레전드 가드너";
+    } else if (score >= 51) {
+      newRank = "마스터 가드너";
+    } else if (score >= 11) {
+      newRank = "정원사";
+    }
+    
+    if (newRank !== user.propagatorRank) {
+      const [updatedUser] = await db
+        .update(users)
+        .set({
+          propagatorRank: newRank,
+          updatedAt: new Date(),
+        })
+        .where(eq(users.id, userId))
+        .returning();
+      return updatedUser;
+    }
+    
     return user;
   }
 
