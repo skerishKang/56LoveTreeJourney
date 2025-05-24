@@ -76,11 +76,41 @@ export default function PropagatorStats({ user }: PropagatorStatsProps) {
           </span>
         </div>
 
-        {/* 다음 랭크까지 */}
-        <div className="mt-4 p-3 bg-gradient-to-r from-love-pink/5 to-love-dark/5 rounded-xl">
-          <p className="text-xs text-gray-600 text-center">
-            💡 더 많은 사람들을 입덕시켜서 랭크를 올려보세요!
-          </p>
+        {/* 다음 랭크 진행률 */}
+        <div className="mt-4 p-4 bg-gradient-to-r from-love-pink/5 to-love-dark/5 rounded-xl">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">다음 등급까지</span>
+            <span className="text-sm font-bold text-love-pink">
+              {user.propagatorScore || 0} / {getRankInfo(user.propagatorRank || "새싹 가드너").nextThreshold}
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full bg-gradient-to-r ${getRankInfo(user.propagatorRank || "새싹 가드너").color}`}
+              style={{ 
+                width: `${Math.min(100, ((user.propagatorScore || 0) / getRankInfo(user.propagatorRank || "새싹 가드너").nextThreshold) * 100)}%` 
+              }}
+            ></div>
+          </div>
+          <div className="mt-3 text-center">
+            <p className="text-xs text-gray-600 mb-1">
+              포인트 획득 방법:
+            </p>
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="bg-white/50 rounded-lg p-2">
+                <div className="text-love-pink font-bold">+2</div>
+                <div className="text-gray-600">하트 누르기</div>
+              </div>
+              <div className="bg-white/50 rounded-lg p-2">
+                <div className="text-tree-green font-bold">+5</div>
+                <div className="text-gray-600">영상 추가</div>
+              </div>
+              <div className="bg-white/50 rounded-lg p-2">
+                <div className="text-sparkle-gold font-bold">+10</div>
+                <div className="text-gray-600">트리 생성</div>
+              </div>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -48,6 +48,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userId,
       });
       const loveTree = await storage.createLoveTree(loveTreeData);
+      
+      // Give gardener points for creating new love tree (+10 points)
+      await storage.updateGardenerPoints(userId, 10);
+      
+      // Create notification for point gain
+      await storage.createNotification(
+        userId,
+        'gardener_points',
+        '가드너 포인트 획득! 🌳',
+        '새로운 러브트리를 생성해서 +10 포인트를 획득했어요!'
+      );
+      
       res.json(loveTree);
     } catch (error) {
       console.error("Error creating love tree:", error);
@@ -98,11 +110,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/love-trees/:id/items', isAuthenticated, async (req: any, res) => {
     try {
       const loveTreeId = parseInt(req.params.id);
+      const userId = req.user.claims.sub;
       const itemData = insertLoveTreeItemSchema.parse({
         ...req.body,
         loveTreeId,
       });
       const item = await storage.createLoveTreeItem(itemData);
+
+      // Give gardener points for adding content (+5 points)
+      await storage.updateGardenerPoints(userId, 5);
+      
+      // Create notification for point gain
+      await storage.createNotification(
+        userId,
+        'gardener_points',
+        '가드너 포인트 획득! 🌱',
+        '새로운 콘텐츠를 추가해서 +5 포인트를 획득했어요!'
+      );
 
       // Create notification for new seedling
       if (itemData.isFirstContent) {
@@ -173,6 +197,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const itemId = parseInt(req.params.id);
       const userId = req.user.claims.sub;
       const result = await storage.toggleLike(itemId, userId);
+      
+      // Give gardener points when liking content (+2 points)
+      if (result.liked) {
+        await storage.updateGardenerPoints(userId, 2);
+        
+        // Create notification for point gain
+        await storage.createNotification(
+          userId,
+          'gardener_points',
+          '가드너 포인트 획득! 🌳',
+          '하트를 눌러서 +2 포인트를 획득했어요!'
+        );
+      }
+      
       res.json(result);
     } catch (error) {
       console.error("Error toggling like:", error);
