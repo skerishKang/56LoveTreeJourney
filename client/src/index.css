@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 254 243 248; /* #FEF3F8 (soft-pink) */
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 323 87% 68%; /* #FF6B9D (love-pink) */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 177 62% 68%; /* #4ECDC4 (tree-green) */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 49 100% 60%; /* #FFD93D (sparkle-gold) */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.75rem;
+  
+  /* Custom love tree colors */
+  --love-pink: 323 87% 68%; /* #FF6B9D */
+  --tree-green: 177 62% 68%; /* #4ECDC4 */
+  --sparkle-gold: 49 100% 60%; /* #FFD93D */
+  --soft-pink: 314 100% 96%; /* #FFEEF8 */
+  --diary-beige: 40 100% 95%; /* #FDF6E3 */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 323 87% 68%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 177 62% 68%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 49 100% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .love-pink {
+    color: hsl(var(--love-pink));
+  }
+  
+  .bg-love-pink {
+    background-color: hsl(var(--love-pink));
+  }
+  
+  .tree-green {
+    color: hsl(var(--tree-green));
+  }
+  
+  .bg-tree-green {
+    background-color: hsl(var(--tree-green));
+  }
+  
+  .sparkle-gold {
+    color: hsl(var(--sparkle-gold));
+  }
+  
+  .bg-sparkle-gold {
+    background-color: hsl(var(--sparkle-gold));
+  }
+  
+  .soft-pink {
+    color: hsl(var(--soft-pink));
+  }
+  
+  .bg-soft-pink {
+    background-color: hsl(var(--soft-pink));
+  }
+  
+  .diary-beige {
+    color: hsl(var(--diary-beige));
+  }
+  
+  .bg-diary-beige {
+    background-color: hsl(var(--diary-beige));
+  }
+
+  .sparkle-bg {
+    background-image: 
+      radial-gradient(circle at 20% 80%, hsla(var(--sparkle-gold), 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsla(var(--love-pink), 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, hsla(var(--tree-green), 0.3) 0%, transparent 50%);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scale(1.1); 
+  }
+}
+
+@keyframes grow {
+  0% { 
+    transform: scale(0.95); 
+  }
+  100% { 
+    transform: scale(1); 
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+@keyframes pulse-love {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.animate-grow {
+  animation: grow 0.3s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-love {
+  animation: pulse-love 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--love-pink));
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--tree-green));
+}
