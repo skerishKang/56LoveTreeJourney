@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -133,7 +133,7 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
             <h3 className="text-xl font-bold bg-gradient-to-r from-love-pink to-love-dark bg-clip-text text-transparent mb-2">
               🌳 Felix 입덕 러브트리
             </h3>
-            <p className="text-sm text-gray-600">자유로운 마인드맵 형태로 연결된 입덕 과정!</p>
+            <p className="text-sm text-gray-600">드래그로 자유롭게 움직이는 마인드맵!</p>
           </div>
           <Dialog>
             <DialogTrigger asChild>
@@ -181,11 +181,11 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
 
         <div className="mt-6 p-4 bg-gradient-to-r from-love-pink/10 to-love-dark/10 rounded-2xl text-center border-2 border-love-pink/20">
           <p className="text-lg text-gray-800 mb-4 font-semibold">
-            💡 이런 자유로운 마인드맵이 자동으로 만들어져요!
+            💡 드래그로 자유롭게 움직이는 마인드맵!
           </p>
           <p className="text-sm text-gray-600 mb-4">
-            첨부해주신 이미지처럼 자연스러운 곡선으로 연결된<br />
-            아름다운 입덕 과정 마인드맵이 완성됩니다
+            영상 카드를 마우스로 끌어서 자유롭게 배치하고<br />
+            아름다운 입덕 과정 마인드맵을 만들어보세요
           </p>
           <Link href="/add">
             <Button className="bg-gradient-to-r from-love-pink via-tree-green to-love-dark hover:opacity-90 text-white shadow-xl text-lg px-8 py-3">
@@ -205,8 +205,17 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
   );
 }
 
-// 마인드맵 렌더러 컴포넌트
+// 드래그 가능한 마인드맵 렌더러 컴포넌트
 function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeView: boolean }) {
+  const [draggedNodes, setDraggedNodes] = useState<TreeNode[]>(nodes);
+  const [isDragging, setIsDragging] = useState(false);
+  const [draggedId, setDraggedId] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setDraggedNodes(nodes);
+  }, [nodes]);
+
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "귀여움": return "#FFD93D";
@@ -219,13 +228,51 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
 
   const cardSize = isLargeView ? { width: '200px', height: '120px' } : { width: '140px', height: '90px' };
 
+  const handleMouseDown = (e: React.MouseEvent, nodeId: number) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setDraggedId(nodeId);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !draggedId || !containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    // 경계 체크
+    const clampedX = Math.max(5, Math.min(95, x));
+    const clampedY = Math.max(5, Math.min(95, y));
+
+    setDraggedNodes(prev => 
+      prev.map(node => 
+        node.id === draggedId 
+          ? { ...node, x: clampedX, y: clampedY }
+          : node
+      )
+    );
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    setDraggedId(null);
+  };
+
   return (
-    <>
+    <div 
+      ref={containerRef}
+      className="relative w-full h-full"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      style={{ cursor: isDragging ? 'grabbing' : 'default' }}
+    >
       {/* 연결선들 */}
-      <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
-        {nodes.map(node =>
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+        {draggedNodes.map(node =>
           node.connections.map(targetId => {
-            const target = nodes.find(n => n.id === targetId);
+            const target = draggedNodes.find(n => n.id === targetId);
             if (!target) return null;
             
             const startX = node.x;
@@ -233,7 +280,7 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
             const endX = target.x;
             const endY = target.y;
             
-            // 첨부 이미지처럼 자연스러운 곡선 생성
+            // 자연스러운 곡선 생성
             const controlX1 = startX + (endX - startX) * 0.3;
             const controlY1 = startY + (endY - startY) * 0.1;
             const controlX2 = startX + (endX - startX) * 0.7;
@@ -294,18 +341,6 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
                     />
                   </>
                 )}
-                {/* 반짝이는 효과 */}
-                {target.isShining && !isPopularConnection && (
-                  <path
-                    d={path}
-                    stroke="url(#sparkleGradient)"
-                    strokeWidth={isLargeView ? "3" : "2"}
-                    fill="none"
-                    strokeLinecap="round"
-                    className="animate-pulse"
-                    strokeDasharray="8,4"
-                  />
-                )}
               </g>
             );
           })
@@ -327,16 +362,19 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
         </defs>
       </svg>
 
-      {/* 영상 카드들 */}
-      {nodes.map((node) => (
+      {/* 드래그 가능한 영상 카드들 */}
+      {draggedNodes.map((node) => (
         <div
           key={node.id}
-          className="absolute transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer transition-all duration-300 hover:z-50"
+          className={`absolute transform -translate-x-1/2 -translate-y-1/2 group transition-all duration-300 hover:z-50 select-none ${
+            draggedId === node.id ? 'cursor-grabbing z-50' : 'cursor-grab'
+          }`}
           style={{ 
             left: `${node.x}%`, 
             top: `${node.y}%`,
-            zIndex: 10
+            zIndex: draggedId === node.id ? 50 : 10
           }}
+          onMouseDown={(e) => handleMouseDown(e, node.id)}
         >
           <div 
             className={`relative bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-110 hover:shadow-2xl
@@ -347,7 +385,7 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
             style={cardSize}
           >
             <div className="w-full h-full flex items-center justify-center text-gray-700 relative overflow-hidden bg-gradient-to-br from-white to-gray-100">
-              <div className="relative z-10 text-center p-3">
+              <div className="relative z-10 text-center p-3 pointer-events-none">
                 <div className={`${isLargeView ? 'text-3xl' : 'text-2xl'} mb-2`}>📹</div>
                 <div className={`${isLargeView ? 'text-sm' : 'text-xs'} font-bold leading-tight text-gray-800`}>
                   {node.title.length > (isLargeView ? 20 : 15) ? node.title.slice(0, isLargeView ? 20 : 15) + '...' : node.title}
@@ -356,7 +394,7 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
               </div>
               
               {/* YouTube 재생 버튼 */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 <div className={`${isLargeView ? 'w-14 h-14' : 'w-10 h-10'} bg-red-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform`}>
                   <Play className={`${isLargeView ? 'w-7 h-7' : 'w-5 h-5'} text-white ml-0.5`} fill="white" />
                 </div>
@@ -364,14 +402,14 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
               
               {/* 첫 콘텐츠 왕관 */}
               {node.isFirstContent && (
-                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-40">
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none">
                   <Crown className={`${isLargeView ? 'w-6 h-6' : 'w-4 h-4'} text-sparkle-gold drop-shadow-lg animate-bounce`} />
                 </div>
               )}
               
               {/* 인기 영상 뱃지 */}
               {node.isPopular && (
-                <div className="absolute -top-3 -right-3 z-40">
+                <div className="absolute -top-3 -right-3 z-40 pointer-events-none">
                   <div className="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-xl border-2 border-white animate-pulse">
                     🔥 HOT
                   </div>
@@ -380,13 +418,13 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
               
               {/* 반짝이는 효과 */}
               {node.isShining && !node.isPopular && (
-                <div className="absolute -top-2 -right-2 z-40">
+                <div className="absolute -top-2 -right-2 z-40 pointer-events-none">
                   <Sparkles className={`${isLargeView ? 'w-5 h-5' : 'w-4 h-4'} text-yellow-300 animate-bounce`} />
                 </div>
               )}
 
               {/* 좋아요 수 */}
-              <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full flex items-center z-30">
+              <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full flex items-center z-30 pointer-events-none">
                 <Heart className="w-3 h-3 mr-1 text-red-400" />
                 {node.likeCount.toLocaleString()}
               </div>
@@ -415,6 +453,6 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
