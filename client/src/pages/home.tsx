@@ -320,7 +320,69 @@ export default function Home() {
             );
           }
 
-
+          // 팬활동 섹션
+          if (sectionId === "fanActivities") {
+            return (
+              <div 
+                key={`${sectionId}-${index}`}
+                className="px-4 py-4 bg-white border border-gray-100 rounded-lg mx-4 my-2"
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, index)}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+                    <Star className="w-5 h-5 text-yellow-500" />
+                    <span>팬활동</span>
+                  </h3>
+                  <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <Link href="/community-tracker">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                      <CardContent className="p-3 text-center">
+                        <Users className="w-6 h-6 mx-auto mb-2 text-blue-500" />
+                        <p className="text-sm font-medium">커뮤니티 활동</p>
+                        <p className="text-xs text-gray-500">SNS 팬 커뮤니티</p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                  
+                  <Link href="/goods-collection">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                      <CardContent className="p-3 text-center">
+                        <Gift className="w-6 h-6 mx-auto mb-2 text-purple-500" />
+                        <p className="text-sm font-medium">굿즈 컬렉션</p>
+                        <p className="text-xs text-gray-500">소중한 굿즈 관리</p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                  
+                  <Link href="/fan-activities">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                      <CardContent className="p-3 text-center">
+                        <Gamepad2 className="w-6 h-6 mx-auto mb-2 text-green-500" />
+                        <p className="text-sm font-medium">팬 활동 일지</p>
+                        <p className="text-xs text-gray-500">콘서트 & 이벤트</p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                  
+                  <Link href="/subscription-manager">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                      <CardContent className="p-3 text-center">
+                        <Smartphone className="w-6 h-6 mx-auto mb-2 text-cyan-500" />
+                        <p className="text-sm font-medium">구독 서비스</p>
+                        <p className="text-xs text-gray-500">버블, 위버스 등</p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </div>
+              </div>
+            );
+          }
 
           // 자빠돌이 스테이터스 섹션
           if (sectionId === "propagatorStats" && user) {
