@@ -267,6 +267,15 @@ export default function LoveTreeMindmap({ loveTreeId }: LoveTreeMindmapProps) {
                   )}
                   <Button
                     size="sm"
+                    variant="outline"
+                    onClick={() => setViewMode('editor')}
+                    className="text-xs flex items-center space-x-1"
+                  >
+                    <Edit3 className="w-3 h-3" />
+                    <span>편집</span>
+                  </Button>
+                  <Button
+                    size="sm"
                     variant="ghost"
                     onClick={() => setSelectedNode(null)}
                     className="text-xs"

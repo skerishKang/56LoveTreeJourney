@@ -28,6 +28,7 @@ export default function Home() {
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [sectionOrder, setSectionOrder] = useState([
     "myLoveTree",
+    "officialLoveTrees",
     "popularCategories", 
     "popularTrees",
     "propagatorStats",
@@ -379,6 +380,102 @@ export default function Home() {
                       </CardContent>
                     </Card>
                   </Link>
+                </div>
+              </div>
+            );
+          }
+
+          // 공식 러브트리 섹션
+          if (sectionId === "officialLoveTrees") {
+            return (
+              <div 
+                key={`${sectionId}-${index}`}
+                className="px-4 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg mx-4 my-2"
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, index)}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+                    <Crown className="w-5 h-5 text-purple-600" />
+                    <span>공식 러브트리</span>
+                    <Badge className="bg-purple-600 text-white">OFFICIAL</Badge>
+                  </h3>
+                  <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
+                </div>
+                
+                <div className="grid grid-cols-1 gap-3">
+                  {/* 공식 러브트리 카드들 */}
+                  {[
+                    {
+                      title: "NewJeans 완벽 입덕 루트",
+                      artist: "NewJeans",
+                      curator: "ADOR 공식",
+                      views: "128K",
+                      stages: 5,
+                      thumbnail: "🐰",
+                      isHot: true
+                    },
+                    {
+                      title: "BTS 입문자 가이드",
+                      artist: "BTS",
+                      curator: "BigHit Music",
+                      views: "256K",
+                      stages: 7,
+                      thumbnail: "💜",
+                      isHot: false
+                    },
+                    {
+                      title: "IVE 매력 발견 여행",
+                      artist: "IVE",
+                      curator: "Starship Ent.",
+                      views: "89K",
+                      stages: 4,
+                      thumbnail: "✨",
+                      isHot: true
+                    }
+                  ].map((tree, idx) => (
+                    <Card key={idx} className="hover:shadow-md transition-shadow cursor-pointer border-purple-100">
+                      <CardContent className="p-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg flex items-center justify-center text-2xl">
+                            {tree.thumbnail}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2 mb-1">
+                              <h4 className="font-semibold text-gray-800">{tree.title}</h4>
+                              {tree.isHot && (
+                                <Badge variant="destructive" className="text-xs">HOT</Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600 mb-2">{tree.artist} • {tree.curator}</p>
+                            <div className="flex items-center space-x-4 text-xs text-gray-500">
+                              <span className="flex items-center space-x-1">
+                                <Play className="w-3 h-3" />
+                                <span>{tree.views} 조회</span>
+                              </span>
+                              <span className="flex items-center space-x-1">
+                                <Sparkles className="w-3 h-3" />
+                                <span>{tree.stages}단계</span>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <Badge variant="outline" className="bg-purple-50 text-purple-600 border-purple-200">
+                              공식 인증
+                            </Badge>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                
+                <div className="mt-4 text-center">
+                  <Button variant="outline" className="text-purple-600 border-purple-200 hover:bg-purple-50">
+                    더 많은 공식 러브트리 보기
+                  </Button>
                 </div>
               </div>
             );
