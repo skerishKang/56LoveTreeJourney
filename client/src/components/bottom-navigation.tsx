@@ -10,7 +10,7 @@ export default function BottomNavigation() {
     { path: "/community", icon: Users, label: "커뮤니티" },
     { path: "/add", icon: Plus, label: "추가", isSpecial: true },
     { path: "/shorts", icon: Play, label: "쇼츠" },
-    { path: "/profile", icon: User, label: "프로필" },
+    { path: "/templates", icon: Sparkles, label: "템플릿" },
   ];
 
   return (
