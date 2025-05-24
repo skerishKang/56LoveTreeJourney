@@ -8,36 +8,36 @@ interface PropagatorStatsProps {
 }
 
 export default function PropagatorStats({ user }: PropagatorStatsProps) {
-  const getRankIcon = (rank: string) => {
+  const getRankInfo = (rank: string) => {
     switch (rank) {
-      case "마스터":
-        return <Crown className="w-5 h-5 text-sparkle-gold" />;
-      case "전도사":
-        return <Heart className="w-5 h-5 text-love-pink" />;
+      case "새싹 가드너":
+        return { icon: "🌱", text: "새싹 가드너", color: "from-green-400 to-green-600", nextThreshold: 11 };
+      case "정원사":
+        return { icon: "🌿", text: "정원사", color: "from-blue-400 to-blue-600", nextThreshold: 51 };
+      case "마스터 가드너":
+        return { icon: "🌳", text: "마스터 가드너", color: "from-purple-400 to-purple-600", nextThreshold: 151 };
+      case "레전드 가드너":
+        return { icon: "🏆", text: "레전드 가드너", color: "from-yellow-400 to-yellow-600", nextThreshold: 999 };
       default:
-        return <Users className="w-5 h-5 text-tree-green" />;
-    }
-  };
-
-  const getRankBadgeStyle = (rank: string) => {
-    switch (rank) {
-      case "마스터":
-        return "bg-gradient-to-r from-sparkle-gold to-yellow-600 text-black";
-      case "전도사":
-        return "bg-gradient-to-r from-love-pink to-love-dark text-white";
-      default:
-        return "bg-gradient-to-r from-tree-green to-green-600 text-white";
+        return { icon: "🌱", text: "새싹 가드너", color: "from-green-400 to-green-600", nextThreshold: 11 };
     }
   };
 
   return (
     <Card className="bg-white/90 backdrop-blur-sm border-love-pink/20 shadow-lg">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center space-x-2 text-gray-800">
-          {getRankIcon(user.propagatorRank || "새싹")}
-          <span>자빠돌이 스테이터스</span>
-          <Badge className={`ml-auto ${getRankBadgeStyle(user.propagatorRank || "새싹")}`}>
-            {user.propagatorRank || "새싹"}
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <span className="text-3xl">{getRankInfo(user.propagatorRank || "새싹 가드너").icon}</span>
+            <div>
+              <h3 className="text-lg font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
+                러브트리 가드너
+              </h3>
+              <p className="text-sm text-gray-600">트리를 키우는 정원사 🌳</p>
+            </div>
+          </div>
+          <Badge className={`bg-gradient-to-r ${getRankInfo(user.propagatorRank || "새싹 가드너").color} text-white border-none shadow-md font-bold`}>
+            {getRankInfo(user.propagatorRank || "새싹 가드너").text}
           </Badge>
         </CardTitle>
       </CardHeader>
