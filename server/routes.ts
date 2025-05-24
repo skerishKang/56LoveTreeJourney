@@ -9,6 +9,7 @@ import {
   insertRecommendationSchema,
   insertShortsVideoSchema,
   insertShortsRecommendationSchema,
+  insertConversionTrackingSchema,
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -365,6 +366,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching shares:", error);
       res.status(500).json({ message: "Failed to fetch shares" });
+    }
+  });
+
+  // 자빠돌이/꼬돌이 API 라우트
+  app.post('/api/track-conversion', isAuthenticated, async (req: any, res) => {
+    try {
+      const recommenderId = req.user.claims.sub;
+      const { convertedUserId, loveTreeId, conversionType } = req.body;
+      
+      const tracking = await storage.trackConversion(recommenderId, convertedUserId, loveTreeId, conversionType);
+      res.json(tracking);
+    } catch (error) {
+      console.error("Error tracking conversion:", error);
+      res.status(500).json({ message: "Failed to track conversion" });
+    }
+  });
+
+  app.get('/api/propagator-stats', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const stats = await storage.getPropagatorStats(userId);
+      res.json(stats || { totalConversions: 0, monthlyConversions: 0, rank: "새싹 자빠돌이", trustScore: 0 });
+    } catch (error) {
+      console.error("Error fetching propagator stats:", error);
+      res.status(500).json({ message: "Failed to fetch propagator stats" });
+    }
+  });
+
+  app.get('/api/propagator-rankings', async (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 20;
+      const rankings = await storage.getPropagatorRankings(limit);
+      res.json(rankings);
+    } catch (error) {
+      console.error("Error fetching propagator rankings:", error);
+      res.status(500).json({ message: "Failed to fetch propagator rankings" });
     }
   });
 
