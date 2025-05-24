@@ -258,16 +258,14 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
                         style={{ width: '200px', height: '120px' }}
                       >
                         <div 
-                          className="w-full h-full flex items-center justify-center text-white relative overflow-hidden"
-                          style={{ backgroundColor: node.color }}
+                          className="w-full h-full flex items-center justify-center text-gray-700 relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40" />
-                          
                           <div className="relative z-10 text-center p-4">
                             <div className="text-4xl mb-3">📹</div>
-                            <div className="text-sm font-bold leading-tight">
+                            <div className="text-sm font-bold leading-tight text-gray-800">
                               {node.title}
                             </div>
+                            <div className="text-xs text-gray-600 mt-1">{node.platform}</div>
                           </div>
                           
                           <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -426,18 +424,15 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
               >
                 {/* 영상 썸네일 영역 */}
                 <div 
-                  className="w-full h-full flex items-center justify-center text-white relative overflow-hidden"
-                  style={{ backgroundColor: node.color }}
+                  className="w-full h-full flex items-center justify-center text-gray-700 relative overflow-hidden bg-gradient-to-br from-white to-gray-100"
                 >
-                  {/* 그라데이션 오버레이 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40" />
-                  
                   {/* 메인 콘텐츠 */}
                   <div className="relative z-10 text-center p-3">
                     <div className="text-3xl mb-2">📹</div>
-                    <div className="text-xs font-bold leading-tight">
+                    <div className="text-xs font-bold leading-tight text-gray-800">
                       {node.title.length > 18 ? node.title.slice(0, 18) + '...' : node.title}
                     </div>
+                    <div className="text-xs text-gray-600 mt-1">{node.platform}</div>
                   </div>
                   
                   {/* YouTube 재생 버튼 */}
