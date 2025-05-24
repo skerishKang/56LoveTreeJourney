@@ -252,12 +252,6 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
                 첫 영상 추가하기
               </Button>
             </Link>
-            <Link href="/categories">
-              <Button variant="outline" className="border-love-pink text-love-pink hover:bg-love-pink hover:text-white shadow-lg px-6 py-3">
-                <Star className="w-5 h-5 mr-2" />
-                팬 활동 카테고리
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
