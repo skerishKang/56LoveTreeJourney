@@ -143,6 +143,17 @@ export const notifications = pgTable("notifications", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// 공유 기록 테이블
+export const shares = pgTable("shares", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  loveTreeId: integer("love_tree_id").notNull().references(() => loveTrees.id),
+  platform: varchar("platform", { length: 50 }).notNull(), // 'twitter', 'facebook', 'instagram', 'kakao', 'link'
+  shareUrl: text("share_url"),
+  viewCount: integer("view_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   loveTrees: many(loveTrees),
@@ -151,6 +162,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   recommendations: many(recommendations),
   follows: many(follows),
   notifications: many(notifications),
+  shares: many(shares),
 }));
 
 export const loveTreesRelations = relations(loveTrees, ({ one, many }) => ({
@@ -161,6 +173,7 @@ export const loveTreesRelations = relations(loveTrees, ({ one, many }) => ({
   items: many(loveTreeItems),
   tags: many(loveTreeTags),
   followers: many(follows),
+  shares: many(shares),
 }));
 
 export const loveTreeItemsRelations = relations(loveTreeItems, ({ one, many }) => ({
@@ -199,6 +212,17 @@ export const recommendationsRelations = relations(recommendations, ({ one }) => 
   }),
 }));
 
+export const sharesRelations = relations(shares, ({ one }) => ({
+  user: one(users, {
+    fields: [shares.userId],
+    references: [users.id],
+  }),
+  loveTree: one(loveTrees, {
+    fields: [shares.loveTreeId],
+    references: [loveTrees.id],
+  }),
+}));
+
 // Insert schemas
 export const upsertUserSchema = createInsertSchema(users);
 export const insertLoveTreeSchema = createInsertSchema(loveTrees).omit({
@@ -223,6 +247,12 @@ export const insertTagSchema = createInsertSchema(tags).omit({
   createdAt: true,
 });
 
+export const insertShareSchema = createInsertSchema(shares).omit({
+  id: true,
+  createdAt: true,
+  viewCount: true,
+});
+
 // Types
 export type UpsertUser = z.infer<typeof upsertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -239,3 +269,5 @@ export type InsertRecommendation = z.infer<typeof insertRecommendationSchema>;
 export type Tag = typeof tags.$inferSelect;
 export type InsertTag = z.infer<typeof insertTagSchema>;
 export type Notification = typeof notifications.$inferSelect;
+export type Share = typeof shares.$inferSelect;
+export type InsertShare = z.infer<typeof insertShareSchema>;
