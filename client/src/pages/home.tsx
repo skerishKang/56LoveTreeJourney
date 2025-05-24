@@ -585,21 +585,21 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
                     <Crown className="w-5 h-5 text-love-pink" />
-                    <span>자뻐둥이 스테이터스</span>
-                    <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white">NEW</Badge>
+                    <span>러브트리 가드너</span>
+                    <Badge className="bg-gradient-to-r from-green-500 to-blue-500 text-white">GARDENER</Badge>
                   </h3>
                   <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
                 </div>
                 
                 {/* 스테이터스 카드들 */}
                 <div className="space-y-3">
-                  {/* 전도사 점수 */}
+                  {/* 가드너 점수 */}
                   <div className="flex items-center justify-between p-3 bg-pink-50 rounded-lg border border-pink-200">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium text-gray-800">전도사 점수</span>
+                      <span className="font-medium text-gray-800">가드너 점수</span>
                     </div>
                     <span className="text-xl font-bold text-pink-600">0</span>
                   </div>
@@ -638,25 +638,26 @@ export default function Home() {
             );
           }
 
-          // 추천 섹션
+          // YouTube 확장 프로그램 안내 섹션
           if (sectionId === "recommendations") {
             return (
               <div 
                 key={`${sectionId}-${index}`}
-                className="px-4 py-4 bg-white border border-gray-100 rounded-lg mx-4 my-2"
+                className="px-4 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg mx-4 my-2"
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, index)}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">추천 숏츠</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+                    <span className="text-2xl">📺</span>
+                    <span>YouTube 확장앱 연동</span>
+                    <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">NEW</Badge>
+                  </h3>
                   <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
                 </div>
-                <RecommendedShorts />
-                <div className="mt-4">
-                  <YouTubeExtensionGuide />
-                </div>
+                <YouTubeExtensionGuide />
               </div>
             );
           }
