@@ -177,20 +177,62 @@ export default function Community() {
           </section>
         )}
 
-        {/* Hot Topics */}
-        <section className="px-4 py-2">
+        {/* Community Stats & Hot Topics */}
+        <section className="px-4 py-4">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="bg-gradient-to-br from-love-pink/10 to-love-pink/5 rounded-2xl p-4 text-center border border-love-pink/20">
+              <div className="text-2xl font-bold text-love-pink">1.2K</div>
+              <div className="text-xs text-gray-600">활성 가드너</div>
+            </div>
+            <div className="bg-gradient-to-br from-tree-green/10 to-tree-green/5 rounded-2xl p-4 text-center border border-tree-green/20">
+              <div className="text-2xl font-bold text-tree-green">342</div>
+              <div className="text-xs text-gray-600">오늘 새 글</div>
+            </div>
+            <div className="bg-gradient-to-br from-sparkle-gold/10 to-sparkle-gold/5 rounded-2xl p-4 text-center border border-sparkle-gold/20">
+              <div className="text-2xl font-bold text-sparkle-gold">89</div>
+              <div className="text-xs text-gray-600">HOT 러브트리</div>
+            </div>
+          </div>
+
+          {/* Hot Topics */}
           <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
             <TrendingUp className="w-5 h-5 mr-2 text-love-pink" />
             실시간 HOT 토픽
           </h2>
+          <div className="space-y-3 mb-6">
+            {[
+              { topic: "#뉴진스컴백", posts: "2.3K", trend: "+15%", emoji: "🔥" },
+              { topic: "#스트레이키즈", posts: "1.8K", trend: "+23%", emoji: "⚡" },
+              { topic: "#아이브신곡", posts: "1.5K", trend: "+8%", emoji: "💖" },
+              { topic: "#세븐틴콘서트", posts: "987", trend: "+12%", emoji: "🎵" },
+            ].map((item, index) => (
+              <div key={index} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-2xl">{item.emoji}</div>
+                    <div>
+                      <h3 className="font-semibold text-gray-800">{item.topic}</h3>
+                      <p className="text-sm text-gray-600">{item.posts} 게시물</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-love-pink/10 text-love-pink border-none">
+                    {item.trend}
+                  </Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick Hashtags */}
           <div className="flex space-x-2 overflow-x-auto pb-2">
             {[
-              "#뉴진스컴백", "#스트레이키즈", "#아이브신곡", "#세븐틴콘서트", "#러브트리", "#입덕"
+              "#러브트리", "#입덕", "#덕질", "#아이돌", "#K팝", "#드라마"
             ].map((hashtag, index) => (
               <Badge
                 key={index}
                 variant="secondary"
-                className="whitespace-nowrap bg-love-pink/10 text-love-pink hover:bg-love-pink hover:text-white cursor-pointer transition-all"
+                className="whitespace-nowrap bg-gradient-to-r from-love-pink/10 to-tree-green/10 text-gray-700 hover:from-love-pink hover:to-tree-green hover:text-white cursor-pointer transition-all border-none"
               >
                 {hashtag}
               </Badge>
@@ -198,8 +240,59 @@ export default function Community() {
           </div>
         </section>
 
+        {/* Featured Love Trees */}
+        <section className="px-4 py-4">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <Sparkles className="w-5 h-5 mr-2 text-sparkle-gold" />
+            주목받는 러브트리
+          </h2>
+          <div className="space-y-3 mb-6">
+            {[
+              { title: "뉴진스 입덕기", user: "민지팬", category: "K-pop", likes: 234, comments: 45, items: 12 },
+              { title: "스트레이키즈 러브트리", user: "하늘", category: "K-pop", likes: 189, comments: 32, items: 8 },
+              { title: "약한영웅 이준영 입덕", user: "소라", category: "드라마", likes: 167, comments: 28, items: 15 },
+            ].map((tree, index) => (
+              <div key={index} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer">
+                <div className="flex items-start space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-love-pink to-tree-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                    {tree.user[0]}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <h3 className="font-semibold text-gray-800">{tree.title}</h3>
+                      <Badge variant="secondary" className="text-xs bg-sparkle-gold/10 text-sparkle-gold">{tree.category}</Badge>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">
+                      by {tree.user} • {tree.items}개 콘텐츠
+                    </p>
+                    <div className="flex items-center space-x-4 text-sm text-gray-600">
+                      <div className="flex items-center space-x-1">
+                        <Heart className="w-4 h-4 text-love-pink" />
+                        <span>{tree.likes}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <MessageCircle className="w-4 h-4 text-tree-green" />
+                        <span>{tree.comments}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Share2 className="w-4 h-4 text-sparkle-gold" />
+                        <span>공유</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Community Feed */}
         <section className="px-4 py-4">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <Users className="w-5 h-5 mr-2 text-tree-green" />
+            실시간 피드
+          </h2>
+          
           {posts.length === 0 && (
             <div className="text-center py-8">
               <div className="text-4xl mb-4">💬</div>
@@ -215,7 +308,7 @@ export default function Community() {
           )}
           
           <div className="space-y-4">
-            {displayPosts.map((post) => (
+            {displayPosts.map((post: any) => (
               <Card key={post.id} className="bg-white hover:shadow-md transition-all duration-200">
                 <CardContent className="p-4">
                   <div className="flex items-start space-x-3">
