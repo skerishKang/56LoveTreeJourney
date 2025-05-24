@@ -36,6 +36,7 @@ export interface IStorage {
   // User operations (mandatory for Replit Auth)
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
+  getAllActiveGardeners(): Promise<User[]>;
   
   // Gardener system operations
   updateGardenerPoints(userId: string, points: number): Promise<User>;
@@ -68,6 +69,7 @@ export interface IStorage {
   // Recommendation operations
   getItemRecommendations(itemId: number): Promise<(Recommendation & { recommender: User })[]>;
   createRecommendation(recommendation: InsertRecommendation): Promise<Recommendation>;
+  getRecommendation(recommendationId: number): Promise<Recommendation | undefined>;
   selectRecommendation(recommendationId: number, newItemData: InsertLoveTreeItem): Promise<LoveTreeItem>;
 
   // Tag operations
@@ -116,6 +118,15 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     return user;
+  }
+
+  async getAllActiveGardeners(): Promise<User[]> {
+    const allUsers = await db
+      .select()
+      .from(users)
+      .where(sql`${users.propagatorScore} > 0`)
+      .orderBy(desc(users.propagatorScore));
+    return allUsers;
   }
 
   // Gardener system operations

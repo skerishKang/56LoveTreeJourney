@@ -128,19 +128,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         '새로운 콘텐츠를 추가해서 +5 포인트를 획득했어요!'
       );
 
-      // Create notification for new seedling
+      // Create notification for new seedling (notify other gardeners)
       if (itemData.isFirstContent) {
         const loveTree = await storage.getLoveTree(loveTreeId);
         if (loveTree) {
-          // Here you would notify followers, but for now we'll just create a general notification
-          await storage.createNotification(
-            loveTree.userId,
-            'new_seedling',
-            '새싹이 첫 영상을 올렸어요!',
-            `${loveTree.title}에 첫 번째 콘텐츠가 추가되었습니다.`,
-            loveTreeId,
-            item.id
-          );
+          // Get all other users who can recommend (experienced gardeners)
+          const allUsers = await storage.getAllActiveGardeners();
+          const otherGardeners = allUsers.filter(u => u.id !== userId);
+          
+          // Notify other gardeners about new seedling
+          for (const gardener of otherGardeners.slice(0, 10)) { // Limit to 10 for now
+            await storage.createNotification(
+              gardener.id,
+              'new_seedling',
+              '🌱 새싹이 첫 영상을 올렸어요!',
+              `"${loveTree.title}" 카테고리에 새로운 가드너가 입문했어요! 다음 영상을 추천해보세요.`,
+              loveTreeId,
+              item.id
+            );
+          }
         }
       }
 
@@ -250,8 +256,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/recommendations/:id/select', isAuthenticated, async (req: any, res) => {
     try {
       const recommendationId = parseInt(req.params.id);
+      const userId = req.user.claims.sub;
       const newItemData = insertLoveTreeItemSchema.parse(req.body);
+      
+      // Get recommendation info to find who made the recommendation
+      const recommendation = await storage.getRecommendation(recommendationId);
+      if (!recommendation) {
+        return res.status(404).json({ message: "Recommendation not found" });
+      }
+      
       const item = await storage.selectRecommendation(recommendationId, newItemData);
+      
+      // Reward the recommender with gardener points (+7 points for successful recommendation)
+      await storage.updateGardenerPoints(recommendation.recommenderId, 7);
+      
+      // Notify the recommender about successful selection
+      await storage.createNotification(
+        recommendation.recommenderId,
+        'recommendation_selected',
+        '추천 영상이 선택되었어요! ✨',
+        `새싹이 당신의 추천 영상을 선택했어요! +7 가드너 포인트를 획득했습니다.`
+      );
+      
       res.json(item);
     } catch (error) {
       console.error("Error selecting recommendation:", error);
