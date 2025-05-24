@@ -19,6 +19,7 @@ interface TreeNode {
   isFirstContent: boolean;
   likeCount: number;
   isShining?: boolean;
+  isPopular?: boolean; // 여러 명이 같은 영상을 올렸을 때
 }
 
 interface MindmapLoveTreeProps {
@@ -67,7 +68,8 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         color: "#FFD93D",
         isFirstContent: false,
         likeCount: 892,
-        isShining: true
+        isShining: true, // 다른 사람도 같은 영상 업로드
+        isPopular: true // 인기 영상 표시
       },
       // 중간 가지
       {
@@ -94,6 +96,7 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         color: "#FF6B9D",
         isFirstContent: false,
         likeCount: 2030,
+        isPopular: true // 이 영상도 인기!
       },
       // 위쪽 끝
       {
@@ -238,13 +241,18 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
             
             const path = `M ${startX}% ${startY}% C ${controlX1}% ${controlY1}% ${controlX2}% ${controlY2}% ${endX}% ${endY}%`;
             
+            // 인기 영상으로 연결되는 선은 초록색으로 강조
+            const isPopularConnection = target.isPopular;
+            const connectionColor = isPopularConnection ? "#10B981" : getCategoryColor(target.category);
+            const strokeWidth = isPopularConnection ? (isLargeView ? "10" : "8") : (isLargeView ? "6" : "4");
+            
             return (
               <g key={`${node.id}-${targetId}`}>
                 {/* 그림자 */}
                 <path
                   d={path}
                   stroke="#00000015"
-                  strokeWidth={isLargeView ? "8" : "6"}
+                  strokeWidth={isLargeView ? "12" : "10"}
                   fill="none"
                   strokeLinecap="round"
                   transform="translate(2, 2)"
@@ -252,17 +260,42 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
                 {/* 메인 곡선 */}
                 <path
                   d={path}
-                  stroke={getCategoryColor(target.category)}
-                  strokeWidth={isLargeView ? "6" : "4"}
+                  stroke={connectionColor}
+                  strokeWidth={strokeWidth}
                   fill="none"
                   strokeLinecap="round"
-                  className={target.isShining ? "animate-pulse" : ""}
+                  className={target.isShining || isPopularConnection ? "animate-pulse" : ""}
                   style={{
-                    filter: target.isShining ? 'drop-shadow(0 0 8px currentColor)' : 'none'
+                    filter: (target.isShining || isPopularConnection) ? 'drop-shadow(0 0 12px currentColor)' : 'none'
                   }}
                 />
+                {/* 인기 영상 특별 효과 */}
+                {isPopularConnection && (
+                  <>
+                    {/* 초록색 외곽선 */}
+                    <path
+                      d={path}
+                      stroke="#34D399"
+                      strokeWidth={isLargeView ? "14" : "12"}
+                      fill="none"
+                      strokeLinecap="round"
+                      opacity="0.4"
+                      className="animate-pulse"
+                    />
+                    {/* 반짝이는 점들 */}
+                    <path
+                      d={path}
+                      stroke="url(#popularGradient)"
+                      strokeWidth={isLargeView ? "4" : "3"}
+                      fill="none"
+                      strokeLinecap="round"
+                      className="animate-bounce"
+                      strokeDasharray="12,8"
+                    />
+                  </>
+                )}
                 {/* 반짝이는 효과 */}
-                {target.isShining && (
+                {target.isShining && !isPopularConnection && (
                   <path
                     d={path}
                     stroke="url(#sparkleGradient)"
@@ -284,6 +317,13 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
             <stop offset="50%" stopColor="#FFA500" />
             <stop offset="100%" stopColor="#FF69B4" />
           </linearGradient>
+          <linearGradient id="popularGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10B981" />
+            <stop offset="25%" stopColor="#34D399" />
+            <stop offset="50%" stopColor="#6EE7B7" />
+            <stop offset="75%" stopColor="#34D399" />
+            <stop offset="100%" stopColor="#10B981" />
+          </linearGradient>
         </defs>
       </svg>
 
@@ -299,9 +339,10 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
           }}
         >
           <div 
-            className={`relative bg-white rounded-xl shadow-xl border-2 border-white overflow-hidden transition-all duration-300 hover:scale-110 hover:shadow-2xl
+            className={`relative bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-110 hover:shadow-2xl
               ${node.isFirstContent ? 'ring-3 ring-sparkle-gold ring-offset-2 animate-pulse' : ''}
               ${node.isShining ? 'shadow-love-pink/60 shadow-2xl' : ''}
+              ${node.isPopular ? 'border-4 border-green-400 ring-4 ring-green-200 ring-offset-2 shadow-green-400/50' : 'border-2 border-white'}
             `}
             style={cardSize}
           >
@@ -328,8 +369,17 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
                 </div>
               )}
               
+              {/* 인기 영상 뱃지 */}
+              {node.isPopular && (
+                <div className="absolute -top-3 -right-3 z-40">
+                  <div className="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-xl border-2 border-white animate-pulse">
+                    🔥 HOT
+                  </div>
+                </div>
+              )}
+              
               {/* 반짝이는 효과 */}
-              {node.isShining && (
+              {node.isShining && !node.isPopular && (
                 <div className="absolute -top-2 -right-2 z-40">
                   <Sparkles className={`${isLargeView ? 'w-5 h-5' : 'w-4 h-4'} text-yellow-300 animate-bounce`} />
                 </div>
@@ -352,7 +402,10 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
                 <Heart className="w-3 h-3 text-red-400" />
                 <span>{node.likeCount.toLocaleString()}</span>
               </div>
-              {node.isShining && (
+              {node.isPopular && (
+                <span className="text-green-400 text-xs font-bold">🔥 여러 명이 선택한 핫한 영상!</span>
+              )}
+              {node.isShining && !node.isPopular && (
                 <span className="text-yellow-300 text-xs">✨ 다른 분도 추천!</span>
               )}
               {node.isFirstContent && (
