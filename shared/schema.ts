@@ -297,3 +297,114 @@ export type InsertTag = z.infer<typeof insertTagSchema>;
 export type Notification = typeof notifications.$inferSelect;
 export type Share = typeof shares.$inferSelect;
 export type InsertShare = z.infer<typeof insertShareSchema>;
+
+// 커뮤니티 활동 트래커
+export const communityActivities = pgTable("community_activities", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  platform: varchar("platform").notNull(), // 더쿠, 여시, 디시, 인벤 등
+  activityType: varchar("activity_type").notNull(), // 게시글, 댓글, 좋아요 등
+  title: varchar("title"),
+  url: varchar("url"),
+  content: text("content"),
+  likeCount: integer("like_count").default(0),
+  commentCount: integer("comment_count").default(0),
+  isPopular: boolean("is_popular").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_community_activities_user").on(table.userId),
+  index("idx_community_activities_platform").on(table.platform),
+]);
+
+// 굿즈 컬렉션
+export const goodsCollection = pgTable("goods_collection", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  category: varchar("category").notNull(), // 앨범, 포토카드, 의류, 액세서리 등
+  itemName: varchar("item_name").notNull(),
+  artist: varchar("artist"),
+  price: integer("price"),
+  purchaseDate: timestamp("purchase_date"),
+  platform: varchar("platform"), // 온라인몰, 오프라인매장 등
+  condition: varchar("condition"), // 새상품, 중고 등
+  rarity: varchar("rarity"), // 일반, 한정판, 사인 등
+  imageUrl: varchar("image_url"),
+  notes: text("notes"),
+  isWishlist: boolean("is_wishlist").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_goods_collection_user").on(table.userId),
+  index("idx_goods_collection_category").on(table.category),
+  index("idx_goods_collection_artist").on(table.artist),
+]);
+
+// 팬 활동 일지
+export const fanActivities = pgTable("fan_activities", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  activityType: varchar("activity_type").notNull(), // 콘서트, 팬사인회, 성지순례 등
+  title: varchar("title").notNull(),
+  artist: varchar("artist"),
+  venue: varchar("venue"), // 장소
+  eventDate: timestamp("event_date"),
+  cost: integer("cost"), // 비용
+  companions: text("companions"), // 동행자
+  photos: text("photos").array(), // 사진 URL 배열
+  review: text("review"), // 후기
+  rating: integer("rating"), // 1-5 별점
+  isSpecial: boolean("is_special").default(false), // 특별한 경험
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_fan_activities_user").on(table.userId),
+  index("idx_fan_activities_type").on(table.activityType),
+  index("idx_fan_activities_artist").on(table.artist),
+]);
+
+// 구독 서비스 관리 (버블, 위버스 등)
+export const subscriptions = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  platform: varchar("platform").notNull(), // 버블, 위버스, 팬클럽 등
+  artist: varchar("artist").notNull(),
+  subscriptionType: varchar("subscription_type"), // 월구독, 연구독 등
+  startDate: timestamp("start_date"),
+  endDate: timestamp("end_date"),
+  monthlyFee: integer("monthly_fee"),
+  isActive: boolean("is_active").default(true),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_subscriptions_user").on(table.userId),
+  index("idx_subscriptions_platform").on(table.platform),
+  index("idx_subscriptions_artist").on(table.artist),
+]);
+
+// 새로운 타입들
+export const insertCommunityActivitySchema = createInsertSchema(communityActivities).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertGoodsCollectionSchema = createInsertSchema(goodsCollection).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertFanActivitySchema = createInsertSchema(fanActivities).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertSubscriptionSchema = createInsertSchema(subscriptions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type CommunityActivity = typeof communityActivities.$inferSelect;
+export type InsertCommunityActivity = z.infer<typeof insertCommunityActivitySchema>;
+export type GoodsCollection = typeof goodsCollection.$inferSelect;
+export type InsertGoodsCollection = z.infer<typeof insertGoodsCollectionSchema>;
+export type FanActivity = typeof fanActivities.$inferSelect;
+export type InsertFanActivity = z.infer<typeof insertFanActivitySchema>;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
