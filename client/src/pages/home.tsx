@@ -30,6 +30,7 @@ export default function Home() {
   const [selectedTag, setSelectedTag] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [showAllCategories, setShowAllCategories] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [sectionOrder, setSectionOrder] = useState([
     "myLoveTree",
     "officialLoveTrees",
@@ -310,7 +311,15 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="h-96 border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
+                <div className="h-96 border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 relative">
+                  {/* 전체화면 버튼 */}
+                  <button 
+                    onClick={() => setIsFullscreen(!isFullscreen)}
+                    className="absolute top-3 right-3 z-10 bg-white/80 hover:bg-white text-gray-700 px-3 py-1 rounded-full text-xs font-medium shadow-md transition-all"
+                  >
+                    {isFullscreen ? '📱 작게보기' : '🖥️ 전체화면'}
+                  </button>
+                  
                   {viewMode === "mindmap" ? (
                     <div className="relative w-full h-full p-4">
                       {/* 실제 러브트리 마인드맵 시뮬레이션 */}
@@ -347,64 +356,76 @@ export default function Home() {
                         </div>
                       </div>
 
-                      {/* 첫 번째 영상 - 정국 */}
-                      <div className="absolute" style={{ left: '200px', top: '40px' }}>
-                        <div className="w-32 bg-white rounded-lg border-2 border-green-300 shadow-lg overflow-hidden">
+                      {/* 첫 번째 영상 - 금성제 */}
+                      <div className="absolute" style={{ left: '180px', top: '30px' }}>
+                        <div className="w-40 bg-white rounded-lg border-2 border-orange-300 shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
                           {/* 영상 부분 */}
-                          <div className="w-full h-20 bg-gradient-to-r from-green-400 to-green-500 flex items-center justify-center relative">
-                            <Play className="w-6 h-6 text-white" />
-                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold">정국</div>
+                          <div className="w-full h-24 bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center relative">
+                            <Play className="w-8 h-8 text-white drop-shadow-lg" />
+                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold drop-shadow">금성제 ❤️‍🔥</div>
+                            <div className="absolute top-1 right-1 text-xs text-white bg-black/20 px-1 rounded">0524</div>
                           </div>
                           {/* 감상 부분 */}
-                          <div className="p-2 bg-white">
+                          <div className="p-3 bg-white max-h-32 overflow-y-auto">
                             <p className="text-xs text-gray-700 leading-relaxed">
-                              "목소리 진짜 미쳤다... 이거 듣고 바로 입덕💜"
+                              "저번주 금요일에 3일 빠졌다가 어제 다시 금성제❤️‍🔥 발성 목소리 발음 욕의 찰짐 넘 좋아 진짜🩷 내 스타일이 전혀 아니었는데 오히려 놀랐어... 한 번 보고 뿅감! 진짜 한눈에 반함✨"
                             </p>
-                            <div className="flex items-center mt-1 text-xs text-gray-500">
-                              <Heart className="w-3 h-3 mr-1 text-red-400" />
-                              <span>1.2k</span>
+                            <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+                              <div className="flex items-center">
+                                <Heart className="w-3 h-3 mr-1 text-red-400" />
+                                <span>2.8k</span>
+                              </div>
+                              <span className="text-blue-500 cursor-pointer">더보기...</span>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* 두 번째 영상 - 필릭스 */}
-                      <div className="absolute" style={{ left: '380px', top: '60px' }}>
-                        <div className="w-32 bg-white rounded-lg border-2 border-yellow-300 shadow-lg overflow-hidden">
+                      {/* 두 번째 영상 - 수영장 씬 */}
+                      <div className="absolute" style={{ left: '400px', top: '80px' }}>
+                        <div className="w-40 bg-white rounded-lg border-2 border-blue-300 shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
                           {/* 영상 부분 */}
-                          <div className="w-full h-20 bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center relative">
-                            <Play className="w-6 h-6 text-white" />
-                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold">필릭스</div>
+                          <div className="w-full h-24 bg-gradient-to-r from-blue-400 to-cyan-500 flex items-center justify-center relative">
+                            <Play className="w-8 h-8 text-white drop-shadow-lg" />
+                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold drop-shadow">크루즈 수영장 💙</div>
+                            <div className="absolute top-1 right-1 text-xs text-white bg-black/20 px-1 rounded">0204</div>
                           </div>
                           {/* 감상 부분 */}
-                          <div className="p-2 bg-white">
+                          <div className="p-3 bg-white max-h-32 overflow-y-auto">
                             <p className="text-xs text-gray-700 leading-relaxed">
-                              "목소리 톤이 진짜 특별해! 깊이 있으면서도 따뜻함✨"
+                              "크루즈와 파트리끄 수영장씬 진짜 이뻐💎 그전에 경매 붙이는거 꺄악 나도 할래! 천만원 걸게 파트리끄한테 넘 좋아~ 재미져 봐도 봐도 잼나🏊‍♂️"
                             </p>
-                            <div className="flex items-center mt-1 text-xs text-gray-500">
-                              <Heart className="w-3 h-3 mr-1 text-red-400" />
-                              <span>856</span>
+                            <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+                              <div className="flex items-center">
+                                <Heart className="w-3 h-3 mr-1 text-red-400" />
+                                <span>3.2k</span>
+                              </div>
+                              <span className="text-blue-500 cursor-pointer">더보기...</span>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* 세 번째 영상 - 댄스 */}
-                      <div className="absolute" style={{ left: '420px', top: '180px' }}>
-                        <div className="w-32 bg-white rounded-lg border-2 border-red-300 shadow-lg overflow-hidden">
+                      {/* 세 번째 영상 - 마누 미소 */}
+                      <div className="absolute" style={{ left: '320px', top: '200px' }}>
+                        <div className="w-40 bg-white rounded-lg border-2 border-pink-300 shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
                           {/* 영상 부분 */}
-                          <div className="w-full h-20 bg-gradient-to-r from-red-400 to-red-500 flex items-center justify-center relative">
-                            <Play className="w-6 h-6 text-white" />
-                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold">댄스</div>
+                          <div className="w-full h-24 bg-gradient-to-r from-pink-400 to-rose-500 flex items-center justify-center relative">
+                            <Play className="w-8 h-8 text-white drop-shadow-lg" />
+                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold drop-shadow">마누 미소 😊</div>
+                            <div className="absolute top-1 right-1 text-xs text-white bg-black/20 px-1 rounded">재시청</div>
                           </div>
                           {/* 감상 부분 */}
-                          <div className="p-2 bg-white">
+                          <div className="p-3 bg-white max-h-32 overflow-y-auto">
                             <p className="text-xs text-gray-700 leading-relaxed">
-                              "이 안무 진짜 중독성 있어서 계속 보게 됨🔥"
+                              "마누 보고파다💕 미소 넘 이쁘고 목소리 캬 넘 좋다 말투도 좋고 피부 흰피부에 이렇게 꽂힐줄이야~ 넘 매끄럽고 수염으로 가리지마 이쁜 얼굴 드러내야지✨"
                             </p>
-                            <div className="flex items-center mt-1 text-xs text-gray-500">
-                              <Heart className="w-3 h-3 mr-1 text-red-400" />
-                              <span>2.1k</span>
+                            <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+                              <div className="flex items-center">
+                                <Heart className="w-3 h-3 mr-1 text-red-400" />
+                                <span>4.1k</span>
+                              </div>
+                              <span className="text-blue-500 cursor-pointer">더보기...</span>
                             </div>
                           </div>
                         </div>
