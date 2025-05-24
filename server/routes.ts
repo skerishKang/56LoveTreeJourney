@@ -7,6 +7,8 @@ import {
   insertLoveTreeItemSchema,
   insertCommentSchema,
   insertRecommendationSchema,
+  insertShortsVideoSchema,
+  insertShortsRecommendationSchema,
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {

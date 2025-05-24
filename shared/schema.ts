@@ -408,3 +408,51 @@ export type FanActivity = typeof fanActivities.$inferSelect;
 export type InsertFanActivity = z.infer<typeof insertFanActivitySchema>;
 export type Subscription = typeof subscriptions.$inferSelect;
 export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
+
+// Shorts videos for community sharing
+export const shortsVideos = pgTable("shorts_videos", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  url: varchar("url", { length: 500 }).notNull(),
+  thumbnail: varchar("thumbnail", { length: 500 }),
+  artist: varchar("artist", { length: 100 }).notNull(),
+  category: varchar("category", { length: 50 }).notNull(),
+  stage: varchar("stage", { length: 20 }).notNull(), // 썸, 폴인럽, 최애
+  uploaderId: varchar("uploader_id").notNull().references(() => users.id),
+  initialReview: text("initial_review"),
+  initialRating: integer("initial_rating").default(5),
+  recommendationCount: integer("recommendation_count").default(0),
+  avgRating: varchar("avg_rating", { length: 10 }).default("5.00"),
+  isPopular: boolean("is_popular").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Shorts video recommendations/reviews
+export const shortsRecommendations = pgTable("shorts_recommendations", {
+  id: serial("id").primaryKey(),
+  shortId: integer("short_id").notNull().references(() => shortsVideos.id, { onDelete: "cascade" }),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  review: text("review").notNull(),
+  rating: integer("rating").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertShortsVideoSchema = createInsertSchema(shortsVideos).omit({
+  id: true,
+  recommendationCount: true,
+  avgRating: true,
+  isPopular: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertShortsRecommendationSchema = createInsertSchema(shortsRecommendations).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type ShortsVideo = typeof shortsVideos.$inferSelect;
+export type InsertShortsVideo = z.infer<typeof insertShortsVideoSchema>;
+export type ShortsRecommendation = typeof shortsRecommendations.$inferSelect;
+export type InsertShortsRecommendation = z.infer<typeof insertShortsRecommendationSchema>;

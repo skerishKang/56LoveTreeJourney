@@ -96,6 +96,11 @@ export interface IStorage {
   createShare(share: InsertShare): Promise<Share>;
   getLoveTreeShares(loveTreeId: number): Promise<Share[]>;
   incrementShareView(shareId: number): Promise<void>;
+
+  // Shorts videos operations
+  getShortsVideos(category?: string): Promise<any[]>;
+  createShortsVideo(shorts: any): Promise<any>;
+  createShortsRecommendation(recommendation: any): Promise<any>;
 }
 
 export class DatabaseStorage implements IStorage {
