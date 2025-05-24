@@ -28,12 +28,12 @@ interface MindmapLoveTreeProps {
 
 export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
   if (!items || items.length === 0) {
-    // 첨부 이미지처럼 자유도가 있는 마인드맵 예시
+    // 실제 입덕 여정을 담은 마인드맵 예시
     const exampleNodes: TreeNode[] = [
-      // 시작점 (왼쪽)
+      // 첫 영상 (입덕 시작점)
       {
         id: 1,
-        title: "Felix Deep Voice Compilation",
+        title: "첫 만남 - Felix 저음 컴필레이션",
         platform: "YouTube",
         category: "보컬",
         x: 8,
@@ -43,10 +43,10 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         isFirstContent: true,
         likeCount: 342,
       },
-      // 중심 허브
+      // 주로 가는 채널 발견
       {
         id: 2,
-        title: "Stray Kids - God's Menu",
+        title: "Stray Kids - God's Menu MV",
         platform: "YouTube", 
         category: "댄스",
         x: 35,
@@ -56,73 +56,112 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         isFirstContent: false,
         likeCount: 1560,
       },
-      // 위쪽 가지
+      // 다양한 플랫폼 탐색
       {
         id: 3,
-        title: "Felix Baking Brownies",
+        title: "Felix 베이킹 브이로그",
         platform: "YouTube",
         category: "귀여움", 
         x: 65,
         y: 20,
-        connections: [6],
+        connections: [6, 8],
         color: "#FFD93D",
         isFirstContent: false,
         likeCount: 892,
-        isShining: true, // 다른 사람도 같은 영상 업로드
-        isPopular: true // 인기 영상 표시
+        isShining: true,
+        isPopular: true
       },
-      // 중간 가지
+      // 커뮤니티 참여 시작
       {
         id: 4,
-        title: "Felix ASMR Voice",
-        platform: "YouTube",
-        category: "보컬",
+        title: "더쿠 펠릭스 게시글",
+        platform: "더쿠",
+        category: "커뮤니티",
         x: 70,
         y: 50,
-        connections: [],
+        connections: [9],
         color: "#9B59B6",
         isFirstContent: false,
         likeCount: 756,
       },
-      // 아래쪽 가지
+      // 팬 콘텐츠 발견
       {
         id: 5,
-        title: "Stray Kids - MANIAC",
-        platform: "YouTube",
-        category: "섹시함",
+        title: "스키즈 나무위키 문서",
+        platform: "나무위키",
+        category: "정보",
         x: 60,
         y: 80,
-        connections: [7],
+        connections: [7, 10],
         color: "#FF6B9D",
         isFirstContent: false,
         likeCount: 2030,
-        isPopular: true // 이 영상도 인기!
+        isPopular: true
       },
-      // 위쪽 끝
+      // SNS 팔로우
       {
         id: 6,
-        title: "Felix TikTok Dance",
-        platform: "TikTok",
-        category: "댄스",
+        title: "Felix 인스타그램",
+        platform: "Instagram",
+        category: "일상",
         x: 85,
         y: 15,
         connections: [],
-        color: "#4ECDC4", 
+        color: "#E1306C", 
         isFirstContent: false,
         likeCount: 567,
       },
-      // 아래쪽 끝
+      // 굿즈 구매 단계
       {
         id: 7,
-        title: "SKZ Concert Fancam",
-        platform: "YouTube",
-        category: "댄스",
+        title: "첫 앨범 구매",
+        platform: "온라인 쇼핑몰",
+        category: "굿즈",
         x: 85,
         y: 85,
         connections: [],
-        color: "#4ECDC4",
+        color: "#FFD700",
         isFirstContent: false,
         likeCount: 1284,
+      },
+      // TikTok 숏폼 중독
+      {
+        id: 8,
+        title: "Felix 틱톡 댄스",
+        platform: "TikTok",
+        category: "댄스",
+        x: 90,
+        y: 30,
+        connections: [],
+        color: "#4ECDC4",
+        isFirstContent: false,
+        likeCount: 3421,
+      },
+      // 팬클럽 가입
+      {
+        id: 9,
+        title: "STAY 팬클럽 가입",
+        platform: "팬클럽",
+        category: "팬활동",
+        x: 95,
+        y: 55,
+        connections: [],
+        color: "#FF4081",
+        isFirstContent: false,
+        likeCount: 892,
+      },
+      // 위버스 가입 (완전 입덕)
+      {
+        id: 10,
+        title: "위버스 가입 완료",
+        platform: "위버스",
+        category: "팬활동",
+        x: 90,
+        y: 75,
+        connections: [],
+        color: "#7C4DFF",
+        isFirstContent: false,
+        likeCount: 1567,
       }
     ];
 
@@ -159,23 +198,42 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
           <MindmapRenderer nodes={exampleNodes} isLargeView={false} />
         </div>
         
-        {/* 카테고리 범례 */}
-        <div className="mt-6 grid grid-cols-4 gap-4">
-          <div className="flex items-center space-x-3 p-2 bg-yellow-50 rounded-xl">
-            <div className="w-5 h-5 bg-yellow-400 rounded-full border-2 border-white shadow-md"></div>
-            <span className="text-gray-700 font-semibold text-sm">귀여움</span>
-          </div>
-          <div className="flex items-center space-x-3 p-2 bg-pink-50 rounded-xl">
-            <div className="w-5 h-5 bg-love-pink rounded-full border-2 border-white shadow-md"></div>
-            <span className="text-gray-700 font-semibold text-sm">섹시함</span>
-          </div>
-          <div className="flex items-center space-x-3 p-2 bg-teal-50 rounded-xl">
-            <div className="w-5 h-5 bg-tree-green rounded-full border-2 border-white shadow-md"></div>
-            <span className="text-gray-700 font-semibold text-sm">댄스</span>
-          </div>
-          <div className="flex items-center space-x-3 p-2 bg-purple-50 rounded-xl">
-            <div className="w-5 h-5 bg-purple-500 rounded-full border-2 border-white shadow-md"></div>
-            <span className="text-gray-700 font-semibold text-sm">보컬</span>
+        {/* 입덕 여정 단계 범례 */}
+        <div className="mt-6 space-y-4">
+          <h4 className="text-lg font-bold text-gray-800 text-center">🎯 입덕 여정 단계</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="flex items-center space-x-2 p-3 bg-yellow-50 rounded-xl">
+              <div className="w-4 h-4 bg-yellow-400 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">귀여움</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-pink-50 rounded-xl">
+              <div className="w-4 h-4 bg-love-pink rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">섹시함</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-teal-50 rounded-xl">
+              <div className="w-4 h-4 bg-tree-green rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">댄스</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-purple-50 rounded-xl">
+              <div className="w-4 h-4 bg-purple-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">보컬</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-blue-50 rounded-xl">
+              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">커뮤니티</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-green-50 rounded-xl">
+              <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">정보</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-orange-50 rounded-xl">
+              <div className="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">굿즈</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-red-50 rounded-xl">
+              <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">팬활동</span>
+            </div>
           </div>
         </div>
 
@@ -222,7 +280,29 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
       case "섹시함": return "#FF6B9D"; 
       case "댄스": return "#4ECDC4";
       case "보컬": return "#9B59B6";
+      case "커뮤니티": return "#3B82F6";
+      case "정보": return "#10B981";
+      case "굿즈": return "#F59E0B";
+      case "팬활동": return "#EF4444";
+      case "일상": return "#E1306C";
       default: return "#8B4513";
+    }
+  };
+
+  const getPlatformEmoji = (platform: string) => {
+    switch (platform) {
+      case "YouTube": return "📺";
+      case "TikTok": return "🎵";
+      case "Instagram": return "📷";
+      case "Twitter": return "🐦";
+      case "Facebook": return "👥";
+      case "더쿠": return "💬";
+      case "여시": return "👭";
+      case "나무위키": return "📚";
+      case "팬클럽": return "💝";
+      case "위버스": return "🌟";
+      case "온라인 쇼핑몰": return "🛒";
+      default: return "📱";
     }
   };
 
@@ -386,7 +466,9 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
           >
             <div className="w-full h-full flex items-center justify-center text-gray-700 relative overflow-hidden bg-gradient-to-br from-white to-gray-100">
               <div className="relative z-10 text-center p-3 pointer-events-none">
-                <div className={`${isLargeView ? 'text-3xl' : 'text-2xl'} mb-2`}>📹</div>
+                <div className={`${isLargeView ? 'text-3xl' : 'text-2xl'} mb-2`}>
+                  {getPlatformEmoji(node.platform)}
+                </div>
                 <div className={`${isLargeView ? 'text-sm' : 'text-xs'} font-bold leading-tight text-gray-800`}>
                   {node.title.length > (isLargeView ? 20 : 15) ? node.title.slice(0, isLargeView ? 20 : 15) + '...' : node.title}
                 </div>
