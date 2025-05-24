@@ -9,7 +9,7 @@ import LoveTreeMindmap from "@/components/love-tree-mindmap";
 import EnhancedLoveTree from "@/components/enhanced-love-tree";
 import InteractiveMindmap from "@/components/interactive-mindmap";
 import PopularTrees from "@/components/popular-trees";
-import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles } from "lucide-react";
+import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -337,23 +337,9 @@ export default function Home() {
                           fill="none" 
                           strokeDasharray="5,5"
                         />
-                        <path 
-                          d="M 480 250 Q 380 280 280 260" 
-                          stroke="#8B5CF6" 
-                          strokeWidth="3" 
-                          fill="none" 
-                          strokeDasharray="5,5"
-                        />
-                        <path 
-                          d="M 280 260 Q 180 300 120 280" 
-                          stroke="#06B6D4" 
-                          strokeWidth="3" 
-                          fill="none" 
-                          strokeDasharray="5,5"
-                        />
                       </svg>
 
-                      {/* 영상 노드들 */}
+                      {/* 영상 노드들 - 틱톡/인스타 스타일 */}
                       {/* 시작점 */}
                       <div className="absolute" style={{ left: '30px', top: '80px' }}>
                         <div className="w-16 h-12 bg-gray-100 rounded border shadow-sm flex items-center justify-center text-xs font-medium">
@@ -361,68 +347,80 @@ export default function Home() {
                         </div>
                       </div>
 
-                      {/* 첫 번째 영상 */}
-                      <div className="absolute" style={{ left: '230px', top: '60px' }}>
-                        <div className="w-20 h-16 bg-white rounded border-2 border-green-300 shadow-md overflow-hidden">
-                          <div className="w-full h-10 bg-gradient-to-r from-green-400 to-green-500 flex items-center justify-center">
-                            <Play className="w-4 h-4 text-white" />
+                      {/* 첫 번째 영상 - 정국 */}
+                      <div className="absolute" style={{ left: '200px', top: '40px' }}>
+                        <div className="w-32 bg-white rounded-lg border-2 border-green-300 shadow-lg overflow-hidden">
+                          {/* 영상 부분 */}
+                          <div className="w-full h-20 bg-gradient-to-r from-green-400 to-green-500 flex items-center justify-center relative">
+                            <Play className="w-6 h-6 text-white" />
+                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold">정국</div>
                           </div>
-                          <div className="p-1 text-xs text-center font-medium text-gray-700">정국</div>
+                          {/* 감상 부분 */}
+                          <div className="p-2 bg-white">
+                            <p className="text-xs text-gray-700 leading-relaxed">
+                              "목소리 진짜 미쳤다... 이거 듣고 바로 입덕💜"
+                            </p>
+                            <div className="flex items-center mt-1 text-xs text-gray-500">
+                              <Heart className="w-3 h-3 mr-1 text-red-400" />
+                              <span>1.2k</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      {/* 두 번째 영상 */}
-                      <div className="absolute" style={{ left: '430px', top: '70px' }}>
-                        <div className="w-20 h-16 bg-white rounded border-2 border-yellow-300 shadow-md overflow-hidden">
-                          <div className="w-full h-10 bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center">
-                            <Play className="w-4 h-4 text-white" />
+                      {/* 두 번째 영상 - 필릭스 */}
+                      <div className="absolute" style={{ left: '380px', top: '60px' }}>
+                        <div className="w-32 bg-white rounded-lg border-2 border-yellow-300 shadow-lg overflow-hidden">
+                          {/* 영상 부분 */}
+                          <div className="w-full h-20 bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center relative">
+                            <Play className="w-6 h-6 text-white" />
+                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold">필릭스</div>
                           </div>
-                          <div className="p-1 text-xs text-center font-medium text-gray-700">필릭스</div>
+                          {/* 감상 부분 */}
+                          <div className="p-2 bg-white">
+                            <p className="text-xs text-gray-700 leading-relaxed">
+                              "목소리 톤이 진짜 특별해! 깊이 있으면서도 따뜻함✨"
+                            </p>
+                            <div className="flex items-center mt-1 text-xs text-gray-500">
+                              <Heart className="w-3 h-3 mr-1 text-red-400" />
+                              <span>856</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      {/* 세 번째 영상 */}
-                      <div className="absolute" style={{ left: '460px', top: '230px' }}>
-                        <div className="w-20 h-16 bg-white rounded border-2 border-red-300 shadow-md overflow-hidden">
-                          <div className="w-full h-10 bg-gradient-to-r from-red-400 to-red-500 flex items-center justify-center">
-                            <Play className="w-4 h-4 text-white" />
+                      {/* 세 번째 영상 - 댄스 */}
+                      <div className="absolute" style={{ left: '420px', top: '180px' }}>
+                        <div className="w-32 bg-white rounded-lg border-2 border-red-300 shadow-lg overflow-hidden">
+                          {/* 영상 부분 */}
+                          <div className="w-full h-20 bg-gradient-to-r from-red-400 to-red-500 flex items-center justify-center relative">
+                            <Play className="w-6 h-6 text-white" />
+                            <div className="absolute bottom-1 left-1 text-xs text-white font-bold">댄스</div>
                           </div>
-                          <div className="p-1 text-xs text-center font-medium text-gray-700">댄스</div>
-                        </div>
-                      </div>
-
-                      {/* 네 번째 영상 */}
-                      <div className="absolute" style={{ left: '260px', top: '240px' }}>
-                        <div className="w-20 h-16 bg-white rounded border-2 border-purple-300 shadow-md overflow-hidden">
-                          <div className="w-full h-10 bg-gradient-to-r from-purple-400 to-purple-500 flex items-center justify-center">
-                            <Play className="w-4 h-4 text-white" />
+                          {/* 감상 부분 */}
+                          <div className="p-2 bg-white">
+                            <p className="text-xs text-gray-700 leading-relaxed">
+                              "이 안무 진짜 중독성 있어서 계속 보게 됨🔥"
+                            </p>
+                            <div className="flex items-center mt-1 text-xs text-gray-500">
+                              <Heart className="w-3 h-3 mr-1 text-red-400" />
+                              <span>2.1k</span>
+                            </div>
                           </div>
-                          <div className="p-1 text-xs text-center font-medium text-gray-700">보컬</div>
                         </div>
-                      </div>
-
-                      {/* 다섯 번째 영상 */}
-                      <div className="absolute" style={{ left: '100px', top: '260px' }}>
-                        <div className="w-20 h-16 bg-white rounded border-2 border-cyan-300 shadow-md overflow-hidden">
-                          <div className="w-full h-10 bg-gradient-to-r from-cyan-400 to-cyan-500 flex items-center justify-center">
-                            <Play className="w-4 h-4 text-white" />
-                          </div>
-                          <div className="p-1 text-xs text-center font-medium text-gray-700">커버</div>
-                        </div>
-                      </div>
-
-                      {/* 인터랙션 안내 */}
-                      <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm rounded-lg p-3 shadow-sm">
-                        <p className="text-xs text-gray-600 font-medium">🎯 드래그로 영상 위치 조정</p>
-                        <p className="text-xs text-gray-500 mt-1">🔗 클릭으로 영상 연결</p>
                       </div>
 
                       {/* 우측 상단 도구 */}
                       <div className="absolute top-4 right-4 flex space-x-2">
-                        <Button size="sm" className="bg-pink-500 hover:bg-pink-600 text-white">
-                          <Plus className="w-3 h-3 mr-1" />
-                          영상 추가
-                        </Button>
+                        <button className="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg">
+                          ➕ 영상 추가
+                        </button>
+                      </div>
+
+                      {/* 인터랙션 안내 */}
+                      <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
+                        <p className="text-xs text-gray-700 font-medium">💡 틱톡/인스타 스타일</p>
+                        <p className="text-xs text-gray-500 mt-1">영상 + 바로 아래 감상 작성</p>
                       </div>
                     </div>
                   ) : (
