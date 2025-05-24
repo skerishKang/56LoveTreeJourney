@@ -68,7 +68,7 @@ export default function PopularTrees() {
     );
   }
 
-  if (!popularTrees || popularTrees.length === 0) {
+  if (!popularTrees || !Array.isArray(popularTrees) || popularTrees.length === 0) {
     return (
       <section className="px-4 py-4">
         <div className="flex items-center justify-between mb-4">
@@ -100,7 +100,7 @@ export default function PopularTrees() {
       </div>
 
       <div className="space-y-3">
-        {popularTrees.map((tree: any, index: number) => (
+        {popularTrees && popularTrees.map((tree: any, index: number) => (
           <Card key={tree.id} className="bg-white rounded-xl shadow-sm border border-gray-100 hover:border-love-pink/30 transition-colors">
             <CardContent className="p-4">
               <div className="flex items-center space-x-3 mb-3">
