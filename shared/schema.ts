@@ -37,7 +37,7 @@ export const users = pgTable("users", {
   successfulRecommendations: integer("successful_recommendations").default(0), // 성공한 추천 수
   totalWatchTime: integer("total_watch_time").default(0), // 총 시청 시간 (분)
   dailyVideoCount: integer("daily_video_count").default(0), // 하루 영상 수
-  lastActiveDate: date("last_active_date"),
+  lastActiveDate: timestamp("last_active_date"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

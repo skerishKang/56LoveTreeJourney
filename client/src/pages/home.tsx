@@ -12,10 +12,14 @@ import { Heart, Bell, Map, List, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import ShareLoveTree from "@/components/share-love-tree";
+import PropagatorStats from "@/components/propagator-stats";
+import YouTubeExtensionGuide from "@/components/youtube-extension-guide";
+import TagFilter from "@/components/tag-filter";
 
 export default function Home() {
   const { user } = useAuth();
   const [viewMode, setViewMode] = useState<"timeline" | "mindmap">("mindmap");
+  const [selectedTag, setSelectedTag] = useState<number | null>(null);
   
   const { data: loveTrees, isLoading: loveTreesLoading } = useQuery({
     queryKey: ["/api/love-trees"],
@@ -73,12 +77,28 @@ export default function Home() {
         {/* Recommended Shorts */}
         <RecommendedShorts />
 
+        {/* 자빠돌이 스테이터스 */}
+        {user && (
+          <section className="px-4 py-2">
+            <PropagatorStats user={user} />
+          </section>
+        )}
+
+        {/* YouTube 확장앱 가이드 */}
+        <section className="px-4 py-2">
+          <YouTubeExtensionGuide />
+        </section>
+
         {/* View Mode Toggle */}
         {currentLoveTree && (
           <section className="px-4 py-2">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-800">나의 러브트리 🌳</h3>
               <div className="flex items-center space-x-2">
+                <TagFilter 
+                  onTagSelect={setSelectedTag} 
+                  selectedTag={selectedTag} 
+                />
                 <ShareLoveTree loveTree={currentLoveTree} />
                 <div className="bg-white rounded-full p-1 flex">
                   <Button
