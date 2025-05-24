@@ -46,10 +46,10 @@ function Router() {
           <Route path="/community" component={Community} />
           <Route path="/profile" component={Profile} />
           <Route path="/categories" component={CategoryHub} />
-          <Route path="/community-tracker" component={CommunityTracker} />
-          <Route path="/goods-collection" component={GoodsCollection} />
-          <Route path="/fan-activities" component={FanActivityJournal} />
-          <Route path="/subscription-manager" component={SubscriptionManager} />
+          <Route path="/community-tracker" component={CommunityTrackerPage} />
+          <Route path="/goods-collection" component={GoodsCollectionPage} />
+          <Route path="/fan-activities" component={FanActivitiesPage} />
+          <Route path="/subscription-manager" component={SubscriptionManagerPage} />
         </>
       )}
       <Route component={NotFound} />
