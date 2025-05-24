@@ -34,6 +34,13 @@ export default function Home() {
 
   const currentLoveTree = loveTrees?.[0]; // Most recent love tree
 
+  // 현재 러브트리의 아이템들 가져오기
+  const { data: loveTreeItems } = useQuery({
+    queryKey: ["/api/love-trees", currentLoveTree?.id, "items"],
+    queryFn: () => currentLoveTree ? api.getLoveTreeItems(currentLoveTree.id) : Promise.resolve([]),
+    enabled: !!currentLoveTree,
+  });
+
   return (
     <div className="min-h-screen bg-soft-pink">
       {/* Header */}
