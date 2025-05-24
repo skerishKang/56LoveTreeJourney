@@ -12,7 +12,7 @@ import { Heart, Bell, Map, List, Share2, Search, TrendingUp } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ShareLoveTree from "@/components/share-love-tree";
 import PropagatorStats from "@/components/propagator-stats";
 import YouTubeExtensionGuide from "@/components/youtube-extension-guide";
@@ -26,6 +26,13 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<"timeline" | "mindmap">("mindmap");
   const [selectedTag, setSelectedTag] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sectionOrder, setSectionOrder] = useState([
+    "myLoveTree",
+    "popularCategories", 
+    "popularTrees",
+    "propagatorStats",
+    "recommendations"
+  ]);
   
   const { data: loveTrees, isLoading: loveTreesLoading } = useQuery({
     queryKey: ["/api/love-trees"],
@@ -96,37 +103,13 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="max-w-md mx-auto pb-20">
-        {/* Love Tree Progress */}
+        {/* 1. 나의 러브트리 (최우선) */}
         {currentLoveTree && (
-          <LoveTreeProgress loveTree={currentLoveTree} />
-        )}
-
-        {/* New Seed Alert */}
-        <NewSeedAlert />
-
-        {/* Recommended Shorts */}
-        <RecommendedShorts />
-
-        {/* 자빠돌이 스테이터스 */}
-        {user && (
-          <section className="px-4 py-2">
-            <PropagatorStats user={user} />
-          </section>
-        )}
-
-        {/* YouTube 확장앱 가이드 */}
-        <section className="px-4 py-2">
-          <YouTubeExtensionGuide />
-        </section>
-
-        {/* View Mode Toggle */}
-        {currentLoveTree && (
-          <section className="px-4 py-2">
+          <section className="px-4 py-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
-                <span>나의</span>
-                <span>러브트리</span>
                 <span className="text-2xl">🌳</span>
+                <span>나의 러브트리</span>
               </h3>
               <div className="flex items-center space-x-2">
                 <TagFilter 
