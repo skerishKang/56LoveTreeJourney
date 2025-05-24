@@ -311,17 +311,17 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="h-96 border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 relative">
+                <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'h-96'} border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 relative transition-all duration-300`}>
                   {/* 전체화면 버튼 */}
                   <button 
                     onClick={() => setIsFullscreen(!isFullscreen)}
-                    className="absolute top-3 right-3 z-10 bg-white/80 hover:bg-white text-gray-700 px-3 py-1 rounded-full text-xs font-medium shadow-md transition-all"
+                    className="absolute top-3 right-3 z-10 bg-white/90 hover:bg-white text-gray-700 px-3 py-1 rounded-full text-xs font-medium shadow-lg transition-all"
                   >
                     {isFullscreen ? '📱 작게보기' : '🖥️ 전체화면'}
                   </button>
                   
                   {viewMode === "mindmap" ? (
-                    <div className="relative w-full h-full p-4">
+                    <div className={`relative w-full h-full ${isFullscreen ? 'p-8' : 'p-4'} transition-all duration-300`}>
                       {/* 실제 러브트리 마인드맵 시뮬레이션 */}
                       <svg className="absolute inset-0 w-full h-full">
                         {/* 연결선들 */}
@@ -440,7 +440,7 @@ export default function Home() {
 
                       {/* 인터랙션 안내 */}
                       <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-                        <p className="text-xs text-gray-700 font-medium">💡 틱톡/인스타 스타일</p>
+                        <p className="text-xs text-gray-700 font-medium">💡 러브트리 만들기</p>
                         <p className="text-xs text-gray-500 mt-1">영상 + 바로 아래 감상 작성</p>
                       </div>
                     </div>
