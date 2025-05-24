@@ -10,6 +10,7 @@ import Discover from "@/pages/discover";
 import Community from "@/pages/community";
 import Profile from "@/pages/profile";
 import AddContent from "@/pages/add-content";
+import CategoryHub from "@/pages/category-hub";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -39,6 +40,7 @@ function Router() {
           <Route path="/community" component={Community} />
           <Route path="/profile" component={Profile} />
           <Route path="/add" component={AddContent} />
+          <Route path="/categories" component={CategoryHub} />
         </>
       )}
       <Route component={NotFound} />
