@@ -202,8 +202,8 @@ export default function EnhancedLoveTree({ loveTreeId }: EnhancedLoveTreeProps) 
         </div>
       )}
 
-      {/* 🎨 마인드맵 뷰 */}
-      <div className="relative w-full h-96 bg-gradient-to-br from-sky-50 to-indigo-50 rounded-lg overflow-hidden border border-gray-200"
+      {/* 🎨 마인드맵 뷰 - 핑크 테마 */}
+      <div className="relative w-full h-96 bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100 rounded-2xl overflow-hidden border border-pink-200"
            style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
         
         {/* SVG for connections */}
@@ -230,32 +230,32 @@ export default function EnhancedLoveTree({ loveTreeId }: EnhancedLoveTreeProps) 
           )}
         </svg>
 
-        {/* 영상 노드들 */}
+        {/* 영상 노드들 - 원형 디자인 */}
         {nodes.map((node) => (
           <div
             key={node.id}
-            className="absolute w-20 h-20 cursor-pointer group"
+            className="absolute w-16 h-16 cursor-pointer group"
             style={{ left: node.x, top: node.y }}
             onClick={() => setSelectedNode(node)}
           >
-            <div className="relative w-full h-full bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border-2 group-hover:scale-105"
-                 style={{ borderColor: node.color }}>
+            <div className="relative w-full h-full rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-110 border-4 border-white"
+                 style={{ backgroundColor: node.color }}>
               
-              {/* 썸네일 또는 플랫폼 아이콘 */}
+              {/* 원형 노드 내용 */}
               {node.thumbnailUrl ? (
                 <img
                   src={node.thumbnailUrl}
                   alt={node.title}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full object-cover rounded-full"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-full flex items-center justify-center text-white">
                   {getPlatformIcon(node.platform)}
                 </div>
               )}
 
-              {/* 플랫폼 아이콘 오버레이 */}
-              <div className="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center">
+              {/* 플랫폼 아이콘 - 더 작고 예쁘게 */}
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full shadow-sm flex items-center justify-center border border-gray-100">
                 {getPlatformIcon(node.platform)}
               </div>
 

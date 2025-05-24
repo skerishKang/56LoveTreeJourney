@@ -6,6 +6,7 @@ import NewSeedAlert from "@/components/new-seed-alert";
 import RecommendedShorts from "@/components/recommended-shorts";
 import LoveTreeTimeline from "@/components/love-tree-timeline";
 import LoveTreeMindmap from "@/components/love-tree-mindmap";
+import EnhancedLoveTree from "@/components/enhanced-love-tree";
 import PopularTrees from "@/components/popular-trees";
 import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -194,7 +195,7 @@ export default function Home() {
                 
                 <div>
                   {viewMode === "mindmap" ? (
-                    <MindmapLoveTree items={loveTreeItems} />
+                    <EnhancedLoveTree loveTreeId={currentLoveTree.id} />
                   ) : (
                     <LoveTreeTimeline loveTreeId={currentLoveTree.id} />
                   )}
