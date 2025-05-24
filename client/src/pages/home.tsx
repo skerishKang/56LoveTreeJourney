@@ -8,9 +8,10 @@ import RecommendedShorts from "@/components/recommended-shorts";
 import LoveTreeTimeline from "@/components/love-tree-timeline";
 import LoveTreeMindmap from "@/components/love-tree-mindmap";
 import PopularTrees from "@/components/popular-trees";
-import { Heart, Bell, Map, List } from "lucide-react";
+import { Heart, Bell, Map, List, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import ShareLoveTree from "@/components/share-love-tree";
 
 export default function Home() {
   const { user } = useAuth();
@@ -77,33 +78,36 @@ export default function Home() {
           <section className="px-4 py-2">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-800">나의 러브트리 🌳</h3>
-              <div className="bg-white rounded-full p-1 flex">
-                <Button
-                  size="sm"
-                  variant={viewMode === "mindmap" ? "default" : "ghost"}
-                  onClick={() => setViewMode("mindmap")}
-                  className={`rounded-full px-3 py-1 text-xs ${
-                    viewMode === "mindmap" 
-                      ? "bg-gradient-to-r from-love-pink to-tree-green text-white" 
-                      : "text-gray-600"
-                  }`}
-                >
-                  <Map className="w-4 h-4 mr-1" />
-                  마인드맵
-                </Button>
-                <Button
-                  size="sm"
-                  variant={viewMode === "timeline" ? "default" : "ghost"}
-                  onClick={() => setViewMode("timeline")}
-                  className={`rounded-full px-3 py-1 text-xs ${
-                    viewMode === "timeline" 
-                      ? "bg-gradient-to-r from-love-pink to-tree-green text-white" 
-                      : "text-gray-600"
-                  }`}
-                >
-                  <List className="w-4 h-4 mr-1" />
-                  타임라인
-                </Button>
+              <div className="flex items-center space-x-2">
+                <ShareLoveTree loveTree={currentLoveTree} />
+                <div className="bg-white rounded-full p-1 flex">
+                  <Button
+                    size="sm"
+                    variant={viewMode === "mindmap" ? "default" : "ghost"}
+                    onClick={() => setViewMode("mindmap")}
+                    className={`rounded-full px-3 py-1 text-xs ${
+                      viewMode === "mindmap" 
+                        ? "bg-gradient-to-r from-love-pink to-tree-green text-white" 
+                        : "text-gray-600"
+                    }`}
+                  >
+                    <Map className="w-4 h-4 mr-1" />
+                    마인드맵
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={viewMode === "timeline" ? "default" : "ghost"}
+                    onClick={() => setViewMode("timeline")}
+                    className={`rounded-full px-3 py-1 text-xs ${
+                      viewMode === "timeline" 
+                        ? "bg-gradient-to-r from-love-pink to-tree-green text-white" 
+                        : "text-gray-600"
+                    }`}
+                  >
+                    <List className="w-4 h-4 mr-1" />
+                    타임라인
+                  </Button>
+                </div>
               </div>
             </div>
             
