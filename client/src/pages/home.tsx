@@ -584,11 +584,22 @@ export default function Home() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
-                    <Crown className="w-5 h-5 text-love-pink" />
+                    <span className="text-2xl">🌱</span>
                     <span>러브트리 가드너</span>
-                    <Badge className="bg-gradient-to-r from-green-500 to-blue-500 text-white">GARDENER</Badge>
                   </h3>
                   <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
+                </div>
+
+                {/* 가드너 소개 */}
+                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200 mb-4">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl">🌱</span>
+                    <div>
+                      <h4 className="font-bold text-gray-800">러브트리 가드너</h4>
+                      <p className="text-sm text-gray-600">트리를키우는 정원사! 🌱</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-500 text-white">새싹 가드너</Badge>
                 </div>
                 
                 {/* 스테이터스 카드들 */}
@@ -596,9 +607,7 @@ export default function Home() {
                   {/* 가드너 점수 */}
                   <div className="flex items-center justify-between p-3 bg-pink-50 rounded-lg border border-pink-200">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-white" />
-                      </div>
+                      <Sparkles className="w-5 h-5 text-pink-500" />
                       <span className="font-medium text-gray-800">가드너 점수</span>
                     </div>
                     <span className="text-xl font-bold text-pink-600">0</span>
@@ -607,31 +616,49 @@ export default function Home() {
                   {/* 성공한 추천 */}
                   <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center">
-                        <Heart className="w-4 h-4 text-white" />
-                      </div>
+                      <Heart className="w-5 h-5 text-green-500" />
                       <span className="font-medium text-gray-800">성공한 추천</span>
                     </div>
                     <span className="text-xl font-bold text-green-600">0</span>
                   </div>
 
                   {/* 총 시청 시간 */}
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-200">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center">
-                        <Play className="w-4 h-4 text-white" />
-                      </div>
+                      <Play className="w-5 h-5 text-yellow-500" />
                       <span className="font-medium text-gray-800">총 시청 시간</span>
                     </div>
-                    <span className="text-xl font-bold text-blue-600">64시간</span>
+                    <span className="text-xl font-bold text-yellow-600">0시간</span>
                   </div>
                 </div>
 
-                {/* 다음 단계 안내 */}
-                <div className="mt-4 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-                  <div className="flex items-center space-x-2 mb-1">
-                    <span className="text-lg">💡</span>
-                    <span className="font-medium text-gray-800">다음은 사랑을 전파한 사람에게 평점을 올려보세요!</span>
+                {/* 다음 등급까지 진행률 */}
+                <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium text-gray-800">다음 등급까지</span>
+                    <span className="text-sm font-bold text-pink-600">0 / 11</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full" style={{ width: '0%' }}></div>
+                  </div>
+                </div>
+
+                {/* 포인트 획득 방법 */}
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-center text-sm font-medium text-gray-800 mb-3">포인트 획득 방법:</p>
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className="bg-white rounded-lg p-2 text-center">
+                      <div className="text-pink-500 font-bold mb-1">+2</div>
+                      <div className="text-gray-600">하트 누르기</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-2 text-center">
+                      <div className="text-green-500 font-bold mb-1">+5</div>
+                      <div className="text-gray-600">영상 추가</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-2 text-center">
+                      <div className="text-blue-500 font-bold mb-1">+10</div>
+                      <div className="text-gray-600">트리 생성</div>
+                    </div>
                   </div>
                 </div>
               </div>
