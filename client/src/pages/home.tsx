@@ -310,9 +310,121 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="h-96 border border-gray-200 rounded-lg overflow-hidden">
+                <div className="h-96 border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
                   {viewMode === "mindmap" ? (
-                    <InteractiveMindmap loveTreeId={currentLoveTree.id} />
+                    <div className="relative w-full h-full p-4">
+                      {/* 실제 러브트리 마인드맵 시뮬레이션 */}
+                      <svg className="absolute inset-0 w-full h-full">
+                        {/* 연결선들 */}
+                        <path 
+                          d="M 50 100 Q 150 50 250 80" 
+                          stroke="#10B981" 
+                          strokeWidth="3" 
+                          fill="none" 
+                          strokeDasharray="5,5"
+                        />
+                        <path 
+                          d="M 250 80 Q 350 120 450 90" 
+                          stroke="#F59E0B" 
+                          strokeWidth="3" 
+                          fill="none" 
+                          strokeDasharray="5,5"
+                        />
+                        <path 
+                          d="M 450 90 Q 500 180 480 250" 
+                          stroke="#EF4444" 
+                          strokeWidth="3" 
+                          fill="none" 
+                          strokeDasharray="5,5"
+                        />
+                        <path 
+                          d="M 480 250 Q 380 280 280 260" 
+                          stroke="#8B5CF6" 
+                          strokeWidth="3" 
+                          fill="none" 
+                          strokeDasharray="5,5"
+                        />
+                        <path 
+                          d="M 280 260 Q 180 300 120 280" 
+                          stroke="#06B6D4" 
+                          strokeWidth="3" 
+                          fill="none" 
+                          strokeDasharray="5,5"
+                        />
+                      </svg>
+
+                      {/* 영상 노드들 */}
+                      {/* 시작점 */}
+                      <div className="absolute" style={{ left: '30px', top: '80px' }}>
+                        <div className="w-16 h-12 bg-gray-100 rounded border shadow-sm flex items-center justify-center text-xs font-medium">
+                          시작
+                        </div>
+                      </div>
+
+                      {/* 첫 번째 영상 */}
+                      <div className="absolute" style={{ left: '230px', top: '60px' }}>
+                        <div className="w-20 h-16 bg-white rounded border-2 border-green-300 shadow-md overflow-hidden">
+                          <div className="w-full h-10 bg-gradient-to-r from-green-400 to-green-500 flex items-center justify-center">
+                            <Play className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="p-1 text-xs text-center font-medium text-gray-700">정국</div>
+                        </div>
+                      </div>
+
+                      {/* 두 번째 영상 */}
+                      <div className="absolute" style={{ left: '430px', top: '70px' }}>
+                        <div className="w-20 h-16 bg-white rounded border-2 border-yellow-300 shadow-md overflow-hidden">
+                          <div className="w-full h-10 bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center">
+                            <Play className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="p-1 text-xs text-center font-medium text-gray-700">필릭스</div>
+                        </div>
+                      </div>
+
+                      {/* 세 번째 영상 */}
+                      <div className="absolute" style={{ left: '460px', top: '230px' }}>
+                        <div className="w-20 h-16 bg-white rounded border-2 border-red-300 shadow-md overflow-hidden">
+                          <div className="w-full h-10 bg-gradient-to-r from-red-400 to-red-500 flex items-center justify-center">
+                            <Play className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="p-1 text-xs text-center font-medium text-gray-700">댄스</div>
+                        </div>
+                      </div>
+
+                      {/* 네 번째 영상 */}
+                      <div className="absolute" style={{ left: '260px', top: '240px' }}>
+                        <div className="w-20 h-16 bg-white rounded border-2 border-purple-300 shadow-md overflow-hidden">
+                          <div className="w-full h-10 bg-gradient-to-r from-purple-400 to-purple-500 flex items-center justify-center">
+                            <Play className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="p-1 text-xs text-center font-medium text-gray-700">보컬</div>
+                        </div>
+                      </div>
+
+                      {/* 다섯 번째 영상 */}
+                      <div className="absolute" style={{ left: '100px', top: '260px' }}>
+                        <div className="w-20 h-16 bg-white rounded border-2 border-cyan-300 shadow-md overflow-hidden">
+                          <div className="w-full h-10 bg-gradient-to-r from-cyan-400 to-cyan-500 flex items-center justify-center">
+                            <Play className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="p-1 text-xs text-center font-medium text-gray-700">커버</div>
+                        </div>
+                      </div>
+
+                      {/* 인터랙션 안내 */}
+                      <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm rounded-lg p-3 shadow-sm">
+                        <p className="text-xs text-gray-600 font-medium">🎯 드래그로 영상 위치 조정</p>
+                        <p className="text-xs text-gray-500 mt-1">🔗 클릭으로 영상 연결</p>
+                      </div>
+
+                      {/* 우측 상단 도구 */}
+                      <div className="absolute top-4 right-4 flex space-x-2">
+                        <Button size="sm" className="bg-pink-500 hover:bg-pink-600 text-white">
+                          <Plus className="w-3 h-3 mr-1" />
+                          영상 추가
+                        </Button>
+                      </div>
+                    </div>
                   ) : (
                     <LoveTreeTimeline loveTreeId={currentLoveTree.id} />
                   )}
