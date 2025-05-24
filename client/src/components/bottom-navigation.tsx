@@ -1,6 +1,6 @@
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Home, Compass, Plus, Users, User, Sparkles } from "lucide-react";
+import { Home, Compass, Plus, Users, User, Sparkles, Play } from "lucide-react";
 
 export default function BottomNavigation() {
   const [location, setLocation] = useLocation();

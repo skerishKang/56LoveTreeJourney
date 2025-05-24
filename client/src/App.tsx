@@ -16,6 +16,7 @@ import CommunityTrackerPage from "@/pages/community-tracker-page";
 import GoodsCollectionPage from "@/pages/goods-collection-page";
 import FanActivitiesPage from "@/pages/fan-activities-page";
 import SubscriptionManagerPage from "@/pages/subscription-manager-page";
+import ShortsPage from "@/pages/shorts";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -50,6 +51,7 @@ function Router() {
           <Route path="/goods-collection" component={GoodsCollectionPage} />
           <Route path="/fan-activities" component={FanActivitiesPage} />
           <Route path="/subscription-manager" component={SubscriptionManagerPage} />
+          <Route path="/shorts" component={ShortsPage} />
         </>
       )}
       <Route component={NotFound} />
