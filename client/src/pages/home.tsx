@@ -154,9 +154,97 @@ export default function Home() {
                     <span className="text-2xl">🌳</span>
                     <span>나의 러브트리</span>
                   </h3>
-                  <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
+                  <div className="flex items-center space-x-2">
+                    <Badge variant="outline" className="text-pink-600 border-pink-300 bg-pink-50">
+                      첫 단계
+                    </Badge>
+                    <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
+                  </div>
                 </div>
                 
+                {/* 진행률 바 */}
+                <div className="mb-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-gray-600">진행률</span>
+                    <span className="text-sm font-medium text-gray-700">0/100</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full" style={{ width: '5%' }}></div>
+                  </div>
+                </div>
+
+                {/* 현재 빠져있는 것 */}
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">현재 빠져있는 것</h4>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                      <Heart className="w-5 h-5 text-pink-500" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-800">이준영</p>
+                      <p className="text-sm text-gray-600">사랑함</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* 추천 쇼츠 */}
+                <h4 className="text-sm font-bold text-gray-800 mb-3 flex items-center space-x-2">
+                  <span>추천 쇼츠</span>
+                  <span className="text-lg">🔥</span>
+                </h4>
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  {/* 쇼츠 1 - 전국 캠프송 */}
+                  <div className="relative group cursor-pointer">
+                    <div className="aspect-[9/16] bg-gradient-to-br from-green-400 to-green-600 rounded-lg overflow-hidden">
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <Play className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <div className="flex items-center space-x-1 text-white mb-1">
+                          <Heart className="w-3 h-3" />
+                          <span className="text-xs font-medium">1.2k</span>
+                        </div>
+                        <p className="text-xs text-white/90 font-medium">전국 캠프송</p>
+                        <p className="text-xs text-white/70">@army_forever</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 쇼츠 2 - 넷플릭스 브랜딩 */}
+                  <div className="relative group cursor-pointer">
+                    <div className="aspect-[9/16] bg-gradient-to-br from-red-500 to-red-700 rounded-lg overflow-hidden">
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <Play className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <div className="flex items-center space-x-1 text-white mb-1">
+                          <Heart className="w-3 h-3" />
+                          <span className="text-xs font-medium">856</span>
+                        </div>
+                        <p className="text-xs text-white/90 font-medium">넷플릭스 브랜딩2</p>
+                        <p className="text-xs text-white/70">@stay_with_skz</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 쇼츠 3 - 인천 덕스 웰컴 */}
+                  <div className="relative group cursor-pointer">
+                    <div className="aspect-[9/16] bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg overflow-hidden">
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <Play className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <div className="flex items-center space-x-1 text-white mb-1">
+                          <Heart className="w-3 h-3" />
+                          <span className="text-xs font-medium">2.1k</span>
+                        </div>
+                        <p className="text-xs text-white/90 font-medium">인천 덕스 웰컴</p>
+                        <p className="text-xs text-white/70">@newyears_fan</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex items-center space-x-2 mb-4">
                   <TagFilter 
                     onTagSelect={setSelectedTag} 
@@ -496,11 +584,56 @@ export default function Home() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
-                    🌳 <span>러브트리 가드너</span>
+                    <Crown className="w-5 h-5 text-love-pink" />
+                    <span>자뻐둥이 스테이터스</span>
+                    <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white">NEW</Badge>
                   </h3>
                   <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
                 </div>
-                <PropagatorStats user={user} />
+                
+                {/* 스테이터스 카드들 */}
+                <div className="space-y-3">
+                  {/* 전도사 점수 */}
+                  <div className="flex items-center justify-between p-3 bg-pink-50 rounded-lg border border-pink-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full flex items-center justify-center">
+                        <Sparkles className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="font-medium text-gray-800">전도사 점수</span>
+                    </div>
+                    <span className="text-xl font-bold text-pink-600">0</span>
+                  </div>
+
+                  {/* 성공한 추천 */}
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center">
+                        <Heart className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="font-medium text-gray-800">성공한 추천</span>
+                    </div>
+                    <span className="text-xl font-bold text-green-600">0</span>
+                  </div>
+
+                  {/* 총 시청 시간 */}
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center">
+                        <Play className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="font-medium text-gray-800">총 시청 시간</span>
+                    </div>
+                    <span className="text-xl font-bold text-blue-600">64시간</span>
+                  </div>
+                </div>
+
+                {/* 다음 단계 안내 */}
+                <div className="mt-4 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="text-lg">💡</span>
+                    <span className="font-medium text-gray-800">다음은 사랑을 전파한 사람에게 평점을 올려보세요!</span>
+                  </div>
+                </div>
               </div>
             );
           }
