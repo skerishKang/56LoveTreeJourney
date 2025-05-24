@@ -15,6 +15,7 @@ import ShareLoveTree from "@/components/share-love-tree";
 import PropagatorStats from "@/components/propagator-stats";
 import YouTubeExtensionGuide from "@/components/youtube-extension-guide";
 import TagFilter from "@/components/tag-filter";
+import SampleLoveTree from "@/components/sample-love-tree";
 
 export default function Home() {
   const { user } = useAuth();
@@ -138,6 +139,13 @@ export default function Home() {
                 <LoveTreeTimeline loveTreeId={currentLoveTree.id} />
               )}
             </div>
+          </section>
+        )}
+
+        {/* 러브트리 예시 - 콘텐츠가 없을 때만 표시 */}
+        {(!currentLoveTree || (currentLoveTree && (!loveTreeItems || loveTreeItems.length === 0))) && (
+          <section className="px-4 py-2">
+            <SampleLoveTree />
           </section>
         )}
 
