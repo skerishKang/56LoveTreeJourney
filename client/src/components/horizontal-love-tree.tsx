@@ -169,45 +169,63 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
                         const endX = target.x;
                         const endY = target.y;
                         
-                        const path = `M ${startX}% ${startY}% 
-                                    L ${startX + (endX - startX) * 0.3}% ${startY}%
-                                    Q ${startX + (endX - startX) * 0.6}% ${startY + (endY - startY) * 0.3}% ${endX}% ${endY}%`;
-                        
                         return (
                           <g key={`large-${node.id}-${targetId}`}>
-                            <path
-                              d={path}
-                              stroke="#00000020"
-                              strokeWidth="12"
-                              fill="none"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              transform="translate(3, 3)"
+                            {/* 큰 화면용 연결선 그림자 */}
+                            <line
+                              x1={`${startX}%`}
+                              y1={`${startY}%`}
+                              x2={`${endX}%`}
+                              y2={`${endY}%`}
+                              stroke="#00000030"
+                              strokeWidth="6"
+                              strokeDasharray="12,6"
+                              transform="translate(2, 2)"
                             />
-                            <path
-                              d={path}
+                            {/* 큰 화면용 메인 연결선 */}
+                            <line
+                              x1={`${startX}%`}
+                              y1={`${startY}%`}
+                              x2={`${endX}%`}
+                              y2={`${endY}%`}
                               stroke={getBranchColor(target.category)}
-                              strokeWidth="10"
-                              fill="none"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
+                              strokeWidth="5"
+                              strokeDasharray="12,6"
                               className={target.isShining ? "animate-pulse" : ""}
                               style={{
-                                filter: target.isShining ? 'drop-shadow(0 0 12px currentColor)' : 'none'
+                                filter: target.isShining ? 'drop-shadow(0 0 10px currentColor)' : 'none'
                               }}
                             />
+                            {/* 큰 화면용 반짝이는 효과 */}
                             {target.isShining && (
-                              <path
-                                d={path}
+                              <line
+                                x1={`${startX}%`}
+                                y1={`${startY}%`}
+                                x2={`${endX}%`}
+                                y2={`${endY}%`}
                                 stroke="url(#sparkleGradient)"
-                                strokeWidth="5"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                strokeDasharray="6,6"
                                 className="animate-pulse"
-                                strokeDasharray="8,8"
                               />
                             )}
+                            {/* 큰 화면용 연결점 */}
+                            <circle
+                              cx={`${startX}%`}
+                              cy={`${startY}%`}
+                              r="5"
+                              fill={getBranchColor(node.category)}
+                              stroke="white"
+                              strokeWidth="3"
+                            />
+                            <circle
+                              cx={`${endX}%`}
+                              cy={`${endY}%`}
+                              r="5"
+                              fill={getBranchColor(target.category)}
+                              stroke="white"
+                              strokeWidth="3"
+                            />
                           </g>
                         );
                       })
@@ -308,49 +326,66 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
                   }
                 };
                 
-                // 실제 나무 가지처럼 자연스러운 곡선
-                const path = `M ${startX}% ${startY}% 
-                            L ${startX + (endX - startX) * 0.3}% ${startY}%
-                            Q ${startX + (endX - startX) * 0.6}% ${startY + (endY - startY) * 0.3}% ${endX}% ${endY}%`;
+                // 구글 마인드맵 스타일의 연결선
+                const path = `M ${startX}% ${startY}% L ${endX}% ${endY}%`;
                 
                 return (
                   <g key={`${node.id}-${targetId}`}>
-                    {/* 가지 그림자 */}
-                    <path
-                      d={path}
+                    {/* 연결선 그림자 */}
+                    <line
+                      x1={`${startX}%`}
+                      y1={`${startY}%`}
+                      x2={`${endX}%`}
+                      y2={`${endY}%`}
                       stroke="#00000020"
-                      strokeWidth="8"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      transform="translate(2, 2)"
+                      strokeWidth="4"
+                      strokeDasharray="8,4"
+                      transform="translate(1, 1)"
                     />
-                    {/* 메인 가지 */}
-                    <path
-                      d={path}
+                    {/* 메인 연결선 */}
+                    <line
+                      x1={`${startX}%`}
+                      y1={`${startY}%`}
+                      x2={`${endX}%`}
+                      y2={`${endY}%`}
                       stroke={getBranchColor(target.category)}
-                      strokeWidth="6"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      strokeDasharray="8,4"
                       className={target.isShining ? "animate-pulse" : ""}
                       style={{
-                        filter: target.isShining ? 'drop-shadow(0 0 8px currentColor)' : 'none'
+                        filter: target.isShining ? 'drop-shadow(0 0 6px currentColor)' : 'none'
                       }}
                     />
                     {/* 반짝이는 효과 (같은 콘텐츠 공유시) */}
                     {target.isShining && (
-                      <path
-                        d={path}
+                      <line
+                        x1={`${startX}%`}
+                        y1={`${startY}%`}
+                        x2={`${endX}%`}
+                        y2={`${endY}%`}
                         stroke="url(#sparkleGradient)"
-                        strokeWidth="3"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        strokeDasharray="4,4"
                         className="animate-pulse"
-                        strokeDasharray="5,5"
                       />
                     )}
+                    {/* 연결점 표시 */}
+                    <circle
+                      cx={`${startX}%`}
+                      cy={`${startY}%`}
+                      r="3"
+                      fill={getBranchColor(node.category)}
+                      stroke="white"
+                      strokeWidth="2"
+                    />
+                    <circle
+                      cx={`${endX}%`}
+                      cy={`${endY}%`}
+                      r="3"
+                      fill={getBranchColor(target.category)}
+                      stroke="white"
+                      strokeWidth="2"
+                    />
                   </g>
                 );
               })
