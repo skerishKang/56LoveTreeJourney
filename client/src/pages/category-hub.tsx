@@ -108,6 +108,18 @@ export default function CategoryHub() {
             러브트리에서 썸을 탄 후, 각 영역별로 전문화된 팬 활동을 관리해보세요
           </p>
           
+          {/* 새로운 러브트리 템플릿 링크 */}
+          <div className="mb-8">
+            <Link href="/templates">
+              <Button className="bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 px-8 py-4 text-lg">
+                🎯 다양한 러브트리 템플릿 보기
+              </Button>
+            </Link>
+            <p className="text-sm text-gray-500 mt-2">
+              투자 결정, 유튜버 구독, 학습 과정, 드라마 입덕 등 다양한 분야의 러브트리 템플릿을 체험해보세요!
+            </p>
+          </div>
+          
           {/* 진행 과정 설명 */}
           <Card className="max-w-3xl mx-auto mb-8 border-love-pink/20">
             <CardContent className="p-8">

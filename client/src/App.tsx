@@ -42,6 +42,7 @@ function Router() {
           <Route path="/profile" component={Profile} />
           <Route path="/add" component={AddContent} />
           <Route path="/categories" component={CategoryHub} />
+          <Route path="/templates" component={LoveTreeTemplates} />
         </>
       )}
       <Route component={NotFound} />
