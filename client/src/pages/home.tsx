@@ -87,7 +87,7 @@ export default function Home() {
                     onClick={() => setViewMode("mindmap")}
                     className={`rounded-full px-3 py-1 text-xs ${
                       viewMode === "mindmap" 
-                        ? "bg-gradient-to-r from-love-pink to-tree-green text-white" 
+                        ? "bg-gradient-to-r from-love-pink to-love-dark text-white shadow-lg" 
                         : "text-gray-600"
                     }`}
                   >
@@ -100,7 +100,7 @@ export default function Home() {
                     onClick={() => setViewMode("timeline")}
                     className={`rounded-full px-3 py-1 text-xs ${
                       viewMode === "timeline" 
-                        ? "bg-gradient-to-r from-love-pink to-tree-green text-white" 
+                        ? "bg-gradient-to-r from-love-pink to-love-dark text-white shadow-lg" 
                         : "text-gray-600"
                     }`}
                   >

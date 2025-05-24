@@ -24,8 +24,9 @@
   --ring: 20 14.3% 4.1%;
   --radius: 0.75rem;
   
-  /* Custom love tree colors */
+  /* Custom love tree colors - Apple Music inspired */
   --love-pink: 323 87% 68%; /* #FF6B9D */
+  --love-dark: 330 60% 20%; /* #523344 */
   --tree-green: 177 62% 68%; /* #4ECDC4 */
   --sparkle-gold: 49 100% 60%; /* #FFD93D */
   --soft-pink: 314 100% 96%; /* #FFEEF8 */

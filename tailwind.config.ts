@@ -61,6 +61,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        'love-pink': 'hsl(var(--love-pink))',
+        'love-dark': 'hsl(var(--love-dark))',
+        'tree-green': 'hsl(var(--tree-green))',
+        'sparkle-gold': 'hsl(var(--sparkle-gold))',
+        'soft-pink': 'hsl(var(--soft-pink))',
+        'diary-beige': 'hsl(var(--diary-beige))',
       },
       keyframes: {
         "accordion-down": {
