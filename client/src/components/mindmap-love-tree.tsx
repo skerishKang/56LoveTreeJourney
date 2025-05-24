@@ -71,37 +71,37 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         isShining: true,
         isPopular: true
       },
-      // 커뮤니티 참여 시작
+      // 더 많은 영상 콘텐츠
       {
         id: 4,
-        title: "더쿠 펠릭스 게시글",
-        platform: "더쿠",
-        category: "커뮤니티",
+        title: "Felix 솔로 무대 모음",
+        platform: "YouTube",
+        category: "댄스",
         x: 70,
         y: 50,
         connections: [9],
-        color: "#9B59B6",
+        color: "#4ECDC4",
         isFirstContent: false,
         likeCount: 756,
       },
-      // 팬 콘텐츠 발견
+      // 라이브 영상
       {
         id: 5,
-        title: "스키즈 나무위키 문서",
-        platform: "나무위키",
-        category: "정보",
+        title: "Stray Kids V LIVE",
+        platform: "V LIVE",
+        category: "일상",
         x: 60,
         y: 80,
         connections: [7, 10],
-        color: "#FF6B9D",
+        color: "#8A2BE2",
         isFirstContent: false,
         likeCount: 2030,
         isPopular: true
       },
-      // SNS 팔로우
+      // 인스타 릴스
       {
         id: 6,
-        title: "Felix 인스타그램",
+        title: "Felix 인스타 릴스",
         platform: "Instagram",
         category: "일상",
         x: 85,
@@ -111,23 +111,23 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         isFirstContent: false,
         likeCount: 567,
       },
-      // 굿즈 구매 단계
+      // 더 많은 뮤직비디오
       {
         id: 7,
-        title: "첫 앨범 구매",
-        platform: "온라인 쇼핑몰",
-        category: "굿즈",
+        title: "Stray Kids - S-Class MV",
+        platform: "YouTube",
+        category: "뮤직비디오",
         x: 85,
         y: 85,
         connections: [],
-        color: "#FFD700",
+        color: "#FF6B6B",
         isFirstContent: false,
         likeCount: 1284,
       },
-      // TikTok 숏폼 중독
+      // TikTok 숏폼 영상
       {
         id: 8,
-        title: "Felix 틱톡 댄스",
+        title: "Felix 틱톡 댄스 챌린지",
         platform: "TikTok",
         category: "댄스",
         x: 90,
@@ -137,29 +137,29 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         isFirstContent: false,
         likeCount: 3421,
       },
-      // 팬클럽 가입
+      // 예능 영상
       {
         id: 9,
-        title: "STAY 팬클럽 가입",
-        platform: "팬클럽",
-        category: "팬활동",
+        title: "Stray Kids 예능 출연",
+        platform: "YouTube",
+        category: "예능",
         x: 95,
         y: 55,
         connections: [],
-        color: "#FF4081",
+        color: "#FFA500",
         isFirstContent: false,
         likeCount: 892,
       },
-      // 위버스 가입 (완전 입덕)
+      // 라이브 공연 영상
       {
         id: 10,
-        title: "위버스 가입 완료",
-        platform: "위버스",
-        category: "팬활동",
+        title: "Felix 라이브 공연 직캠",
+        platform: "YouTube",
+        category: "라이브",
         x: 90,
         y: 75,
         connections: [],
-        color: "#7C4DFF",
+        color: "#9370DB",
         isFirstContent: false,
         likeCount: 1567,
       }
@@ -198,9 +198,9 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
           <MindmapRenderer nodes={exampleNodes} isLargeView={false} />
         </div>
         
-        {/* 입덕 여정 단계 범례 */}
+        {/* 영상 콘텐츠 카테고리 범례 */}
         <div className="mt-6 space-y-4">
-          <h4 className="text-lg font-bold text-gray-800 text-center">🎯 입덕 여정 단계</h4>
+          <h4 className="text-lg font-bold text-gray-800 text-center">🎥 영상 콘텐츠 카테고리</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="flex items-center space-x-2 p-3 bg-yellow-50 rounded-xl">
               <div className="w-4 h-4 bg-yellow-400 rounded-full border-2 border-white shadow-md"></div>
@@ -218,39 +218,47 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
               <div className="w-4 h-4 bg-purple-500 rounded-full border-2 border-white shadow-md"></div>
               <span className="text-gray-700 font-semibold text-xs">보컬</span>
             </div>
-            <div className="flex items-center space-x-2 p-3 bg-blue-50 rounded-xl">
-              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-md"></div>
-              <span className="text-gray-700 font-semibold text-xs">커뮤니티</span>
-            </div>
-            <div className="flex items-center space-x-2 p-3 bg-green-50 rounded-xl">
-              <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-md"></div>
-              <span className="text-gray-700 font-semibold text-xs">정보</span>
+            <div className="flex items-center space-x-2 p-3 bg-red-50 rounded-xl">
+              <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">뮤직비디오</span>
             </div>
             <div className="flex items-center space-x-2 p-3 bg-orange-50 rounded-xl">
               <div className="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-md"></div>
-              <span className="text-gray-700 font-semibold text-xs">굿즈</span>
+              <span className="text-gray-700 font-semibold text-xs">예능</span>
             </div>
-            <div className="flex items-center space-x-2 p-3 bg-red-50 rounded-xl">
-              <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md"></div>
-              <span className="text-gray-700 font-semibold text-xs">팬활동</span>
+            <div className="flex items-center space-x-2 p-3 bg-indigo-50 rounded-xl">
+              <div className="w-4 h-4 bg-indigo-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">라이브</span>
+            </div>
+            <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl">
+              <div className="w-4 h-4 bg-gray-500 rounded-full border-2 border-white shadow-md"></div>
+              <span className="text-gray-700 font-semibold text-xs">일상</span>
             </div>
           </div>
         </div>
 
         <div className="mt-6 p-4 bg-gradient-to-r from-love-pink/10 to-love-dark/10 rounded-2xl text-center border-2 border-love-pink/20">
           <p className="text-lg text-gray-800 mb-4 font-semibold">
-            💡 드래그로 자유롭게 움직이는 마인드맵!
+            🎥 영상으로 만드는 입덕 러브트리!
           </p>
           <p className="text-sm text-gray-600 mb-4">
-            영상 카드를 마우스로 끌어서 자유롭게 배치하고<br />
-            아름다운 입덕 과정 마인드맵을 만들어보세요
+            YouTube, TikTok, Instagram 등 다양한 영상 콘텐츠로<br />
+            당신만의 입덕 과정 마인드맵을 완성해보세요
           </p>
-          <Link href="/add">
-            <Button className="bg-gradient-to-r from-love-pink via-tree-green to-love-dark hover:opacity-90 text-white shadow-xl text-lg px-8 py-3">
-              <Plus className="w-5 h-5 mr-2" />
-              첫 콘텐츠 추가하기
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/add">
+              <Button className="bg-gradient-to-r from-love-pink via-tree-green to-love-dark hover:opacity-90 text-white shadow-xl px-6 py-3">
+                <Plus className="w-5 h-5 mr-2" />
+                첫 영상 추가하기
+              </Button>
+            </Link>
+            <Link href="/categories">
+              <Button variant="outline" className="border-love-pink text-love-pink hover:bg-love-pink hover:text-white shadow-lg px-6 py-3">
+                <Star className="w-5 h-5 mr-2" />
+                팬 활동 카테고리
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -280,10 +288,9 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
       case "섹시함": return "#FF6B9D"; 
       case "댄스": return "#4ECDC4";
       case "보컬": return "#9B59B6";
-      case "커뮤니티": return "#3B82F6";
-      case "정보": return "#10B981";
-      case "굿즈": return "#F59E0B";
-      case "팬활동": return "#EF4444";
+      case "뮤직비디오": return "#FF6B6B";
+      case "예능": return "#FFA500";
+      case "라이브": return "#9370DB";
       case "일상": return "#E1306C";
       default: return "#8B4513";
     }
