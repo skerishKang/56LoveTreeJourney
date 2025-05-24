@@ -16,6 +16,7 @@ import PropagatorStats from "@/components/propagator-stats";
 import YouTubeExtensionGuide from "@/components/youtube-extension-guide";
 import TagFilter from "@/components/tag-filter";
 import SampleLoveTree from "@/components/sample-love-tree";
+import HorizontalLoveTree from "@/components/horizontal-love-tree";
 
 export default function Home() {
   const { user } = useAuth();
@@ -141,7 +142,7 @@ export default function Home() {
             
             <div className="px-4">
               {viewMode === "mindmap" ? (
-                <LoveTreeMindmap loveTreeId={currentLoveTree.id} />
+                <HorizontalLoveTree items={loveTreeItems} />
               ) : (
                 <LoveTreeTimeline loveTreeId={currentLoveTree.id} />
               )}
