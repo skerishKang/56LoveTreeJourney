@@ -10,15 +10,13 @@ import { Play, Edit3, Scissors, Save, Download, Sparkles, Heart, Volume2, Volume
 import { useToast } from "@/hooks/use-toast";
 
 interface VideoEditorProps {
-  videoUrl: string;
-  videoTitle: string;
+  videoUrl?: string;
   onSave: (editedData: any) => void;
 }
 
-export default function VideoEditor({ videoUrl, videoTitle, onSave }: VideoEditorProps) {
+export default function VideoEditor({ videoUrl, onSave }: VideoEditorProps) {
   const { toast } = useToast();
-  const [isOpen, setIsOpen] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(videoTitle);
+  const [editedTitle, setEditedTitle] = useState("내가 편집한 영상");
   const [startTime, setStartTime] = useState([0]);
   const [endTime, setEndTime] = useState([100]);
   const [volume, setVolume] = useState([80]);

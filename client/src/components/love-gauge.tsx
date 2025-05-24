@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface LoveGaugeProps {
   loveTreeId: number;
-  artist: string;
+  artist?: string;
 }
 
 export default function LoveGauge({ loveTreeId, artist }: LoveGaugeProps) {

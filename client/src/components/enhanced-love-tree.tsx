@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Play, Sparkles, Crown, Youtube, Instagram, Music, BookOpen, Edit3, Gauge, Camera, Filter, Scissors } from "lucide-react";
 import { useState, useEffect } from "react";
-import VideoEditor from "./video-editor";
+import EnhancedVideoEditor from "./enhanced-video-editor";
 import LoveGauge from "./love-gauge";
 import DiaryLoveTree from "./diary-love-tree";
 
@@ -128,10 +128,10 @@ export default function EnhancedLoveTree({ loveTreeId }: EnhancedLoveTreeProps) 
   if (showVideoEditor && selectedNode) {
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
-            <Edit3 className="w-5 h-5 text-love-pink" />
-            <span>영상 편집</span>
+        <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-md rounded-lg border border-pink-200">
+          <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center space-x-2">
+            <Edit3 className="w-5 h-5 text-pink-500" />
+            <span>영상 편집 - {selectedNode.title}</span>
           </h3>
           <Button
             variant="outline"
@@ -140,13 +140,15 @@ export default function EnhancedLoveTree({ loveTreeId }: EnhancedLoveTreeProps) 
               setShowVideoEditor(false);
               setSelectedNode(null);
             }}
+            className="border-pink-200 hover:bg-pink-50"
           >
             편집 완료
           </Button>
         </div>
-        <VideoEditor 
+        <EnhancedVideoEditor 
           videoUrl={selectedNode.contentUrl} 
-          onSave={() => {
+          onSave={(editedData) => {
+            console.log('영상 편집 완료:', editedData);
             setShowVideoEditor(false);
             setSelectedNode(null);
           }} 
