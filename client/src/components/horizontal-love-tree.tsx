@@ -27,14 +27,15 @@ interface HorizontalLoveTreeProps {
 export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
   if (!items || items.length === 0) {
     // Felix 입덕 과정 가로형 마인드맵 예시
+    // 트리 가지 형태로 배치 - 중앙에서 시작해서 가지가 뻗어나가는 형태
     const exampleNodes: TreeNode[] = [
       {
         id: 1,
         title: "Felix Deep Voice Compilation",
         platform: "YouTube",
         category: "보컬",
-        x: 12,
-        y: 50,
+        x: 15, // 시작점
+        y: 45,
         connections: [2],
         color: "#9B59B6",
         isFirstContent: true,
@@ -45,21 +46,21 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
         title: "Stray Kids - God's Menu MV",
         platform: "YouTube", 
         category: "댄스",
-        x: 32,
-        y: 35,
-        connections: [3, 4],
+        x: 35, // 주 줄기
+        y: 50,
+        connections: [3, 4, 5],
         color: "#4ECDC4",
         isFirstContent: false,
         likeCount: 1560,
       },
       {
         id: 3,
-        title: "Felix Baking Brownies VLOG",
+        title: "Felix Baking Brownies",
         platform: "YouTube",
         category: "귀여움", 
-        x: 52,
-        y: 22,
-        connections: [5],
+        x: 55, // 위쪽 가지
+        y: 25,
+        connections: [6],
         color: "#FFD93D",
         isFirstContent: false,
         likeCount: 892,
@@ -67,22 +68,34 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
       },
       {
         id: 4,
-        title: "Stray Kids - MANIAC MV",
+        title: "Stray Kids - MANIAC",
         platform: "YouTube",
         category: "섹시함",
-        x: 52,
-        y: 68,
-        connections: [6],
+        x: 55, // 아래쪽 가지
+        y: 75,
+        connections: [7],
         color: "#FF6B9D",
         isFirstContent: false,
         likeCount: 2030,
       },
       {
         id: 5,
-        title: "Felix TikTok Dance Moments",
+        title: "Felix ASMR Voice",
+        platform: "YouTube",
+        category: "보컬",
+        x: 55, // 중간 가지
+        y: 50,
+        connections: [],
+        color: "#9B59B6",
+        isFirstContent: false,
+        likeCount: 756,
+      },
+      {
+        id: 6,
+        title: "Felix TikTok Moments",
         platform: "TikTok",
         category: "귀여움",
-        x: 72,
+        x: 75, // 위쪽 끝 가지
         y: 15,
         connections: [],
         color: "#FFD93D", 
@@ -90,11 +103,11 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
         likeCount: 567,
       },
       {
-        id: 6,
-        title: "SKZ Concert Fancam 4K",
+        id: 7,
+        title: "SKZ Concert Fancam",
         platform: "YouTube",
         category: "댄스",
-        x: 72,
+        x: 75, // 아래쪽 끝 가지
         y: 85,
         connections: [],
         color: "#4ECDC4",
@@ -120,39 +133,41 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
                 const target = exampleNodes.find(n => n.id === targetId);
                 if (!target) return null;
                 
-                // 부드러운 베지어 곡선 생성
+                // 자연스러운 나무 가지 모양 곡선
                 const startX = node.x;
                 const startY = node.y;
                 const endX = target.x;
                 const endY = target.y;
                 
-                const controlX1 = startX + (endX - startX) * 0.4;
-                const controlY1 = startY + (endY - startY) * 0.1;
-                const controlX2 = startX + (endX - startX) * 0.6;
-                const controlY2 = endY + (startY - endY) * 0.1;
+                // 나무 가지처럼 자연스러운 곡선을 위한 제어점
+                const midX = startX + (endX - startX) * 0.7;
+                const branchOffset = (endY - startY) * 0.3;
                 
-                const path = `M ${startX}% ${startY}% C ${controlX1}% ${controlY1}% ${controlX2}% ${controlY2}% ${endX}% ${endY}%`;
+                const path = `M ${startX}% ${startY}% 
+                            Q ${midX}% ${startY}% ${midX}% ${startY + branchOffset}%
+                            Q ${midX}% ${endY}% ${endX}% ${endY}%`;
                 
                 return (
                   <path
                     key={`${node.id}-${targetId}`}
                     d={path}
-                    stroke="url(#horizontalGradient)"
-                    strokeWidth="4"
+                    stroke="url(#treeGradient)"
+                    strokeWidth="6"
                     fill="none"
-                    className="drop-shadow-sm opacity-80"
-                    strokeDasharray="8,4"
+                    className="drop-shadow-md"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 );
               })
             )}
             
             <defs>
-              <linearGradient id="horizontalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#FF6B9D" />
-                <stop offset="30%" stopColor="#4ECDC4" />
-                <stop offset="70%" stopColor="#FFD93D" />
-                <stop offset="100%" stopColor="#523344" />
+              <linearGradient id="treeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#8B4513" />
+                <stop offset="30%" stopColor="#A0522D" />
+                <stop offset="70%" stopColor="#CD853F" />
+                <stop offset="100%" stopColor="#DEB887" />
               </linearGradient>
             </defs>
           </svg>

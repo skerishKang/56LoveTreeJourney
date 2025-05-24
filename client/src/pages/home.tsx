@@ -102,7 +102,11 @@ export default function Home() {
         {currentLoveTree && (
           <section className="px-4 py-2">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-800">나의 러브트리 🌳</h3>
+              <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+                <span>나의</span>
+                <span>러브트리</span>
+                <span className="text-2xl">🌳</span>
+              </h3>
               <div className="flex items-center space-x-2">
                 <TagFilter 
                   onTagSelect={setSelectedTag} 
