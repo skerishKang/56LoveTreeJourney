@@ -1,153 +1,292 @@
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
 import BottomNavigation from "@/components/bottom-navigation";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, Share2, Users, TrendingUp, Clock } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Heart, MessageCircle, Share2, TrendingUp, Users, Sparkles, Plus, Send, Image, Video } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
+
+interface CommunityPost {
+  id: number;
+  userId: string;
+  content: string;
+  imageUrl?: string;
+  hashtags: string[];
+  likeCount: number;
+  commentCount: number;
+  shareCount: number;
+  isLiked: boolean;
+  createdAt: string;
+  user: {
+    id: string;
+    firstName: string;
+    profileImageUrl?: string;
+  };
+}
 
 export default function Community() {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const [newPost, setNewPost] = useState("");
+  const [showPostForm, setShowPostForm] = useState(false);
+  
+  // 실제 API로 커뮤니티 게시물 가져오기 (현재는 빈 배열)
+  const { data: posts = [], isLoading } = useQuery({
+    queryKey: ["/api/community-posts"],
+    queryFn: () => api.getCommunityPosts?.() || Promise.resolve([]),
+  });
+
+  const handleSubmitPost = () => {
+    if (!newPost.trim()) return;
+    
+    // 실제 API 호출 구현 필요
+    console.log("새 게시물:", newPost);
+    setNewPost("");
+    setShowPostForm(false);
+  };
+
+  const handleLike = (postId: number) => {
+    // 실제 API 호출 구현 필요
+    console.log("좋아요:", postId);
+  };
+
+  // 샘플 데이터 (실제 데이터가 없을 때만 표시)
+  const samplePosts: CommunityPost[] = [
+    {
+      id: 1,
+      userId: "user1",
+      content: "뉴진스 새 앨범 진짜 대박이다 🔥 Get Up 무한반복 중... #뉴진스 #GetUp #KPOP",
+      hashtags: ["뉴진스", "GetUp", "KPOP"],
+      likeCount: 142,
+      commentCount: 23,
+      shareCount: 8,
+      isLiked: false,
+      createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+      user: {
+        id: "user1",
+        firstName: "민지",
+        profileImageUrl: undefined
+      }
+    },
+    {
+      id: 2,
+      userId: "user2", 
+      content: "스트레이키즈 콘서트 다녀왔는데 진짜 미쳤다... 현실이 맞나 싶을 정도로 완벽했어 ㅠㅠ #스트레이키즈 #콘서트 #MANIAC",
+      hashtags: ["스트레이키즈", "콘서트", "MANIAC"],
+      likeCount: 89,
+      commentCount: 17,
+      shareCount: 12,
+      isLiked: true,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+      user: {
+        id: "user2",
+        firstName: "하늘",
+        profileImageUrl: undefined
+      }
+    },
+    {
+      id: 3,
+      userId: "user3",
+      content: "아이브 신곡 I AM 뮤비 벌써 100만뷰 돌파! 안유진 비주얼 미쳤고 가을 노래로 딱이야 🍂 #IVE #IAM #안유진",
+      hashtags: ["IVE", "IAM", "안유진"],
+      likeCount: 234,
+      commentCount: 45,
+      shareCount: 19,
+      isLiked: false,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
+      user: {
+        id: "user3",
+        firstName: "소라",
+        profileImageUrl: undefined
+      }
+    }
+  ];
+
+  const displayPosts = posts.length > 0 ? posts : samplePosts;
+
   return (
     <div className="min-h-screen bg-soft-pink">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-love-pink/20 sticky top-0 z-50">
         <div className="max-w-md mx-auto px-4 py-3">
-          <h1 className="text-lg font-bold text-gray-800">커뮤니티</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-bold text-gray-800 flex items-center">
+              <Users className="w-5 h-5 mr-2 text-tree-green" />
+              커뮤니티
+            </h1>
+            <Button
+              onClick={() => setShowPostForm(!showPostForm)}
+              className="bg-gradient-to-r from-love-pink to-tree-green text-white rounded-full px-4 py-2 text-sm"
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              글쓰기
+            </Button>
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-md mx-auto pb-20">
-        <Tabs defaultValue="trending" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mx-4 my-4">
-            <TabsTrigger value="trending">인기</TabsTrigger>
-            <TabsTrigger value="recent">최신</TabsTrigger>
-            <TabsTrigger value="following">팔로잉</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="trending" className="px-4 space-y-4">
-            {/* Trending Topic */}
-            <Card className="border-sparkle-gold/20 bg-gradient-to-r from-sparkle-gold/10 to-love-pink/10">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-5 h-5 text-sparkle-gold" />
-                  <h3 className="font-semibold text-gray-800">오늘의 핫토픽</h3>
+        {/* Post Form */}
+        {showPostForm && (
+          <section className="p-4">
+            <Card className="bg-white border-love-pink/20">
+              <CardContent className="p-4">
+                <div className="flex items-start space-x-3 mb-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-love-pink to-tree-green rounded-full flex items-center justify-center text-white font-bold">
+                    {user?.firstName?.[0] || "🌱"}
+                  </div>
+                  <div className="flex-1">
+                    <Textarea
+                      placeholder="지금 무슨 생각을 하고 있나요? #해시태그 를 사용해서 공유해보세요!"
+                      value={newPost}
+                      onChange={(e) => setNewPost(e.target.value)}
+                      className="border-none resize-none focus:ring-0 p-0 min-h-[80px]"
+                      maxLength={280}
+                    />
+                  </div>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700 mb-3">
-                  #스트레이키즈_필릭스 입덕 러시가 몰려오고 있어요! 🔥
-                </p>
-                <div className="flex items-center space-x-2">
-                  <Badge variant="secondary" className="bg-tree-green/20 text-tree-green">
-                    #K-pop
-                  </Badge>
-                  <Badge variant="secondary" className="bg-love-pink/20 text-love-pink">
-                    #스트레이키즈
-                  </Badge>
-                  <span className="text-xs text-gray-500">234명 참여</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex space-x-2">
+                    <Button variant="ghost" size="sm" className="text-gray-500">
+                      <Image className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-gray-500">
+                      <Video className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs text-gray-500">{newPost.length}/280</span>
+                    <Button
+                      onClick={handleSubmitPost}
+                      disabled={!newPost.trim()}
+                      className="bg-love-pink hover:bg-love-pink/90 text-white rounded-full px-4 py-1"
+                    >
+                      <Send className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
+          </section>
+        )}
 
-            {/* Community Posts */}
-            <div className="space-y-4">
-              {[
-                {
-                  user: "kpop_lover_123",
-                  avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
-                  title: "BTS 입덕 완료! 7일만에 러브트리 완성했어요 💜",
-                  content: "처음엔 그냥 친구가 추천해서 본 영상이었는데... 이제 완전 Army가 되어버렸네요 ㅠㅠ",
-                  category: "K-pop",
-                  likes: 127,
-                  comments: 23,
-                  time: "2시간 전",
-                  tags: ["#BTS", "#입덕완료"]
-                },
-                {
-                  user: "drama_addict",
-                  avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-                  title: "약한영웅 이준영 러브트리 공유해요!",
-                  content: "금성제 역할로 완전 빠져서 배우까지 팬이 되었어요. 다음 작품도 기대돼요!",
-                  category: "드라마",
-                  likes: 89,
-                  comments: 16,
-                  time: "4시간 전",
-                  tags: ["#약한영웅", "#이준영"]
-                }
-              ].map((post, index) => (
-                <Card key={index} className="border-gray-100">
-                  <CardContent className="p-4">
-                    <div className="flex items-center space-x-3 mb-3">
-                      <img
-                        src={post.avatar}
-                        alt={post.user}
-                        className="w-10 h-10 rounded-full border-2 border-tree-green object-cover"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-800">{post.user}</p>
-                        <div className="flex items-center space-x-2">
-                          <Badge variant="outline" className="text-xs">
-                            {post.category}
-                          </Badge>
-                          <span className="text-xs text-gray-500 flex items-center">
-                            <Clock className="w-3 h-3 mr-1" />
-                            {post.time}
-                          </span>
+        {/* Hot Topics */}
+        <section className="px-4 py-2">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <TrendingUp className="w-5 h-5 mr-2 text-love-pink" />
+            실시간 HOT 토픽
+          </h2>
+          <div className="flex space-x-2 overflow-x-auto pb-2">
+            {[
+              "#뉴진스컴백", "#스트레이키즈", "#아이브신곡", "#세븐틴콘서트", "#러브트리", "#입덕"
+            ].map((hashtag, index) => (
+              <Badge
+                key={index}
+                variant="secondary"
+                className="whitespace-nowrap bg-love-pink/10 text-love-pink hover:bg-love-pink hover:text-white cursor-pointer transition-all"
+              >
+                {hashtag}
+              </Badge>
+            ))}
+          </div>
+        </section>
+
+        {/* Community Feed */}
+        <section className="px-4 py-4">
+          {posts.length === 0 && (
+            <div className="text-center py-8">
+              <div className="text-4xl mb-4">💬</div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">아직 게시물이 없어요</h3>
+              <p className="text-gray-600 mb-4">첫 번째 게시물을 작성해서 커뮤니티를 활성화해보세요!</p>
+              <Button
+                onClick={() => setShowPostForm(true)}
+                className="bg-gradient-to-r from-love-pink to-tree-green text-white"
+              >
+                첫 게시물 작성하기
+              </Button>
+            </div>
+          )}
+          
+          <div className="space-y-4">
+            {displayPosts.map((post) => (
+              <Card key={post.id} className="bg-white hover:shadow-md transition-all duration-200">
+                <CardContent className="p-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-love-pink to-tree-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                      {post.user.firstName[0]}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <h3 className="font-semibold text-gray-800">{post.user.firstName}</h3>
+                        <span className="text-sm text-gray-500">
+                          {formatDistanceToNow(new Date(post.createdAt), { locale: ko, addSuffix: true })}
+                        </span>
+                      </div>
+                      <p className="text-gray-800 mb-3 whitespace-pre-wrap leading-relaxed">
+                        {post.content}
+                      </p>
+                      
+                      {/* 해시태그 */}
+                      {post.hashtags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {post.hashtags.map((tag, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="text-xs bg-tree-green/10 text-tree-green cursor-pointer"
+                            >
+                              #{tag}
+                            </Badge>
+                          ))}
                         </div>
-                      </div>
-                    </div>
+                      )}
 
-                    <h4 className="font-medium text-gray-800 mb-2">{post.title}</h4>
-                    <p className="text-sm text-gray-600 mb-3">{post.content}</p>
-
-                    <div className="flex items-center space-x-2 mb-3">
-                      {post.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs bg-love-pink/20 text-love-pink">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <button className="flex items-center space-x-1 hover:text-love-pink transition-colors">
-                          <Heart className="w-4 h-4" />
-                          <span>{post.likes}</span>
-                        </button>
-                        <button className="flex items-center space-x-1 hover:text-tree-green transition-colors">
+                      {/* 상호작용 버튼 */}
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleLike(post.id)}
+                          className={`flex items-center space-x-1 ${post.isLiked ? 'text-love-pink' : ''}`}
+                        >
+                          <Heart className={`w-4 h-4 ${post.isLiked ? 'fill-current' : ''}`} />
+                          <span>{post.likeCount}</span>
+                        </Button>
+                        <Button variant="ghost" size="sm" className="flex items-center space-x-1">
                           <MessageCircle className="w-4 h-4" />
-                          <span>{post.comments}</span>
-                        </button>
-                        <button className="flex items-center space-x-1 hover:text-sparkle-gold transition-colors">
+                          <span>{post.commentCount}</span>
+                        </Button>
+                        <Button variant="ghost" size="sm" className="flex items-center space-x-1">
                           <Share2 className="w-4 h-4" />
-                        </button>
+                          <span>{post.shareCount}</span>
+                        </Button>
                       </div>
-                      <Button size="sm" variant="outline" className="text-tree-green border-tree-green/30 hover:bg-tree-green hover:text-white">
-                        러브트리 보기
-                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
 
-          <TabsContent value="recent" className="px-4">
-            <div className="text-center py-8">
-              <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">최신 포스트가 곧 업데이트됩니다!</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="following" className="px-4">
-            <div className="text-center py-8">
-              <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">팔로우한 사용자의 활동이 여기에 표시됩니다!</p>
-            </div>
-          </TabsContent>
-        </Tabs>
+        {/* Load More */}
+        {displayPosts.length > 0 && (
+          <section className="px-4 py-4">
+            <Button variant="outline" className="w-full">
+              더 많은 게시물 보기
+            </Button>
+          </section>
+        )}
       </main>
 
+      {/* Bottom Navigation */}
       <BottomNavigation />
     </div>
   );

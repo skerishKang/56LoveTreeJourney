@@ -37,11 +37,11 @@ function Router() {
       ) : (
         <>
           <Route path="/" component={Home} />
+          <Route path="/add" component={AddContent} />
+          <Route path="/templates" component={LoveTreeTemplates} />
           <Route path="/community" component={Community} />
           <Route path="/profile" component={Profile} />
-          <Route path="/add" component={AddContent} />
           <Route path="/categories" component={CategoryHub} />
-          <Route path="/templates" component={LoveTreeTemplates} />
         </>
       )}
       <Route component={NotFound} />
