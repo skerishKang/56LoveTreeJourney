@@ -12,6 +12,10 @@ import Profile from "@/pages/profile";
 import AddContent from "@/pages/add-content";
 import CategoryHub from "@/pages/category-hub";
 import LoveTreeTemplates from "@/pages/love-tree-templates";
+import CommunityTrackerPage from "@/pages/community-tracker-page";
+import GoodsCollectionPage from "@/pages/goods-collection-page";
+import FanActivitiesPage from "@/pages/fan-activities-page";
+import SubscriptionManagerPage from "@/pages/subscription-manager-page";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -42,6 +46,10 @@ function Router() {
           <Route path="/community" component={Community} />
           <Route path="/profile" component={Profile} />
           <Route path="/categories" component={CategoryHub} />
+          <Route path="/community-tracker" component={CommunityTracker} />
+          <Route path="/goods-collection" component={GoodsCollection} />
+          <Route path="/fan-activities" component={FanActivityJournal} />
+          <Route path="/subscription-manager" component={SubscriptionManager} />
         </>
       )}
       <Route component={NotFound} />
