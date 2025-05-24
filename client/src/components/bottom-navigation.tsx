@@ -8,8 +8,8 @@ export default function BottomNavigation() {
   const navItems = [
     { path: "/", icon: Home, label: "홈" },
     { path: "/discover", icon: Compass, label: "발견" },
-    { path: "/templates", icon: Sparkles, label: "템플릿", isSpecial: true },
-    { path: "/community", icon: Users, label: "커뮤니티" },
+    { path: "/add", icon: Plus, label: "추가", isSpecial: true },
+    { path: "/templates", icon: Sparkles, label: "템플릿" },
     { path: "/profile", icon: User, label: "프로필" },
   ];
 
