@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Clock, Search, Sparkles, Crown, Trophy, Zap, Star, Fire } from "lucide-react";
+import { Heart, Clock, Search, Sparkles, Crown, Trophy, Zap, Star, Flame } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface EnhancedLoveGaugeProps {
@@ -305,7 +305,7 @@ export default function EnhancedLoveGauge({ loveTreeId, artist = "아티스트" 
       <Card className="border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50">
         <CardContent className="pt-4">
           <div className="flex items-start space-x-3">
-            <Fire className="w-5 h-5 text-pink-500 mt-1" />
+            <Flame className="w-5 h-5 text-pink-500 mt-1" />
             <div>
               <h4 className="font-medium text-gray-800 mb-1">💡 폴인럽 가속화 팁</h4>
               <p className="text-sm text-gray-600">

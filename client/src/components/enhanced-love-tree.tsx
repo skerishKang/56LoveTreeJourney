@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Play, Sparkles, Crown, Youtube, Instagram, Music, BookOpen, Edit3, Gauge, Camera, Filter, Scissors } from "lucide-react";
 import { useState, useEffect } from "react";
 import EnhancedVideoEditor from "./enhanced-video-editor";
-import LoveGauge from "./love-gauge";
+import EnhancedLoveGauge from "./enhanced-love-gauge";
 import DiaryLoveTree from "./diary-love-tree";
 
 interface EnhancedLoveTreeProps {
@@ -200,7 +200,7 @@ export default function EnhancedLoveTree({ loveTreeId }: EnhancedLoveTreeProps) 
             <Gauge className="w-5 h-5 text-pink-500" />
             <h4 className="font-semibold text-gray-800">폴인럽 게이지</h4>
           </div>
-          <LoveGauge loveTreeId={loveTreeId} />
+          <EnhancedLoveGauge loveTreeId={loveTreeId} />
         </div>
       )}
 
