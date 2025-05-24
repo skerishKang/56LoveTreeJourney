@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Crown, Heart, Sparkles, Play, Plus } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Crown, Heart, Sparkles, Play, Plus, Maximize2 } from "lucide-react";
 import { Link } from "wouter";
 
 interface TreeNode {
@@ -27,88 +28,95 @@ interface HorizontalLoveTreeProps {
 export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
   if (!items || items.length === 0) {
     // Felix 입덕 과정 가로형 마인드맵 예시
-    // 트리 가지 형태로 배치 - 중앙에서 시작해서 가지가 뻗어나가는 형태
+    // 실제 트리 구조 - 뿌리에서 시작해서 카테고리별로 가지가 뻗어나감
     const exampleNodes: TreeNode[] = [
+      // 뿌리 (첫 영상)
       {
         id: 1,
         title: "Felix Deep Voice Compilation",
         platform: "YouTube",
         category: "보컬",
-        x: 15, // 시작점
-        y: 45,
-        connections: [2],
+        x: 25, // 뿌리 위치
+        y: 85,
+        connections: [2], // 줄기로 연결
         color: "#9B59B6",
         isFirstContent: true,
         likeCount: 342,
       },
+      // 주 줄기
       {
         id: 2,
         title: "Stray Kids - God's Menu MV",
         platform: "YouTube", 
         category: "댄스",
-        x: 35, // 주 줄기
-        y: 50,
-        connections: [3, 4, 5],
+        x: 25, 
+        y: 65, // 줄기
+        connections: [3, 4, 5], // 여러 가지로 뻗어나감
         color: "#4ECDC4",
         isFirstContent: false,
         likeCount: 1560,
       },
+      // 귀여움 가지 (왼쪽 위)
       {
         id: 3,
         title: "Felix Baking Brownies",
         platform: "YouTube",
         category: "귀여움", 
-        x: 55, // 위쪽 가지
-        y: 25,
-        connections: [6],
+        x: 15, 
+        y: 45,
+        connections: [6], // 더 뻗어나감
         color: "#FFD93D",
         isFirstContent: false,
         likeCount: 892,
         isShining: true
       },
+      // 섹시함 가지 (오른쪽 위)
       {
         id: 4,
         title: "Stray Kids - MANIAC",
         platform: "YouTube",
         category: "섹시함",
-        x: 55, // 아래쪽 가지
-        y: 75,
-        connections: [7],
+        x: 35,
+        y: 45,
+        connections: [7], // 더 뻗어나감
         color: "#FF6B9D",
         isFirstContent: false,
         likeCount: 2030,
       },
+      // 보컬 가지 (중앙 위)
       {
         id: 5,
         title: "Felix ASMR Voice",
         platform: "YouTube",
         category: "보컬",
-        x: 55, // 중간 가지
-        y: 50,
+        x: 25,
+        y: 45,
         connections: [],
         color: "#9B59B6",
         isFirstContent: false,
         likeCount: 756,
       },
+      // 귀여움 가지 끝 (잎사귀)
       {
         id: 6,
         title: "Felix TikTok Moments",
         platform: "TikTok",
         category: "귀여움",
-        x: 75, // 위쪽 끝 가지
-        y: 15,
+        x: 10,
+        y: 25,
         connections: [],
         color: "#FFD93D", 
         isFirstContent: false,
         likeCount: 567,
       },
+      // 섹시함 가지 끝 (잎사귀)
       {
         id: 7,
         title: "SKZ Concert Fancam",
         platform: "YouTube",
         category: "댄스",
-        x: 75, // 아래쪽 끝 가지
-        y: 85,
+        x: 40,
+        y: 25,
         connections: [],
         color: "#4ECDC4",
         isFirstContent: false,
@@ -118,11 +126,161 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
 
     return (
       <div className="bg-white rounded-2xl border border-love-pink/20 p-6 shadow-lg">
-        <div className="text-center mb-6">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-love-pink to-love-dark bg-clip-text text-transparent mb-2">
-            🌳 Felix 입덕 러브트리
-          </h3>
-          <p className="text-sm text-gray-600">이런 식으로 당신만의 가로형 러브트리가 만들어져요!</p>
+        <div className="flex items-center justify-between mb-6">
+          <div className="text-center flex-1">
+            <h3 className="text-xl font-bold bg-gradient-to-r from-love-pink to-love-dark bg-clip-text text-transparent mb-2">
+              🌳 Felix 입덕 러브트리
+            </h3>
+            <p className="text-sm text-gray-600">카테고리별 색깔 가지로 뻗어나가는 트리!</p>
+          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center space-x-2">
+                <Maximize2 className="w-4 h-4" />
+                <span>큰 화면으로</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-6xl w-full h-[90vh] p-8">
+              <div className="h-full">
+                <h2 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-love-pink to-love-dark bg-clip-text text-transparent">
+                  🌳 Felix 입덕 러브트리 - 전체 화면
+                </h2>
+                {/* 큰 화면용 트리 */}
+                <div className="relative h-full bg-gradient-to-br from-soft-pink via-white to-love-pink/10 rounded-2xl border-2 border-dashed border-love-pink/30 overflow-hidden">
+                  {/* 여기에 더 큰 트리를 렌더링 */}
+                  <svg className="absolute inset-0 w-full h-full">
+                    {exampleNodes.map(node =>
+                      node.connections.map(targetId => {
+                        const target = exampleNodes.find(n => n.id === targetId);
+                        if (!target) return null;
+                        
+                        const getBranchColor = (category: string) => {
+                          switch (category) {
+                            case "귀여움": return "#FFD93D";
+                            case "섹시함": return "#FF6B9D";
+                            case "댄스": return "#4ECDC4";
+                            case "보컬": return "#9B59B6";
+                            default: return "#8B4513";
+                          }
+                        };
+                        
+                        const startX = node.x;
+                        const startY = node.y;
+                        const endX = target.x;
+                        const endY = target.y;
+                        
+                        const path = `M ${startX}% ${startY}% 
+                                    L ${startX + (endX - startX) * 0.3}% ${startY}%
+                                    Q ${startX + (endX - startX) * 0.6}% ${startY + (endY - startY) * 0.3}% ${endX}% ${endY}%`;
+                        
+                        return (
+                          <g key={`large-${node.id}-${targetId}`}>
+                            <path
+                              d={path}
+                              stroke="#00000020"
+                              strokeWidth="12"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              transform="translate(3, 3)"
+                            />
+                            <path
+                              d={path}
+                              stroke={getBranchColor(target.category)}
+                              strokeWidth="10"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className={target.isShining ? "animate-pulse" : ""}
+                              style={{
+                                filter: target.isShining ? 'drop-shadow(0 0 12px currentColor)' : 'none'
+                              }}
+                            />
+                            {target.isShining && (
+                              <path
+                                d={path}
+                                stroke="url(#sparkleGradient)"
+                                strokeWidth="5"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="animate-pulse"
+                                strokeDasharray="8,8"
+                              />
+                            )}
+                          </g>
+                        );
+                      })
+                    )}
+                    <defs>
+                      <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#FFD700" />
+                        <stop offset="50%" stopColor="#FFA500" />
+                        <stop offset="100%" stopColor="#FF69B4" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  
+                  {/* 큰 화면용 영상 카드들 */}
+                  {exampleNodes.map((node) => (
+                    <div
+                      key={`large-${node.id}`}
+                      className="absolute transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer"
+                      style={{ 
+                        left: `${node.x}%`, 
+                        top: `${node.y}%`,
+                        zIndex: 10
+                      }}
+                    >
+                      <div 
+                        className={`relative bg-white rounded-2xl shadow-xl border-3 border-white overflow-hidden transition-all duration-300 hover:scale-110 hover:shadow-2xl
+                          ${node.isFirstContent ? 'ring-4 ring-sparkle-gold ring-offset-4 animate-pulse' : ''}
+                          ${node.isShining ? 'shadow-love-pink/60 shadow-2xl' : ''}
+                        `}
+                        style={{ width: '200px', height: '120px' }}
+                      >
+                        <div 
+                          className="w-full h-full flex items-center justify-center text-white relative overflow-hidden"
+                          style={{ backgroundColor: node.color }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40" />
+                          
+                          <div className="relative z-10 text-center p-4">
+                            <div className="text-4xl mb-3">📹</div>
+                            <div className="text-sm font-bold leading-tight">
+                              {node.title}
+                            </div>
+                          </div>
+                          
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform">
+                              <Play className="w-8 h-8 text-white ml-1" fill="white" />
+                            </div>
+                          </div>
+                          
+                          {node.isFirstContent && (
+                            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 z-40">
+                              <Crown className="w-8 h-8 text-sparkle-gold drop-shadow-lg animate-bounce" />
+                              <div className="text-sm text-sparkle-gold font-bold text-center mt-2">첫 영상</div>
+                            </div>
+                          )}
+                          
+                          {node.isShining && (
+                            <div className="absolute -top-3 -right-3 z-40">
+                              <Sparkles className="w-6 h-6 text-yellow-300 animate-bounce" />
+                              <div className="absolute -bottom-8 -right-3 text-sm text-yellow-600 font-bold whitespace-nowrap">
+                                ✨ 핫한 영상!
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         
         <div className="relative h-96 overflow-hidden bg-gradient-to-r from-soft-pink via-white to-love-pink/10 rounded-2xl border-2 border-dashed border-love-pink/30">
@@ -133,31 +291,67 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
                 const target = exampleNodes.find(n => n.id === targetId);
                 if (!target) return null;
                 
-                // 자연스러운 나무 가지 모양 곡선
+                // 카테고리별 색깔 가지
                 const startX = node.x;
                 const startY = node.y;
                 const endX = target.x;
                 const endY = target.y;
                 
-                // 나무 가지처럼 자연스러운 곡선을 위한 제어점
-                const midX = startX + (endX - startX) * 0.7;
-                const branchOffset = (endY - startY) * 0.3;
+                // 카테고리에 따른 가지 색상
+                const getBranchColor = (category: string) => {
+                  switch (category) {
+                    case "귀여움": return "#FFD93D"; // 노란색
+                    case "섹시함": return "#FF6B9D"; // 빨간색/핑크
+                    case "댄스": return "#4ECDC4"; // 민트색
+                    case "보컬": return "#9B59B6"; // 보라색
+                    default: return "#8B4513"; // 갈색 (기본 나무 색)
+                  }
+                };
                 
+                // 실제 나무 가지처럼 자연스러운 곡선
                 const path = `M ${startX}% ${startY}% 
-                            Q ${midX}% ${startY}% ${midX}% ${startY + branchOffset}%
-                            Q ${midX}% ${endY}% ${endX}% ${endY}%`;
+                            L ${startX + (endX - startX) * 0.3}% ${startY}%
+                            Q ${startX + (endX - startX) * 0.6}% ${startY + (endY - startY) * 0.3}% ${endX}% ${endY}%`;
                 
                 return (
-                  <path
-                    key={`${node.id}-${targetId}`}
-                    d={path}
-                    stroke="url(#treeGradient)"
-                    strokeWidth="6"
-                    fill="none"
-                    className="drop-shadow-md"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <g key={`${node.id}-${targetId}`}>
+                    {/* 가지 그림자 */}
+                    <path
+                      d={path}
+                      stroke="#00000020"
+                      strokeWidth="8"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      transform="translate(2, 2)"
+                    />
+                    {/* 메인 가지 */}
+                    <path
+                      d={path}
+                      stroke={getBranchColor(target.category)}
+                      strokeWidth="6"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className={target.isShining ? "animate-pulse" : ""}
+                      style={{
+                        filter: target.isShining ? 'drop-shadow(0 0 8px currentColor)' : 'none'
+                      }}
+                    />
+                    {/* 반짝이는 효과 (같은 콘텐츠 공유시) */}
+                    {target.isShining && (
+                      <path
+                        d={path}
+                        stroke="url(#sparkleGradient)"
+                        strokeWidth="3"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="animate-pulse"
+                        strokeDasharray="5,5"
+                      />
+                    )}
+                  </g>
                 );
               })
             )}
@@ -168,6 +362,11 @@ export default function HorizontalLoveTree({ items }: HorizontalLoveTreeProps) {
                 <stop offset="30%" stopColor="#A0522D" />
                 <stop offset="70%" stopColor="#CD853F" />
                 <stop offset="100%" stopColor="#DEB887" />
+              </linearGradient>
+              <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FFD700" />
+                <stop offset="50%" stopColor="#FFA500" />
+                <stop offset="100%" stopColor="#FF69B4" />
               </linearGradient>
             </defs>
           </svg>
