@@ -3,8 +3,11 @@ import { api } from "@/lib/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Play, Sparkles, Crown, Youtube, Instagram, Music } from "lucide-react";
+import { Heart, Play, Sparkles, Crown, Youtube, Instagram, Music, BookOpen, Edit3, Gauge } from "lucide-react";
 import { useState, useEffect } from "react";
+import VideoEditor from "./video-editor";
+import LoveGauge from "./love-gauge";
+import DiaryLoveTree from "./diary-love-tree";
 
 interface LoveTreeMindmapProps {
   loveTreeId: number;
@@ -28,6 +31,8 @@ interface TreeNode {
 
 export default function LoveTreeMindmap({ loveTreeId }: LoveTreeMindmapProps) {
   const [selectedNode, setSelectedNode] = useState<TreeNode | null>(null);
+  const [viewMode, setViewMode] = useState<'mindmap' | 'diary' | 'editor'>('mindmap');
+  const [showLoveGauge, setShowLoveGauge] = useState(false);
   const [nodes, setNodes] = useState<TreeNode[]>([]);
 
   const { data: items } = useQuery({
