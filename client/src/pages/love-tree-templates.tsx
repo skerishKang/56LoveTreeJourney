@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, TrendingUp, Play, BookOpen, Heart } from "lucide-react";
 import { Link } from "wouter";
+import BottomNavigation from "@/components/bottom-navigation";
 
 import InvestmentLoveTree from "@/components/investment-love-tree";
 import YouTuberLoveTree from "@/components/youtuber-love-tree";
