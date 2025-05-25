@@ -33,6 +33,10 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showProgressInfo, setShowProgressInfo] = useState(false);
+  const [showAllCrushes, setShowAllCrushes] = useState(false);
+  const [showAllShorts, setShowAllShorts] = useState(false);
+  const [showAllTags, setShowAllTags] = useState(false);
   const [sectionOrder, setSectionOrder] = useState([
     "myLoveTree",
     "officialLoveTrees",
@@ -170,33 +174,125 @@ export default function Home() {
                 {/* 진행률 바 */}
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-600">진행률</span>
-                    <span className="text-sm font-medium text-gray-700">0/100</span>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm text-gray-600">진행률</span>
+                      <button 
+                        onClick={() => setShowProgressInfo(!showProgressInfo)}
+                        className="w-4 h-4 bg-gray-300 hover:bg-gray-400 rounded-full flex items-center justify-center text-xs text-white transition-colors"
+                      >
+                        ?
+                      </button>
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">15/100</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full" style={{ width: '5%' }}></div>
+                    <div className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full" style={{ width: '15%' }}></div>
                   </div>
+                  
+                  {/* 진행률 설명 */}
+                  {showProgressInfo && (
+                    <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs">
+                      <h5 className="font-medium text-blue-800 mb-2">📊 진행률 계산 방식</h5>
+                      <div className="text-blue-700 space-y-1">
+                        <p>• 영상 추가: +5점</p>
+                        <p>• 하트 누르기: +2점</p>
+                        <p>• 러브트리 생성: +10점</p>
+                        <p>• 댓글 작성: +3점</p>
+                        <p>• 시청 시간 10분당: +1점</p>
+                        <p className="pt-1 border-t border-blue-300">💝 100점 달성 시 완전한 덕후!</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* 현재 빠져있는 것 */}
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">현재 빠져있는 것</h4>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                      <Heart className="w-5 h-5 text-pink-500" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-gray-800">이준영</p>
-                      <p className="text-sm text-gray-600">사랑함</p>
-                    </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-medium text-gray-700">현재 빠져있는 것</h4>
+                    <button 
+                      onClick={() => setShowAllCrushes(!showAllCrushes)}
+                      className="text-xs text-yellow-700 hover:text-yellow-900 underline"
+                    >
+                      더보기
+                    </button>
                   </div>
+                  
+                  {!showAllCrushes ? (
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                        <Heart className="w-5 h-5 text-pink-500" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-800">이준영</p>
+                        <p className="text-sm text-gray-600">사랑함</p>
+                        <p className="text-xs text-gray-500">2024.01.15 입덕</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {/* 현재 빠진 인물들 목록 */}
+                      <div className="flex items-center space-x-3 p-2 bg-white rounded-lg">
+                        <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+                          <Heart className="w-4 h-4 text-pink-500" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-800 text-sm">이준영</p>
+                          <p className="text-xs text-gray-600">2024.01.15 입덕 · 진행률 85%</p>
+                        </div>
+                        <div className="ml-auto">
+                          <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 p-2 bg-white rounded-lg">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Heart className="w-4 h-4 text-blue-500" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-800 text-sm">정국</p>
+                          <p className="text-xs text-gray-600">2024.01.10 입덕 · 진행률 65%</p>
+                        </div>
+                        <div className="ml-auto">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 p-2 bg-white rounded-lg">
+                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                          <Heart className="w-4 h-4 text-purple-500" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-800 text-sm">금성제</p>
+                          <p className="text-xs text-gray-600">2024.01.05 입덕 · 진행률 45%</p>
+                        </div>
+                        <div className="ml-auto">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* 추천 쇼츠 */}
-                <h4 className="text-sm font-bold text-gray-800 mb-3 flex items-center space-x-2">
-                  <span>추천 쇼츠</span>
-                  <span className="text-lg">🔥</span>
-                </h4>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-bold text-gray-800 flex items-center space-x-2">
+                    <span>추천 쇼츠</span>
+                    <span className="text-lg">🔥</span>
+                  </h4>
+                  <button 
+                    onClick={() => setShowAllShorts(!showAllShorts)}
+                    className="text-xs text-gray-600 hover:text-gray-800 underline"
+                  >
+                    더보기
+                  </button>
+                </div>
+                
+                {/* 추천 알고리즘 설명 */}
+                <div className="mb-3 p-2 bg-purple-50 border border-purple-200 rounded-lg">
+                  <p className="text-xs text-purple-700">
+                    💡 <strong>이준영</strong> 관련 영상과 <strong>K-pop 보컬</strong> 취향을 바탕으로 추천
+                  </p>
+                </div>
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   {/* 쇼츠 1 - 정국 */}
                   <div className="relative group cursor-pointer">
@@ -276,6 +372,86 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
+                {/* 더보기 쇼츠 */}
+                {showAllShorts && (
+                  <div className="mb-4">
+                    <div className="grid grid-cols-3 gap-3 mb-3">
+                      {/* 추가 쇼츠 4 - 민호 */}
+                      <div className="relative group cursor-pointer">
+                        <div className="aspect-[9/16] bg-gradient-to-br from-green-500 to-teal-600 rounded-lg overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                              <Play className="w-6 h-6 text-white ml-1" />
+                            </div>
+                          </div>
+                          <div className="absolute top-4 left-4 right-4 text-center">
+                            <div className="text-4xl mb-2">🎭</div>
+                            <div className="text-white font-bold text-sm">민호</div>
+                          </div>
+                          <div className="absolute bottom-2 left-2 right-2">
+                            <div className="flex items-center space-x-1 text-white mb-1">
+                              <Heart className="w-3 h-3 fill-current" />
+                              <span className="text-xs font-medium">1.8k</span>
+                            </div>
+                            <p className="text-xs text-white/90 font-medium">민호 연기 모음</p>
+                            <p className="text-xs text-white/70">@minho_acting</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 추가 쇼츠 5 - 수빈 */}
+                      <div className="relative group cursor-pointer">
+                        <div className="aspect-[9/16] bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                              <Play className="w-6 h-6 text-white ml-1" />
+                            </div>
+                          </div>
+                          <div className="absolute top-4 left-4 right-4 text-center">
+                            <div className="text-4xl mb-2">🌟</div>
+                            <div className="text-white font-bold text-sm">수빈</div>
+                          </div>
+                          <div className="absolute bottom-2 left-2 right-2">
+                            <div className="flex items-center space-x-1 text-white mb-1">
+                              <Heart className="w-3 h-3 fill-current" />
+                              <span className="text-xs font-medium">3.2k</span>
+                            </div>
+                            <p className="text-xs text-white/90 font-medium">수빈 비주얼 모음</p>
+                            <p className="text-xs text-white/70">@soobin_visual</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 추가 쇼츠 6 - 연준 */}
+                      <div className="relative group cursor-pointer">
+                        <div className="aspect-[9/16] bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                              <Play className="w-6 h-6 text-white ml-1" />
+                            </div>
+                          </div>
+                          <div className="absolute top-4 left-4 right-4 text-center">
+                            <div className="text-4xl mb-2">🎵</div>
+                            <div className="text-white font-bold text-sm">연준</div>
+                          </div>
+                          <div className="absolute bottom-2 left-2 right-2">
+                            <div className="flex items-center space-x-1 text-white mb-1">
+                              <Heart className="w-3 h-3 fill-current" />
+                              <span className="text-xs font-medium">2.7k</span>
+                            </div>
+                            <p className="text-xs text-white/90 font-medium">연준 랩 모음</p>
+                            <p className="text-xs text-white/70">@yeonjun_rap</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 text-center">💡 총 50개 쇼츠 보관 중 · 알고리즘이 계속 업데이트됩니다</p>
+                  </div>
+                )}
 
                 <div className="flex items-center space-x-2 mb-4">
                   <TagFilter 
