@@ -738,13 +738,44 @@ export default function Home() {
                       </div>
                     </div>
                     
-                    {/* 연결선들 (SVG) - 다이아몬드 모양 */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                      {/* 중앙에서 각 노드로의 곡선 점선 */}
-                      <path d="M 50% 50% Q 50% 30% 50% 20%" stroke="#f3f4f6" strokeWidth="2" strokeDasharray="3,3" fill="none" />
-                      <path d="M 50% 50% Q 70% 35% 85% 35%" stroke="#f3f4f6" strokeWidth="2" strokeDasharray="3,3" fill="none" />
-                      <path d="M 50% 50% Q 70% 65% 85% 65%" stroke="#f3f4f6" strokeWidth="2" strokeDasharray="3,3" fill="none" />
-                      <path d="M 50% 50% Q 30% 65% 15% 65%" stroke="#f3f4f6" strokeWidth="2" strokeDasharray="3,3" fill="none" />
+                    {/* 연결선들을 더 명확하게 */}
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                      {/* 중앙에서 상단 영상으로 */}
+                      <path 
+                        d="M 50% 50% L 50% 18%" 
+                        stroke="#FF6B9D" 
+                        strokeWidth="4" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
+                      {/* 중앙에서 우측 영상으로 */}
+                      <path 
+                        d="M 50% 50% L 85% 50%" 
+                        stroke="#4ECDC4" 
+                        strokeWidth="4" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
+                      {/* 중앙에서 하단 영상으로 */}
+                      <path 
+                        d="M 50% 50% L 50% 82%" 
+                        stroke="#A8E6CF" 
+                        strokeWidth="4" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
+                      {/* 중앙에서 좌측 영상으로 */}
+                      <path 
+                        d="M 50% 50% L 15% 50%" 
+                        stroke="#FFD93D" 
+                        strokeWidth="4" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
                     </svg>
                     
                     {/* 중앙 텍스트 */}
@@ -774,41 +805,37 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  {/* 주요 기능 설명 */}
-                  <div className="mt-4 space-y-3">
-                    <div className="text-xs font-medium text-gray-700 mb-2">🌟 주요 기능</div>
-                    
-                    <div className="space-y-2 text-xs text-gray-600">
-                      <div className="flex items-start space-x-2">
-                        <span className="text-blue-500">📺</span>
-                        <span>유튜브에서 영상 추가 버튼으로 러브트리에 자동 추가</span>
-                      </div>
-                      
-                      <div className="flex items-start space-x-2">
-                        <span className="text-green-500">📝</span>
-                        <span>영상 옆/위/아래에 설명과 감상 추가 가능</span>
-                      </div>
-                      
-                      <div className="flex items-start space-x-2">
-                        <span className="text-pink-500">💖</span>
-                        <span>완성 시 폴인럽 단계로 업그레이드 (공개/비공개 선택)</span>
-                      </div>
-                      
-                      <div className="flex items-start space-x-2">
-                        <span className="text-purple-500">🏷️</span>
-                        <span>태그별 정리 가능 (예: #귀여움, #섹시함)</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2 text-xs text-gray-600 pt-2 border-t border-gray-100">
-                      <span>💡</span>
-                      <span>지금 바로 러브트리를 시작해보세요!</span>
-                    </div>
-                  </div>
+
                 </div>
 
-                {/* 두 가지 시스템 비교 */}
-                <div className="mt-6 space-y-4">
+                {/* 두 가지 시스템 명확히 구분 */}
+                <div className="mt-6 space-y-6">
+                  {/* 시스템 차이 설명 */}
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 border border-blue-200">
+                    <h4 className="font-bold text-gray-800 mb-3 flex items-center">
+                      <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm mr-2">!</div>
+                      두 가지 다른 시스템이에요!
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                      <div className="bg-white rounded-lg p-3 border border-orange-200">
+                        <div className="font-medium text-orange-700 mb-2">🎯 자빠돌이/꼬돌이 시스템</div>
+                        <div className="text-gray-600 space-y-1">
+                          <p>• 다른 사람을 입덕시킨 <strong>영향력</strong> 측정</p>
+                          <p>• 내 러브트리를 공유해서 사람들이 따라하면 점수 상승</p>
+                          <p>• <strong>순위 경쟁</strong>이 핵심!</p>
+                        </div>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-green-200">
+                        <div className="font-medium text-green-700 mb-2">🌳 러브트리 가드너 시스템</div>
+                        <div className="text-gray-600 space-y-1">
+                          <p>• 내가 직접 하는 <strong>활동</strong>으로 포인트 획득</p>
+                          <p>• 영상 추가, 하트, 댓글 등 개인 행동</p>
+                          <p>• <strong>개인 성장</strong>이 핵심!</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* 자빠돌이/꼬돌이 시스템 */}
                   <PropagatorDashboard />
                   
@@ -903,9 +930,12 @@ export default function Home() {
                           <Clock className="w-4 h-4 mr-2" />
                           총 시청시간이란?
                         </h4>
-                        <p className="text-sm text-blue-700">
-                          러브트리에 추가한 모든 영상들의 재생시간 합계입니다. 더 많은 영상을 보고 러브트리에 추가할수록 시청시간이 늘어나며, 그 인물에 대한 사랑도가 높아집니다! 💕
-                        </p>
+                        <div className="text-sm text-blue-700 space-y-1">
+                          <p><strong>러브트리에 추가한 모든 영상들의 재생시간 합계</strong>입니다.</p>
+                          <p>• 예: 3분 영상 10개 추가 = 총 30분 시청시간</p>
+                          <p>• 실제로 영상을 다 본 시간이 아니라, 추가한 영상들의 <strong>원본 길이</strong></p>
+                          <p>• 시청시간이 길수록 그 인물에 더 깊이 빠졌다는 의미! 💕</p>
+                        </div>
                       </div>
 
                       {/* 다음 레벨까지 */}
