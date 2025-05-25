@@ -1,8 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRoute, useLocation } from "wouter";
-import { Heart, MessageCircle, Plus, X, Edit3 } from "lucide-react";
+import { Heart, MessageCircle, Plus, X, Edit3, Play, Scissors, Clock, Zap, Video, Move } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 
 interface LoveTreeFullscreenProps {
   loveTreeId?: number;
@@ -13,9 +17,24 @@ export default function LoveTreeFullscreen() {
   const [, setLocation] = useLocation();
   const [isAddingVideo, setIsAddingVideo] = useState(false);
   const [isAddingText, setIsAddingText] = useState(false);
+  const [isVideoEditing, setIsVideoEditing] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<any>(null);
+  const [draggedNode, setDraggedNode] = useState<any>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const canvasRef = useRef<HTMLDivElement>(null);
+  
+  // 영상 추가 폼 상태
   const [newVideoUrl, setNewVideoUrl] = useState("");
   const [newVideoReview, setNewVideoReview] = useState("");
   const [newTextContent, setNewTextContent] = useState("");
+  
+  // 영상 편집 상태
+  const [loveStruck, setLoveStruck] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [emotionIntensity, setEmotionIntensity] = useState([5]);
+  const [loveReason, setLoveReason] = useState("");
+  const [currentEditingVideo, setCurrentEditingVideo] = useState<any>(null);
 
   const loveTreeId = params?.id ? parseInt(params.id) : 1;
 
@@ -30,11 +49,18 @@ export default function LoveTreeFullscreen() {
         thumbnailUrl: "https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg",
         review: "저번주 금요일에 3일 빠졌다가 어제 다시 금성제❤️‍🔥 발성 목소리 발음 욕의 찰짐 넘 좋아 진짜🩷",
         likes: 24,
+        comments: 8,
         date: "2024.01.15",
         isRewatched: true,
-        x: 50,
-        y: 30,
-        color: "#FF6B9D"
+        x: 400,
+        y: 200,
+        color: "#FF6B9D",
+        loveStruck: true,
+        loveTimestamp: "2:30",
+        endTimestamp: "2:45",
+        emotionIntensity: 9,
+        loveReason: "발성이 너무 완벽해서 소름돋았어 ❤️‍🔥",
+        gardenerLevel: "마스터"
       },
       {
         id: 2,
@@ -42,11 +68,18 @@ export default function LoveTreeFullscreen() {
         thumbnailUrl: "https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg",
         review: "크루즈와 파트리끄 수영장씬 진짜 이뻐💎 천만원 걸게 파트리끄한테!",
         likes: 18,
+        comments: 5,
         date: "2024.01.12",
         isRewatched: false,
-        x: 30,
-        y: 60,
-        color: "#4ECDC4"
+        x: 200,
+        y: 350,
+        color: "#4ECDC4",
+        loveStruck: true,
+        loveTimestamp: "1:23",
+        endTimestamp: "1:40",
+        emotionIntensity: 7,
+        loveReason: "수영장에서 웃는 모습이 천사같아서 💎",
+        gardenerLevel: "새싹"
       },
       {
         id: 3,
@@ -54,26 +87,94 @@ export default function LoveTreeFullscreen() {
         thumbnailUrl: "https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg",
         review: "마누 보고파다💕 흰피부에 이렇게 꽂힐줄이야~ 수염으로 가리지마 이쁜 얼굴 드러내야지✨",
         likes: 31,
+        comments: 12,
         date: "2024.01.10",
         isRewatched: true,
-        x: 70,
-        y: 50,
-        color: "#A8E6CF"
+        x: 600,
+        y: 300,
+        color: "#A8E6CF",
+        loveStruck: true,
+        loveTimestamp: "0:15",
+        endTimestamp: "0:25",
+        emotionIntensity: 8,
+        loveReason: "미소가 너무 예뻐서 심장이 뛰었어 💕",
+        gardenerLevel: "정원사"
       }
     ],
     texts: [
       {
         id: 1,
         content: "르세라핌 처음 본 순간부터 심장이 뛰었어요 💗",
-        x: 15,
-        y: 25,
+        x: 100,
+        y: 150,
         color: "#FFD93D"
       }
+    ],
+    connections: [
+      { from: 1, to: 2, color: "#FF6B9D" },
+      { from: 2, to: 3, color: "#4ECDC4" },
+      { from: 1, to: 3, color: "#A8E6CF" }
     ]
   };
 
   const [videos, setVideos] = useState(loveTreeData.videos);
   const [texts, setTexts] = useState(loveTreeData.texts);
+
+  // 드래그 핸들러
+  const handleMouseDown = (e: React.MouseEvent, node: any) => {
+    e.preventDefault();
+    setDraggedNode(node);
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (rect) {
+      setDragOffset({
+        x: e.clientX - rect.left - node.x,
+        y: e.clientY - rect.top - node.y
+      });
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (draggedNode && canvasRef.current) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const newX = e.clientX - rect.left - dragOffset.x;
+      const newY = e.clientY - rect.top - dragOffset.y;
+      
+      if (draggedNode.title) {
+        // 영상 노드
+        setVideos(prev => prev.map(v => 
+          v.id === draggedNode.id ? { ...v, x: newX, y: newY } : v
+        ));
+      } else {
+        // 텍스트 노드
+        setTexts(prev => prev.map(t => 
+          t.id === draggedNode.id ? { ...t, x: newX, y: newY } : t
+        ));
+      }
+    }
+  };
+
+  const handleMouseUp = () => {
+    setDraggedNode(null);
+    setDragOffset({ x: 0, y: 0 });
+  };
+
+  // 하트 클릭 핸들러
+  const handleLike = (videoId: number) => {
+    setVideos(prev => prev.map(v => 
+      v.id === videoId ? { ...v, likes: v.likes + 1 } : v
+    ));
+  };
+
+  // 영상 편집 시작
+  const startVideoEdit = (video: any) => {
+    setCurrentEditingVideo(video);
+    setLoveStruck(video.loveStruck || false);
+    setStartTime(video.loveTimestamp || "");
+    setEndTime(video.endTimestamp || "");
+    setEmotionIntensity([video.emotionIntensity || 5]);
+    setLoveReason(video.loveReason || "");
+    setIsVideoEditing(true);
+  };
 
   const handleAddVideo = () => {
     if (newVideoUrl && newVideoReview) {
@@ -83,16 +184,47 @@ export default function LoveTreeFullscreen() {
         thumbnailUrl: "https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg",
         review: newVideoReview,
         likes: 0,
+        comments: 0,
         date: new Date().toLocaleDateString('ko-KR'),
         isRewatched: false,
-        x: Math.random() * 80 + 10,
-        y: Math.random() * 60 + 20,
-        color: `#${Math.floor(Math.random()*16777215).toString(16)}`
+        x: Math.random() * 400 + 200,
+        y: Math.random() * 300 + 150,
+        color: `#${Math.floor(Math.random()*16777215).toString(16)}`,
+        loveStruck: loveStruck,
+        loveTimestamp: startTime,
+        endTimestamp: endTime,
+        emotionIntensity: emotionIntensity[0],
+        loveReason: loveReason,
+        gardenerLevel: "새싹"
       };
       setVideos([...videos, newVideo]);
       setNewVideoUrl("");
       setNewVideoReview("");
+      setLoveStruck(false);
+      setStartTime("");
+      setEndTime("");
+      setEmotionIntensity([5]);
+      setLoveReason("");
       setIsAddingVideo(false);
+    }
+  };
+
+  const handleSaveVideoEdit = () => {
+    if (currentEditingVideo) {
+      setVideos(prev => prev.map(v => 
+        v.id === currentEditingVideo.id 
+          ? { 
+              ...v, 
+              loveStruck, 
+              loveTimestamp: startTime, 
+              endTimestamp: endTime, 
+              emotionIntensity: emotionIntensity[0], 
+              loveReason 
+            }
+          : v
+      ));
+      setIsVideoEditing(false);
+      setCurrentEditingVideo(null);
     }
   };
 
@@ -101,13 +233,23 @@ export default function LoveTreeFullscreen() {
       const newText = {
         id: texts.length + 1,
         content: newTextContent,
-        x: Math.random() * 80 + 10,
-        y: Math.random() * 60 + 20,
+        x: Math.random() * 400 + 200,
+        y: Math.random() * 300 + 150,
         color: `#${Math.floor(Math.random()*16777215).toString(16)}`
       };
       setTexts([...texts, newText]);
       setNewTextContent("");
       setIsAddingText(false);
+    }
+  };
+
+  const getGardenerColor = (level: string) => {
+    switch(level) {
+      case "새싹": return "#4ADE80";
+      case "정원사": return "#3B82F6";
+      case "마스터": return "#8B5CF6";
+      case "레전드": return "#F59E0B";
+      default: return "#6B7280";
     }
   };
 
@@ -149,49 +291,106 @@ export default function LoveTreeFullscreen() {
       </div>
 
       {/* 메인 러브트리 캔버스 */}
-      <div className="absolute inset-0 pt-20 pb-4 px-4">
+      <div 
+        ref={canvasRef}
+        className="absolute inset-0 pt-20 pb-4 px-4 overflow-hidden"
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      >
         <div className="relative w-full h-full max-w-7xl mx-auto">
           {/* 연결선들 */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none">
-            {videos.map((video, index) => (
-              videos.slice(index + 1).map(nextVideo => (
+            {loveTreeData.connections.map((connection, index) => {
+              const fromVideo = videos.find(v => v.id === connection.from);
+              const toVideo = videos.find(v => v.id === connection.to);
+              
+              if (!fromVideo || !toVideo) return null;
+              
+              return (
                 <path
-                  key={`${video.id}-${nextVideo.id}`}
-                  d={`M ${video.x}% ${video.y}% Q ${(video.x + nextVideo.x) / 2}% ${(video.y + nextVideo.y) / 2 - 5}% ${nextVideo.x}% ${nextVideo.y}%`}
-                  stroke="#E2E8F0"
-                  strokeWidth="2"
+                  key={`${connection.from}-${connection.to}`}
+                  d={`M ${fromVideo.x + 140} ${fromVideo.y + 80} Q ${(fromVideo.x + toVideo.x) / 2 + 140} ${(fromVideo.y + toVideo.y) / 2 + 60} ${toVideo.x + 140} ${toVideo.y + 80}`}
+                  stroke={getGardenerColor(fromVideo.gardenerLevel)}
+                  strokeWidth="3"
                   fill="none"
-                  strokeDasharray="5,5"
-                  className="opacity-60"
+                  strokeDasharray="8,4"
+                  className="opacity-80"
                 />
-              ))
-            ))}
+              );
+            })}
           </svg>
 
           {/* 영상 노드들 */}
           {videos.map((video) => (
             <div
               key={video.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer"
-              style={{ left: `${video.x}%`, top: `${video.y}%` }}
+              className="absolute group cursor-move select-none"
+              style={{ left: `${video.x}px`, top: `${video.y}px` }}
+              onMouseDown={(e) => handleMouseDown(e, video)}
             >
+              {/* 드래그 핸들 */}
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <Move className="w-3 h-3 text-white" />
+              </div>
+
+              {/* 영상 편집 버튼 */}
+              <button
+                onClick={() => startVideoEdit(video)}
+                className="absolute -top-2 -left-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+              >
+                <Scissors className="w-3 h-3 text-white" />
+              </button>
+
+              {/* 가드너 레벨 뱃지 */}
+              <div 
+                className="absolute -top-3 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-full text-xs text-white font-medium"
+                style={{ backgroundColor: getGardenerColor(video.gardenerLevel) }}
+              >
+                {video.gardenerLevel}
+              </div>
+
               {/* 영상 카드 */}
-              <div className="bg-white rounded-xl shadow-lg p-4 min-w-[280px] max-w-[320px] border-2 hover:shadow-xl transition-all duration-300"
-                   style={{ borderColor: video.color }}>
+              <div className="bg-white rounded-xl shadow-lg p-4 w-[280px] border-2 hover:shadow-xl transition-all duration-300"
+                   style={{ borderColor: getGardenerColor(video.gardenerLevel) }}>
+                
+                {/* 헤더 */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: video.color }}></div>
                     <span className="font-medium text-gray-800">{video.title}</span>
-                    {video.isRewatched && <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">재시청</span>}
+                    {video.isRewatched && <Badge variant="secondary" className="text-xs">재시청</Badge>}
                   </div>
                   <span className="text-xs text-gray-500">{video.date}</span>
                 </div>
+
+                {/* 사랑에 빠진 순간 표시 */}
+                {video.loveStruck && (
+                  <div className="mb-3 p-2 bg-pink-50 rounded-lg border border-pink-200">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <Zap className="w-4 h-4 text-pink-500" />
+                      <span className="text-sm font-medium text-pink-700">사랑에 빠진 순간!</span>
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      <Clock className="w-3 h-3 inline mr-1" />
+                      {video.loveTimestamp} - {video.endTimestamp}
+                    </div>
+                    <div className="text-xs text-gray-600 mt-1">
+                      💕 강도: {video.emotionIntensity}/10
+                    </div>
+                  </div>
+                )}
                 
                 {/* 썸네일 */}
-                <div className="w-full h-32 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+                <div className="w-full h-32 bg-gray-200 rounded-lg mb-3 flex items-center justify-center relative">
                   <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
-                    <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[12px] border-b-white ml-1"></div>
+                    <Play className="w-5 h-5 text-white fill-current" />
                   </div>
+                  {video.loveStruck && (
+                    <div className="absolute top-2 right-2 bg-pink-500 text-white px-2 py-1 rounded-full text-xs">
+                      💝 {video.loveTimestamp}
+                    </div>
+                  )}
                 </div>
                 
                 {/* 감상 리뷰 */}
@@ -199,19 +398,32 @@ export default function LoveTreeFullscreen() {
                   <p className="text-sm text-gray-700 leading-relaxed max-h-20 overflow-y-auto">
                     {video.review}
                   </p>
+                  {video.loveReason && (
+                    <div className="mt-2 pt-2 border-t border-gray-200">
+                      <p className="text-xs text-pink-600 font-medium">
+                        💝 {video.loveReason}
+                      </p>
+                    </div>
+                  )}
                 </div>
                 
                 {/* 하트 & 댓글 */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <button className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors">
+                    <button 
+                      onClick={() => handleLike(video.id)}
+                      className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors"
+                    >
                       <Heart className="w-4 h-4" />
                       <span className="text-sm">{video.likes}</span>
                     </button>
                     <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
                       <MessageCircle className="w-4 h-4" />
-                      <span className="text-sm">5</span>
+                      <span className="text-sm">{video.comments}</span>
                     </button>
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    감정 강도: {video.emotionIntensity}/10
                   </div>
                 </div>
               </div>
