@@ -470,8 +470,8 @@ export default function Home() {
                           : "text-gray-600"
                       }`}
                     >
-                      <Map className="w-4 h-4 mr-1" />
-                      마인드맵
+                      <Sparkles className="w-4 h-4 mr-1" />
+                      러브트리
                     </Button>
                     <Button
                       size="sm"
