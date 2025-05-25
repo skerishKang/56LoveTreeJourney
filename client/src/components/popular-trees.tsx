@@ -237,9 +237,11 @@ export default function PopularTrees() {
           <span className="mr-2">인기 러브트리</span>
           <Flame className="w-5 h-5 text-orange-500" />
         </h3>
-        <Button variant="ghost" className="text-love-pink text-sm font-medium">
-          전체보기
-        </Button>
+        <Link href="/popular-love-trees">
+          <Button variant="ghost" className="text-love-pink text-sm font-medium">
+            더보기
+          </Button>
+        </Link>
       </div>
 
       <div className="space-y-3">
