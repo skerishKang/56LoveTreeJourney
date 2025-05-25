@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { apiRequest } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/useAuth";
-import { Crown, Trophy, Medal, Star, Target, Heart, TrendingUp, Users, Calendar } from "lucide-react";
+import { Crown, Trophy, Medal, Star, Target, Heart, TrendingUp, Users, Calendar, Share2, BarChart3 } from "lucide-react";
 
 interface PropagatorStats {
   totalConversions: number;

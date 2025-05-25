@@ -69,6 +69,70 @@ export default function PopularTrees() {
   }
 
   if (!popularTrees || !Array.isArray(popularTrees) || popularTrees.length === 0) {
+    // 예시 인기 러브트리들 (여러 유저들의 다양한 러브트리)
+    const exampleTrees = [
+      {
+        id: 1,
+        title: "뉴진스 하니 입덕기",
+        category: "K-pop",
+        targetPerson: "뉴진스 하니",
+        user: { firstName: "민지팬", email: "minji@example.com", profileImageUrl: null },
+        itemCount: 12,
+        likeCount: 234,
+        isCompleted: true,
+        createdAt: "2024-01-15T10:30:00Z",
+        period: "이주의 러브트리"
+      },
+      {
+        id: 2,
+        title: "스트레이키즈 현진 러브트리",
+        category: "K-pop", 
+        targetPerson: "스트레이키즈 현진",
+        user: { firstName: "하늘", email: "sky@example.com", profileImageUrl: null },
+        itemCount: 8,
+        likeCount: 189,
+        isCompleted: false,
+        createdAt: "2024-01-20T14:20:00Z",
+        period: "이달의 러브트리"
+      },
+      {
+        id: 3,
+        title: "약한영웅 이준영 입덕",
+        category: "드라마",
+        targetPerson: "약한영웅 이준영",
+        user: { firstName: "소라", email: "sora@example.com", profileImageUrl: null },
+        itemCount: 15,
+        likeCount: 167,
+        isCompleted: true,
+        createdAt: "2024-01-18T09:15:00Z",
+        period: "이주의 러브트리"
+      },
+      {
+        id: 4,
+        title: "아이브 장원영 매력 발견",
+        category: "K-pop",
+        targetPerson: "아이브 장원영",
+        user: { firstName: "별빛", email: "star@example.com", profileImageUrl: null },
+        itemCount: 10,
+        likeCount: 145,
+        isCompleted: false,
+        createdAt: "2024-01-22T16:45:00Z",
+        period: "이달의 러브트리"
+      },
+      {
+        id: 5,
+        title: "선재 업고 튀어 변우석",
+        category: "드라마",
+        targetPerson: "변우석",
+        user: { firstName: "달님", email: "moon@example.com", profileImageUrl: null },
+        itemCount: 13,
+        likeCount: 198,
+        isCompleted: true,
+        createdAt: "2024-01-25T11:30:00Z",
+        period: "이달의 러브트리"
+      }
+    ];
+
     return (
       <section className="px-4 py-4">
         <div className="flex items-center justify-between mb-4">
@@ -77,12 +141,91 @@ export default function PopularTrees() {
             전체보기
           </Button>
         </div>
-        <Card className="border-gray-200">
-          <CardContent className="text-center py-8">
-            <Flame className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500">인기 러브트리가 곧 업데이트됩니다!</p>
-          </CardContent>
-        </Card>
+        <div className="space-y-3">
+          {exampleTrees.map((tree: any, index: number) => (
+            <Card key={tree.id} className="bg-white rounded-xl shadow-sm border border-gray-100 hover:border-love-pink/30 transition-colors">
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-love-pink to-purple-500 rounded-full border-2 border-tree-green flex-shrink-0 flex items-center justify-center text-white font-bold text-sm">
+                    {tree.user?.firstName?.charAt(0) || 'U'}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-2">
+                      <p className="font-medium text-gray-800 truncate">
+                        @{tree.user?.firstName || tree.user?.email?.split('@')[0] || 'user'}
+                      </p>
+                      <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
+                        {tree.period}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      {tree.category} 러브트리
+                    </p>
+                    {tree.targetPerson && (
+                      <p className="text-xs text-love-pink truncate">
+                        👤 {tree.targetPerson}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">
+                    {tree.title}
+                  </h4>
+
+                  {/* 러브트리 진행 단계 표시 */}
+                  <div className="flex space-x-1 mb-2">
+                    {Array.from({ length: Math.min(tree.itemCount, 5) }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={`w-6 h-6 rounded-full border-2 ${
+                          i < 3 
+                            ? "bg-love-pink border-love-pink text-white" 
+                            : "bg-gray-100 border-gray-300"
+                        } flex items-center justify-center text-xs font-bold`}
+                      >
+                        {i + 1}
+                      </div>
+                    ))}
+                    {tree.itemCount > 5 && (
+                      <div className="w-6 h-6 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-xs font-bold text-gray-500">
+                        +{tree.itemCount - 5}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center space-x-3 text-gray-600">
+                    <span className="flex items-center space-x-1">
+                      <Heart className="w-4 h-4 text-love-pink" />
+                      <span>{tree.likeCount || 0}</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <Users className="w-4 h-4 text-tree-green" />
+                      <span>{tree.itemCount || 0}</span>
+                    </span>
+                    {tree.isCompleted && (
+                      <span className="flex items-center space-x-1">
+                        <Trophy className="w-4 h-4 text-sparkle-gold" />
+                      </span>
+                    )}
+                  </div>
+                  <Button 
+                    size="sm"
+                    onClick={() => followLoveTree.mutate(tree.id)}
+                    disabled={followLoveTree.isPending}
+                    className="bg-love-pink/10 text-love-pink hover:bg-love-pink hover:text-white border-love-pink/30 text-xs font-medium px-3"
+                    variant="outline"
+                  >
+                    따라하기
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </section>
     );
   }

@@ -10,10 +10,10 @@ import LoveTreeMindmap from "@/components/love-tree-mindmap";
 import EnhancedLoveTree from "@/components/enhanced-love-tree";
 import InteractiveMindmap from "@/components/interactive-mindmap";
 import PopularTrees from "@/components/popular-trees";
-import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles, Plus } from "lucide-react";
+import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles, Plus, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import ShareLoveTree from "@/components/share-love-tree";
@@ -807,9 +807,123 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* 자빠돌이/꼬돌이 대시보드 */}
-                <div className="mt-6">
+                {/* 두 가지 시스템 비교 */}
+                <div className="mt-6 space-y-4">
+                  {/* 자빠돌이/꼬돌이 시스템 */}
                   <PropagatorDashboard />
+                  
+                  {/* 러브트리 가드너 시스템 */}
+                  <Card className="overflow-hidden">
+                    <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                      <CardTitle className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                          🌱
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold">🌳 러브트리 가드너 시스템</h3>
+                          <p className="text-sm opacity-90">내 활동으로 직접 쌓는 가드너 포인트와 레벨</p>
+                        </div>
+                      </CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="p-6 space-y-6">
+                      {/* 현재 레벨 */}
+                      <div className="text-center">
+                        <Badge className="bg-gradient-to-r from-green-400 to-green-600 text-white text-lg px-4 py-2">
+                          🌱 새싹 가드너
+                        </Badge>
+                        <p className="text-sm text-gray-600 mt-2">현재 레벨</p>
+                      </div>
+
+                      {/* 가드너 활동 통계 */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg">
+                          <div className="flex items-center justify-center mb-2">
+                            <TrendingUp className="w-5 h-5 text-green-500 mr-1" />
+                            <span className="text-2xl font-bold text-gray-800">1,247</span>
+                          </div>
+                          <p className="text-sm text-gray-600">가드너 포인트</p>
+                        </div>
+
+                        <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg">
+                          <div className="flex items-center justify-center mb-2">
+                            <Clock className="w-5 h-5 text-blue-500 mr-1" />
+                            <span className="text-2xl font-bold text-gray-800">3.2시간</span>
+                          </div>
+                          <p className="text-sm text-gray-600">총 시청시간</p>
+                        </div>
+
+                        <div className="text-center p-4 bg-gradient-to-br from-pink-50 to-purple-50 rounded-lg">
+                          <div className="flex items-center justify-center mb-2">
+                            <Heart className="w-5 h-5 text-pink-500 mr-1" />
+                            <span className="text-2xl font-bold text-gray-800">42</span>
+                          </div>
+                          <p className="text-sm text-gray-600">하트 누른 횟수</p>
+                        </div>
+
+                        <div className="text-center p-4 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg">
+                          <div className="flex items-center justify-center mb-2">
+                            <Plus className="w-5 h-5 text-orange-500 mr-1" />
+                            <span className="text-2xl font-bold text-gray-800">12</span>
+                          </div>
+                          <p className="text-sm text-gray-600">영상 추가 횟수</p>
+                        </div>
+                      </div>
+
+                      {/* 포인트 획득 방법 */}
+                      <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                        <h4 className="font-medium text-green-800 mb-3">💎 포인트 획득 방법</h4>
+                        <div className="space-y-2 text-sm text-green-700">
+                          <div className="flex items-center justify-between">
+                            <span>• 영상 추가</span>
+                            <span className="font-medium">+10 포인트</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span>• 하트 누르기</span>
+                            <span className="font-medium">+2 포인트</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span>• 댓글 작성</span>
+                            <span className="font-medium">+5 포인트</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span>• 러브트리 완성</span>
+                            <span className="font-medium">+50 포인트</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span>• 10분 이상 시청</span>
+                            <span className="font-medium">+3 포인트</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 시청시간 설명 */}
+                      <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                        <h4 className="font-medium text-blue-800 mb-2 flex items-center">
+                          <Clock className="w-4 h-4 mr-2" />
+                          총 시청시간이란?
+                        </h4>
+                        <p className="text-sm text-blue-700">
+                          러브트리에 추가한 모든 영상들의 재생시간 합계입니다. 더 많은 영상을 보고 러브트리에 추가할수록 시청시간이 늘어나며, 그 인물에 대한 사랑도가 높아집니다! 💕
+                        </p>
+                      </div>
+
+                      {/* 다음 레벨까지 */}
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-gray-700">정원사까지</span>
+                          <span className="text-sm text-gray-500">753 포인트 더 필요</span>
+                        </div>
+                        
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div 
+                            className="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-500"
+                            style={{ width: "62%" }}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
               </div>
             );
