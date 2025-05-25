@@ -12,7 +12,7 @@ import Profile from "@/pages/profile";
 import ProfileEdit from "@/pages/profile-edit";
 import AddContent from "@/pages/add-content";
 import CategoryHub from "@/pages/category-hub";
-import LoveTreeTemplates from "@/pages/love-tree-templates";
+import LoveTreeTemplates from "@/pages/love-tree-templates-new";
 import CommunityTrackerPage from "@/pages/community-tracker-page";
 import GoodsCollectionPage from "@/pages/goods-collection-page";
 import FanActivitiesPage from "@/pages/fan-activities-page";
