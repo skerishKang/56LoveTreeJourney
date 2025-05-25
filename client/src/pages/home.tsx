@@ -23,6 +23,10 @@ import YouTubeExtensionGuide from "@/components/youtube-extension-guide";
 import TagFilter from "@/components/tag-filter";
 import BottomNavigation from "@/components/bottom-navigation";
 import MindmapLoveTree from "@/components/mindmap-love-tree";
+import CategoryRequestModal from "@/components/category-request-modal";
+import SettingsMenu from "@/components/settings-menu";
+import SubscriptionModal from "@/components/subscription-modal";
+import ContinueLoveTreeModal from "@/components/continue-love-tree-modal";
 import { Link } from "wouter";
 
 export default function Home() {
@@ -37,6 +41,11 @@ export default function Home() {
   const [showAllCrushes, setShowAllCrushes] = useState(false);
   const [showAllShorts, setShowAllShorts] = useState(false);
   const [showAllTags, setShowAllTags] = useState(false);
+  const [showCategoryRequest, setShowCategoryRequest] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showSubscription, setShowSubscription] = useState(false);
+  const [showContinueTree, setShowContinueTree] = useState(false);
+  const [selectedLoveTree, setSelectedLoveTree] = useState<any>(null);
   const [sectionOrder, setSectionOrder] = useState([
     "myLoveTree",
     "officialLoveTrees",
@@ -126,6 +135,14 @@ export default function Home() {
             <div className="flex items-center space-x-2">
               <Button variant="ghost" size="sm" className="rounded-full">
                 <Bell className="w-5 h-5" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="rounded-full"
+                onClick={() => setShowSettings(true)}
+              >
+                <Crown className="w-5 h-5" />
               </Button>
             </div>
           </div>
@@ -928,7 +945,10 @@ export default function Home() {
 
                   {/* 카테고리 요청하기 */}
                   <div className="text-center">
-                    <Card className="bg-gradient-to-r from-love-light to-soft-pink border-dashed border-2 border-love-pink/30 hover:border-love-pink/50 transition-colors cursor-pointer">
+                    <Card 
+                      className="bg-gradient-to-r from-love-light to-soft-pink border-dashed border-2 border-love-pink/30 hover:border-love-pink/50 transition-colors cursor-pointer"
+                      onClick={() => setShowCategoryRequest(true)}
+                    >
                       <CardContent className="p-4">
                         <div className="text-2xl mb-2">💡</div>
                         <h4 className="font-semibold text-gray-800 mb-1">새 카테고리 요청</h4>
