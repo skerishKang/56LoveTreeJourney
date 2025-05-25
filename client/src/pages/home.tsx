@@ -1180,6 +1180,28 @@ export default function Home() {
       </main>
 
       <BottomNavigation />
+
+      {/* 모든 모달들 */}
+      <CategoryRequestModal 
+        isOpen={showCategoryRequest}
+        onClose={() => setShowCategoryRequest(false)}
+      />
+      
+      <SettingsMenu 
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
+      
+      <SubscriptionModal 
+        isOpen={showSubscription}
+        onClose={() => setShowSubscription(false)}
+      />
+      
+      <ContinueLoveTreeModal 
+        isOpen={showContinueTree}
+        onClose={() => setShowContinueTree(false)}
+        loveTree={selectedLoveTree}
+      />
     </div>
   );
 }
