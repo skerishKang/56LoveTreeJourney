@@ -10,7 +10,7 @@ import LoveTreeMindmap from "@/components/love-tree-mindmap";
 import EnhancedLoveTree from "@/components/enhanced-love-tree";
 import InteractiveMindmap from "@/components/interactive-mindmap";
 import PopularTrees from "@/components/popular-trees";
-import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles, Plus, Clock } from "lucide-react";
+import { Heart, Bell, Map, List, Share2, Search, TrendingUp, GripVertical, Star, Users, Gamepad2, Gift, Smartphone, ChevronRight, Crown, Play, Sparkles, Plus, Clock, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -142,7 +142,7 @@ export default function Home() {
                 className="rounded-full"
                 onClick={() => setShowSettings(true)}
               >
-                <Crown className="w-5 h-5" />
+                <Settings className="w-5 h-5" />
               </Button>
             </div>
           </div>

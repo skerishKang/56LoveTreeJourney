@@ -149,7 +149,8 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
         { label: "알림 설정", toggle: { value: notifications, onChange: setNotifications } },
         { label: "다크모드", toggle: { value: darkMode, onChange: setDarkMode } },
         { label: "사운드 효과", toggle: { value: soundEffects, onChange: setSoundEffects } },
-        { label: "개인정보 보호", action: () => setActiveSection("privacy") }
+        { label: "개인정보 보호", action: () => setActiveSection("privacy") },
+        { label: "구독 관리", action: () => toast({ title: "구독 관리", description: "프로필에서 구독 서비스를 이용하세요!" }) }
       ]
     },
     {
