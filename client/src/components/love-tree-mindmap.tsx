@@ -1,293 +1,368 @@
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Play, Sparkles, Crown, Youtube, Instagram, Music, BookOpen, Edit3, Gauge } from "lucide-react";
-import { useState, useEffect } from "react";
-import VideoEditor from "./video-editor";
-import LoveGauge from "./love-gauge";
-import DiaryLoveTree from "./diary-love-tree";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Heart, Play, MessageCircle, Share2, Maximize2, X } from "lucide-react";
 
-interface LoveTreeMindmapProps {
-  loveTreeId: number;
-}
-
-interface TreeNode {
+interface LoveTreeNode {
   id: number;
   title: string;
-  platform: string;
+  type: string;
+  description?: string;
   thumbnailUrl?: string;
-  contentUrl?: string;
-  category: string;
   x: number;
   y: number;
   connections: number[];
   color: string;
-  isFirstContent: boolean;
-  likeCount: number;
-  isShining?: boolean; // 다른 사람이 같은 영상 올렸을 때
+  category: string;
+  stage: string;
+  likeCount?: number;
+  commentCount?: number;
 }
 
-export default function LoveTreeMindmap({ loveTreeId }: LoveTreeMindmapProps) {
-  const [selectedNode, setSelectedNode] = useState<TreeNode | null>(null);
-  const [viewMode, setViewMode] = useState<'mindmap' | 'diary' | 'editor'>('mindmap');
-  const [showLoveGauge, setShowLoveGauge] = useState(false);
-  const [nodes, setNodes] = useState<TreeNode[]>([]);
+interface LoveTreeMindmapProps {
+  loveTree: any;
+  items?: any[];
+  isFullscreen?: boolean;
+  onClose?: () => void;
+}
 
-  const { data: items } = useQuery({
-    queryKey: ["/api/love-trees", loveTreeId, "items"],
-    queryFn: () => api.getLoveTreeItems(loveTreeId),
-  });
+export default function LoveTreeMindmap({ loveTree, items = [], isFullscreen = false, onClose }: LoveTreeMindmapProps) {
+  const [selectedNode, setSelectedNode] = useState<LoveTreeNode | null>(null);
 
-  useEffect(() => {
-    if (items) {
-      // Convert items to tree nodes with positioning
-      const convertedNodes: TreeNode[] = items.map((item: any, index: number) => {
-        const angle = (index * 60) * (Math.PI / 180); // 60도씩 분산
-        const radius = 150 + (index % 3) * 80; // 계층별 거리
-        
-        return {
-          id: item.id,
-          title: item.title,
-          platform: item.platform,
-          thumbnailUrl: item.thumbnailUrl,
-          contentUrl: item.contentUrl,
-          category: getCategoryFromContent(item.title, item.description),
-          x: Math.cos(angle) * radius + 250, // 중심점 250,250
-          y: Math.sin(angle) * radius + 250,
-          connections: getConnectionsForItem(item, items),
-          color: getCategoryColor(item.title, item.description),
-          isFirstContent: item.isFirstContent,
-          likeCount: item.likeCount || 0,
-          isShining: Math.random() > 0.7 // 임시로 랜덤하게 반짝이게
-        };
-      });
-      setNodes(convertedNodes);
+  // 카테고리별 색상 매핑
+  const getCategoryColor = (category: string) => {
+    const colors: { [key: string]: string } = {
+      "귀여움": "#FFD93D", // 노란색
+      "섹시함": "#FF6B9D", // 핑크색
+      "댄스": "#4ECDC4", // 민트색
+      "보컬": "#9B59B6", // 보라색
+      "비주얼": "#E74C3C", // 빨간색
+      "예능": "#F39C12", // 주황색
+      "기타": "#95A5A6"  // 회색
+    };
+    return colors[category] || colors["기타"];
+  };
+
+  // 노드 생성 (다이아몬드 레이아웃)
+  const generateNodes = (): LoveTreeNode[] => {
+    if (!items || items.length === 0) {
+      // 예시 데이터로 마인드맵 구조 보여주기
+      return [
+        {
+          id: 1,
+          title: "첫 영상 발견",
+          type: "video",
+          description: "운명적인 첫 만남",
+          x: 50,
+          y: 50,
+          connections: [2, 3],
+          color: getCategoryColor("귀여움"),
+          category: "귀여움",
+          stage: "썸",
+          likeCount: 12,
+          commentCount: 3
+        },
+        {
+          id: 2,
+          title: "무대 영상",
+          type: "video",
+          description: "댄스 실력에 감탄",
+          x: 25,
+          y: 25,
+          connections: [1, 4],
+          color: getCategoryColor("댄스"),
+          category: "댄스",
+          stage: "설렘",
+          likeCount: 25,
+          commentCount: 7
+        },
+        {
+          id: 3,
+          title: "예능 출연",
+          type: "video",
+          description: "예능감 폭발",
+          x: 75,
+          y: 25,
+          connections: [1, 5],
+          color: getCategoryColor("예능"),
+          category: "예능",
+          stage: "설렘",
+          likeCount: 18,
+          commentCount: 5
+        },
+        {
+          id: 4,
+          title: "라이브 무대",
+          type: "video",
+          description: "라이브 실력 확인",
+          x: 25,
+          y: 75,
+          connections: [2, 6],
+          color: getCategoryColor("보컬"),
+          category: "보컬",
+          stage: "빠짐",
+          likeCount: 42,
+          commentCount: 12
+        },
+        {
+          id: 5,
+          title: "브이로그",
+          type: "video",
+          description: "일상의 모습",
+          x: 75,
+          y: 75,
+          connections: [3, 6],
+          color: getCategoryColor("귀여움"),
+          category: "귀여움",
+          stage: "빠짐",
+          likeCount: 33,
+          commentCount: 8
+        },
+        {
+          id: 6,
+          title: "콘서트 직캠",
+          type: "video",
+          description: "최애가 확정된 순간",
+          x: 50,
+          y: 90,
+          connections: [4, 5],
+          color: getCategoryColor("비주얼"),
+          category: "비주얼",
+          stage: "완전빠짐",
+          likeCount: 89,
+          commentCount: 23
+        }
+      ];
     }
-  }, [items]);
 
-  const getCategoryFromContent = (title: string, description?: string) => {
-    const content = (title + " " + (description || "")).toLowerCase();
-    if (content.includes("귀여") || content.includes("큐트") || content.includes("애교")) return "cute";
-    if (content.includes("섹시") || content.includes("성숙") || content.includes("매력")) return "sexy";
-    if (content.includes("댄스") || content.includes("춤") || content.includes("퍼포먼스")) return "dance";
-    if (content.includes("보컬") || content.includes("노래") || content.includes("음성")) return "vocal";
-    return "general";
+    // 실제 아이템 데이터를 노드로 변환
+    return items.map((item, index) => ({
+      id: item.id,
+      title: item.title || `영상 ${index + 1}`,
+      type: item.type || "video",
+      description: item.description,
+      thumbnailUrl: item.thumbnailUrl,
+      x: 20 + (index % 3) * 30,
+      y: 20 + Math.floor(index / 3) * 25,
+      connections: index > 0 ? [items[index - 1].id] : [],
+      color: getCategoryColor(item.category || "기타"),
+      category: item.category || "기타",
+      stage: item.stage?.name || "썸",
+      likeCount: item.likeCount || 0,
+      commentCount: item.commentCount || 0
+    }));
   };
 
-  const getCategoryColor = (title: string, description?: string) => {
-    const category = getCategoryFromContent(title, description);
-    switch (category) {
-      case "cute": return "#FFD93D"; // 노란색
-      case "sexy": return "#FF6B9D"; // 핑크색
-      case "dance": return "#4ECDC4"; // 민트색
-      case "vocal": return "#A78BFA"; // 보라색
-      default: return "#94A3B8"; // 회색
-    }
-  };
+  const nodes = generateNodes();
 
-  const getConnectionsForItem = (item: any, allItems: any[]) => {
-    // 연관성 기반으로 연결 (같은 플랫폼, 비슷한 제목 등)
-    return allItems
-      .filter(other => other.id !== item.id && (
-        other.platform === item.platform ||
-        other.title.includes(item.title.split(' ')[0])
-      ))
-      .map(other => other.id)
-      .slice(0, 2); // 최대 2개 연결
-  };
-
-  const getPlatformIcon = (platform: string) => {
-    switch (platform.toLowerCase()) {
-      case "youtube":
-        return <Youtube className="w-3 h-3 text-red-500" />;
-      case "instagram":
-        return <Instagram className="w-3 h-3 text-pink-500" />;
-      case "tiktok":
-        return <Music className="w-3 h-3 text-black" />;
-      default:
-        return <Play className="w-3 h-3 text-gray-500" />;
-    }
-  };
-
+  // 연결선 그리기 함수
   const renderConnections = () => {
     return nodes.map(node => 
-      node.connections.map(targetId => {
-        const targetNode = nodes.find(n => n.id === targetId);
+      node.connections.map(connectionId => {
+        const targetNode = nodes.find(n => n.id === connectionId);
         if (!targetNode) return null;
+
+        const startX = node.x;
+        const startY = node.y;
+        const endX = targetNode.x;
+        const endY = targetNode.y;
 
         return (
           <line
-            key={`${node.id}-${targetId}`}
-            x1={node.x + 30} // 노드 중심에서 시작
-            y1={node.y + 30}
-            x2={targetNode.x + 30}
-            y2={targetNode.y + 30}
+            key={`${node.id}-${connectionId}`}
+            x1={`${startX}%`}
+            y1={`${startY}%`}
+            x2={`${endX}%`}
+            y2={`${endY}%`}
             stroke={node.color}
-            strokeWidth="3"
-            strokeDasharray={node.isShining ? "5,5" : "none"}
-            className={node.isShining ? "animate-pulse" : ""}
-            style={{
-              filter: node.isShining ? "drop-shadow(0 0 8px currentColor)" : "none"
-            }}
+            strokeWidth={isFullscreen ? "3" : "2"}
+            strokeOpacity="0.6"
+            className="drop-shadow-sm"
           />
         );
       })
     ).flat();
   };
 
+  // 노드 클릭 핸들러
+  const handleNodeClick = (node: LoveTreeNode) => {
+    setSelectedNode(node);
+  };
+
   return (
-    <div className="relative w-full h-96 bg-gradient-to-br from-soft-pink via-white to-diary-beige rounded-2xl overflow-hidden border border-love-pink/20">
-      {/* SVG for connections */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-        {renderConnections()}
-      </svg>
+    <>
+      <div className={`relative ${isFullscreen ? 'h-screen w-screen bg-gradient-to-br from-love-light via-white to-love-light' : 'h-96 bg-gradient-to-br from-purple-50 to-pink-50'} rounded-xl overflow-hidden`}>
+        {/* 전체화면 헤더 */}
+        {isFullscreen && (
+          <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800">{loveTree?.title || "러브트리"}</h2>
+              <p className="text-sm text-gray-600">{loveTree?.category} • {nodes.length}개 영상</p>
+            </div>
+            <Button variant="ghost" size="sm" onClick={onClose} className="rounded-full">
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+        )}
 
-      {/* Tree nodes */}
-      <div className="relative w-full h-full" style={{ zIndex: 2 }}>
-        {nodes.map((node) => (
-          <div
-            key={node.id}
-            className={`absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2 ${
-              node.isShining ? "animate-pulse-love" : ""
-            }`}
-            style={{
-              left: node.x,
-              top: node.y,
-              zIndex: selectedNode?.id === node.id ? 10 : 2
-            }}
-            onClick={() => setSelectedNode(node)}
-          >
+        {/* SVG로 연결선과 노드 그리기 */}
+        <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
+          {/* 연결선 */}
+          <g>
+            {renderConnections()}
+          </g>
+        </svg>
+
+        {/* 노드들 */}
+        <div className="absolute inset-0" style={{ zIndex: 2 }}>
+          {nodes.map((node) => (
             <div
-              className={`w-16 h-16 rounded-xl shadow-lg border-2 border-white relative group hover:scale-110 transition-transform ${
-                node.isFirstContent ? "ring-2 ring-sparkle-gold ring-offset-2" : ""
-              }`}
+              key={node.id}
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
               style={{
-                backgroundColor: node.color,
-                boxShadow: node.isShining ? `0 0 20px ${node.color}` : "0 4px 12px rgba(0,0,0,0.15)"
+                left: `${node.x}%`,
+                top: `${node.y}%`,
               }}
+              onClick={() => handleNodeClick(node)}
             >
-              {/* Thumbnail or placeholder */}
-              {node.thumbnailUrl ? (
-                <img
-                  src={node.thumbnailUrl}
-                  alt={node.title}
-                  className="w-full h-full object-cover rounded-lg"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  {getPlatformIcon(node.platform)}
-                </div>
-              )}
-
-              {/* Platform icon overlay */}
-              <div className="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center">
-                {getPlatformIcon(node.platform)}
-              </div>
-
-              {/* First content crown */}
-              {node.isFirstContent && (
-                <div className="absolute -top-2 -left-2">
-                  <Crown className="w-5 h-5 text-sparkle-gold animate-sparkle" />
-                </div>
-              )}
-
-              {/* Shining effect */}
-              {node.isShining && (
-                <div className="absolute -inset-1">
-                  <Sparkles className="w-4 h-4 text-white absolute top-0 right-0 animate-sparkle" />
-                  <Sparkles className="w-3 h-3 text-white absolute bottom-1 left-1 animate-sparkle" style={{ animationDelay: "0.5s" }} />
-                </div>
-              )}
-
-              {/* Like count */}
-              {node.likeCount > 0 && (
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-love-pink text-white text-xs px-2 py-1 rounded-full flex items-center space-x-1">
-                    <Heart className="w-3 h-3" />
-                    <span>{node.likeCount}</span>
+              <Card 
+                className={`hover:shadow-lg transition-all duration-300 hover:scale-110 ${
+                  isFullscreen ? 'w-32 h-32' : 'w-20 h-20'
+                }`}
+                style={{ borderColor: node.color, borderWidth: '2px' }}
+              >
+                <CardContent className="p-2 h-full flex flex-col items-center justify-center text-center">
+                  {/* 영상 썸네일 또는 아이콘 */}
+                  <div 
+                    className={`${isFullscreen ? 'w-8 h-8 mb-2' : 'w-6 h-6 mb-1'} rounded-full flex items-center justify-center text-white font-bold`}
+                    style={{ backgroundColor: node.color }}
+                  >
+                    <Play className={`${isFullscreen ? 'w-4 h-4' : 'w-3 h-3'}`} />
                   </div>
-                </div>
-              )}
+                  
+                  {/* 제목 */}
+                  <h4 className={`font-medium text-gray-800 line-clamp-2 ${isFullscreen ? 'text-xs' : 'text-[10px]'}`}>
+                    {node.title}
+                  </h4>
+                  
+                  {/* 단계 뱃지 */}
+                  <Badge 
+                    variant="outline" 
+                    className={`mt-1 ${isFullscreen ? 'text-[10px]' : 'text-[8px]'}`}
+                    style={{ borderColor: node.color, color: node.color }}
+                  >
+                    {node.stage}
+                  </Badge>
 
-              {/* Hover tooltip */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                <div className="bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                  {node.title}
+                  {/* 전체화면에서만 좋아요/댓글 표시 */}
+                  {isFullscreen && (
+                    <div className="flex items-center space-x-2 mt-1 text-[10px] text-gray-500">
+                      <div className="flex items-center space-x-1">
+                        <Heart className="w-2 h-2" />
+                        <span>{node.likeCount}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <MessageCircle className="w-2 h-2" />
+                        <span>{node.commentCount}</span>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* HOT 뱃지 (인기 노드) */}
+              {(node.likeCount || 0) > 30 && (
+                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-[8px] px-1">
+                  🔥 HOT
+                </Badge>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* 전체화면 버튼 */}
+        {!isFullscreen && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-2 right-2 z-10"
+            onClick={() => {/* 전체화면 모달 열기 */}}
+          >
+            <Maximize2 className="w-4 h-4" />
+          </Button>
+        )}
+
+        {/* 범례 */}
+        {isFullscreen && (
+          <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
+            <h4 className="text-sm font-medium mb-2">카테고리</h4>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {["귀여움", "섹시함", "댄스", "보컬"].map(category => (
+                <div key={category} className="flex items-center space-x-2">
+                  <div 
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: getCategoryColor(category) }}
+                  ></div>
+                  <span>{category}</span>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-        ))}
+        )}
       </div>
 
-      {/* Legend */}
-      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 text-xs">
-        <div className="space-y-1">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#FFD93D" }}></div>
-            <span>귀여움</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#FF6B9D" }}></div>
-            <span>섹시함</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#4ECDC4" }}></div>
-            <span>댄스</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#A78BFA" }}></div>
-            <span>보컬</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Selected node details */}
-      {selectedNode && (
-        <div className="absolute bottom-4 left-4 right-4">
-          <Card className="bg-white/95 backdrop-blur-sm">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-medium text-gray-800">{selectedNode.title}</h4>
-                  <p className="text-xs text-gray-600">
-                    {selectedNode.platform} • {selectedNode.category}
-                  </p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {selectedNode.contentUrl && (
-                    <Button size="sm" className="text-xs">
-                      보기
-                    </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setViewMode('editor')}
-                    className="text-xs flex items-center space-x-1"
-                  >
-                    <Edit3 className="w-3 h-3" />
-                    <span>편집</span>
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setSelectedNode(null)}
-                    className="text-xs"
-                  >
-                    닫기
-                  </Button>
-                </div>
+      {/* 노드 상세 정보 모달 */}
+      <Dialog open={!!selectedNode} onOpenChange={() => setSelectedNode(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <div 
+                className="w-6 h-6 rounded-full flex items-center justify-center text-white"
+                style={{ backgroundColor: selectedNode?.color }}
+              >
+                <Play className="w-3 h-3" />
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-    </div>
+              <span>{selectedNode?.title}</span>
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedNode && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Badge style={{ backgroundColor: selectedNode.color, color: 'white' }}>
+                  {selectedNode.category}
+                </Badge>
+                <Badge variant="outline">
+                  {selectedNode.stage}
+                </Badge>
+              </div>
+              
+              {selectedNode.description && (
+                <p className="text-sm text-gray-600">{selectedNode.description}</p>
+              )}
+              
+              <div className="flex items-center justify-between text-sm text-gray-500">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-1">
+                    <Heart className="w-4 h-4 text-red-400" />
+                    <span>{selectedNode.likeCount}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <MessageCircle className="w-4 h-4 text-blue-400" />
+                    <span>{selectedNode.commentCount}</span>
+                  </div>
+                </div>
+                <Button size="sm" variant="outline">
+                  <Share2 className="w-4 h-4 mr-1" />
+                  공유
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

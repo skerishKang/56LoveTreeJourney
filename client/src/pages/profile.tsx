@@ -28,6 +28,8 @@ import {
 import SettingsMenu from "@/components/settings-menu";
 import SubscriptionModal from "@/components/subscription-modal";
 import ContinueLoveTreeModal from "@/components/continue-love-tree-modal";
+import LoveTreeMindmap from "@/components/love-tree-mindmap";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import BottomNavigation from "@/components/bottom-navigation";
 import { useToast } from "@/hooks/use-toast";
 
