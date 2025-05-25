@@ -434,10 +434,16 @@ export default function LoveTreeFullscreen() {
           {texts.map((text) => (
             <div
               key={text.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer"
-              style={{ left: `${text.x}%`, top: `${text.y}%` }}
+              className="absolute group cursor-move select-none"
+              style={{ left: `${text.x}px`, top: `${text.y}px` }}
+              onMouseDown={(e) => handleMouseDown(e, text)}
             >
-              <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-md p-3 max-w-[200px] border-l-4"
+              {/* 드래그 핸들 */}
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <Move className="w-3 h-3 text-white" />
+              </div>
+              
+              <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-md p-3 max-w-[200px] border-l-4 hover:shadow-lg transition-all"
                    style={{ borderLeftColor: text.color }}>
                 <p className="text-sm text-gray-700 leading-relaxed">
                   {text.content}
@@ -451,35 +457,257 @@ export default function LoveTreeFullscreen() {
       {/* 영상 추가 모달 */}
       {isAddingVideo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">영상 추가하기</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">영상 URL</label>
-                <input
-                  type="text"
-                  value={newVideoUrl}
-                  onChange={(e) => setNewVideoUrl(e.target.value)}
-                  placeholder="유튜브 링크를 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                />
+          <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl font-bold mb-6 text-center">💖 영상 편집 스튜디오</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* 영상 미리보기 */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">📹 영상 미리보기</label>
+                  <div className="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <div className="text-center">
+                      <Video className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-500">1:23</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">영상 URL</label>
+                  <Input
+                    type="text"
+                    value={newVideoUrl}
+                    onChange={(e) => setNewVideoUrl(e.target.value)}
+                    placeholder="유튜브 링크를 입력하세요"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">감상 후기</label>
-                <Textarea
-                  value={newVideoReview}
-                  onChange={(e) => setNewVideoReview(e.target.value)}
-                  placeholder="이 영상을 보고 어떤 기분이었는지 생생하게 적어보세요..."
-                  className="w-full h-24 resize-none"
-                />
+
+              {/* 영상 편집 도구들 */}
+              <div className="space-y-4">
+                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                  <h4 className="font-medium text-yellow-800 mb-3">💝 영상 편집 - 이춘문 업리프트</h4>
+                  
+                  {/* 사랑에 빠진 순간 스위치 */}
+                  <div className="flex items-center justify-between mb-4">
+                    <label className="text-sm font-medium text-gray-700">💕 사랑에 빠진 순간</label>
+                    <Switch checked={loveStruck} onCheckedChange={setLoveStruck} />
+                  </div>
+
+                  {loveStruck && (
+                    <div className="space-y-4 pl-4 border-l-2 border-pink-300">
+                      {/* 타임스탬프 설정 */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-600">시작 시간</label>
+                          <Input
+                            type="text"
+                            value={startTime}
+                            onChange={(e) => setStartTime(e.target.value)}
+                            placeholder="1:23"
+                            className="text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-600">끝 시간</label>
+                          <Input
+                            type="text"
+                            value={endTime}
+                            onChange={(e) => setEndTime(e.target.value)}
+                            placeholder="1:40"
+                            className="text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      {/* 감정 강도 슬라이더 */}
+                      <div>
+                        <label className="text-xs text-gray-600 mb-2 block">💖 감정 강도: {emotionIntensity[0]}/10</label>
+                        <div className="px-2">
+                          <Slider
+                            value={emotionIntensity}
+                            onValueChange={setEmotionIntensity}
+                            max={10}
+                            min={1}
+                            step={1}
+                            className="w-full"
+                          />
+                        </div>
+                        <div className="flex justify-between text-xs text-gray-500 mt-1">
+                          <span>😊</span>
+                          <span>😍</span>
+                          <span>🥰</span>
+                          <span>😘</span>
+                          <span>🤩</span>
+                        </div>
+                      </div>
+
+                      {/* 사랑에 빠진 이유 */}
+                      <div>
+                        <label className="text-xs text-gray-600 mb-1 block">💝 사랑에 빠진 이유</label>
+                        <Textarea
+                          value={loveReason}
+                          onChange={(e) => setLoveReason(e.target.value)}
+                          placeholder="이 순간이 왜 특별한지 적어보세요..."
+                          className="h-20 text-sm resize-none"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* 심쿵 포인트 마킹 */}
+                <div className="bg-pink-50 p-3 rounded-lg">
+                  <h5 className="text-sm font-medium text-pink-700 mb-2">✨ 심쿵 포인트 마킹</h5>
+                  <div className="flex flex-wrap gap-2">
+                    {['0:15', '1:23', '2:45', '3:12'].map(time => (
+                      <button
+                        key={time}
+                        className="px-2 py-1 bg-pink-100 text-pink-600 rounded text-xs hover:bg-pink-200"
+                        onClick={() => setStartTime(time)}
+                      >
+                        💖 {time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
+
+            {/* 감상 후기 */}
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">📝 감상 후기</label>
+              <Textarea
+                value={newVideoReview}
+                onChange={(e) => setNewVideoReview(e.target.value)}
+                placeholder="이 영상을 보고 어떤 기분이었는지 생생하게 적어보세요..."
+                className="w-full h-24 resize-none"
+              />
+            </div>
+
             <div className="flex justify-end space-x-3 mt-6">
               <Button variant="outline" onClick={() => setIsAddingVideo(false)}>
                 취소
               </Button>
               <Button onClick={handleAddVideo} className="bg-pink-500 hover:bg-pink-600">
-                추가하기
+                🌸 추가하기
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 영상 편집 모달 */}
+      {isVideoEditing && currentEditingVideo && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl font-bold mb-6 text-center">✂️ 영상 편집 - {currentEditingVideo.title}</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* 영상 미리보기 */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">📹 영상 미리보기</label>
+                  <div className="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <div className="text-center">
+                      <Video className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-500">{startTime || "0:00"}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <h5 className="text-sm font-medium text-gray-700 mb-2">현재 설정</h5>
+                  <div className="text-xs text-gray-600 space-y-1">
+                    <p>🎬 구간: {startTime} - {endTime}</p>
+                    <p>💕 강도: {emotionIntensity[0]}/10</p>
+                    <p>🎯 사랑에 빠진 순간: {loveStruck ? '✅' : '❌'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 영상 편집 도구들 */}
+              <div className="space-y-4">
+                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                  <h4 className="font-medium text-yellow-800 mb-3">💝 사랑에 빠진 순간 설정</h4>
+                  
+                  {/* 사랑에 빠진 순간 스위치 */}
+                  <div className="flex items-center justify-between mb-4">
+                    <label className="text-sm font-medium text-gray-700">💕 사랑에 빠진 순간</label>
+                    <Switch checked={loveStruck} onCheckedChange={setLoveStruck} />
+                  </div>
+
+                  {loveStruck && (
+                    <div className="space-y-4 pl-4 border-l-2 border-pink-300">
+                      {/* 타임스탬프 설정 */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-600">시작 시간</label>
+                          <Input
+                            type="text"
+                            value={startTime}
+                            onChange={(e) => setStartTime(e.target.value)}
+                            placeholder="1:23"
+                            className="text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-600">끝 시간</label>
+                          <Input
+                            type="text"
+                            value={endTime}
+                            onChange={(e) => setEndTime(e.target.value)}
+                            placeholder="1:40"
+                            className="text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      {/* 감정 강도 슬라이더 */}
+                      <div>
+                        <label className="text-xs text-gray-600 mb-2 block">💖 감정 강도: {emotionIntensity[0]}/10</label>
+                        <div className="px-2">
+                          <Slider
+                            value={emotionIntensity}
+                            onValueChange={setEmotionIntensity}
+                            max={10}
+                            min={1}
+                            step={1}
+                            className="w-full"
+                          />
+                        </div>
+                        <div className="flex justify-between text-xs text-gray-500 mt-1">
+                          <span>😊</span>
+                          <span>😍</span>
+                          <span>🥰</span>
+                          <span>😘</span>
+                          <span>🤩</span>
+                        </div>
+                      </div>
+
+                      {/* 사랑에 빠진 이유 */}
+                      <div>
+                        <label className="text-xs text-gray-600 mb-1 block">💝 사랑에 빠진 이유</label>
+                        <Textarea
+                          value={loveReason}
+                          onChange={(e) => setLoveReason(e.target.value)}
+                          placeholder="이 순간이 왜 특별한지 적어보세요..."
+                          className="h-20 text-sm resize-none"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-3 mt-6">
+              <Button variant="outline" onClick={() => setIsVideoEditing(false)}>
+                취소
+              </Button>
+              <Button onClick={handleSaveVideoEdit} className="bg-yellow-500 hover:bg-yellow-600">
+                ✂️ 편집 완료
               </Button>
             </div>
           </div>
@@ -490,10 +718,10 @@ export default function LoveTreeFullscreen() {
       {isAddingText && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">텍스트 추가하기</h3>
+            <h3 className="text-lg font-semibold mb-4">✨ 텍스트 추가하기</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">내용</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">💭 내용</label>
                 <Textarea
                   value={newTextContent}
                   onChange={(e) => setNewTextContent(e.target.value)}
@@ -507,7 +735,7 @@ export default function LoveTreeFullscreen() {
                 취소
               </Button>
               <Button onClick={handleAddText} className="bg-blue-500 hover:bg-blue-600">
-                추가하기
+                💭 추가하기
               </Button>
             </div>
           </div>
