@@ -75,8 +75,8 @@ export default function PropagatorDashboard() {
         <CardTitle className="flex items-center space-x-3">
           {getRankIcon(stats.rank)}
           <div>
-            <h3 className="text-lg font-bold">자빠돌이/꼬돌이 대시보드</h3>
-            <p className="text-sm opacity-90">내가 추천한 러브트리로 입덕시킨 통계</p>
+            <h3 className="text-lg font-bold">🎯 자빠돌이/꼬돌이 시스템</h3>
+            <p className="text-sm opacity-90">추천한 러브트리로 다른 사람을 입덕시킨 영향력 순위</p>
           </div>
         </CardTitle>
       </CardHeader>
@@ -185,11 +185,24 @@ export default function PropagatorDashboard() {
           </div>
         </div>
 
+        {/* 추천 설명 */}
+        <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+          <h4 className="font-medium text-blue-800 mb-2 flex items-center">
+            <Target className="w-4 h-4 mr-2" />
+            러브트리 추천하는 방법
+          </h4>
+          <div className="space-y-2 text-sm text-blue-700">
+            <p>• 내 러브트리를 다른 사람에게 공유</p>
+            <p>• 공유받은 사람이 같은 인물에 빠지면 자동으로 입덕 카운트</p>
+            <p>• 더 많이 입덕시킬수록 등급 상승!</p>
+          </div>
+        </div>
+
         {/* 행동 버튼들 */}
         <div className="space-y-3">
-          <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600">
-            <Target className="w-4 h-4 mr-2" />
-            러브트리 추천하기
+          <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600">
+            <Share2 className="w-4 h-4 mr-2" />
+            내 러브트리 공유하기
           </Button>
           
           <div className="grid grid-cols-2 gap-2">
@@ -198,7 +211,7 @@ export default function PropagatorDashboard() {
               순위 보기
             </Button>
             <Button variant="outline" size="sm">
-              <Star className="w-4 h-4 mr-1" />
+              <BarChart3 className="w-4 h-4 mr-1" />
               내 기록
             </Button>
           </div>

@@ -641,44 +641,101 @@ export default function Home() {
                   
                   {/* 다이아몬드 모양 마인드맵 */}
                   <div className="relative bg-white rounded-lg p-8 min-h-[240px] border border-gray-100">
-                    {/* 중앙 노드 */}
+                    {/* 연결선들 */}
+                    <svg className="absolute inset-0 w-full h-full">
+                      {/* 중앙에서 상단으로 */}
+                      <path 
+                        d="M 50% 50% L 50% 25%" 
+                        stroke="#FF6B9D" 
+                        strokeWidth="3" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
+                      {/* 중앙에서 우측으로 */}
+                      <path 
+                        d="M 50% 50% L 75% 50%" 
+                        stroke="#4ECDC4" 
+                        strokeWidth="3" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
+                      {/* 중앙에서 하단으로 */}
+                      <path 
+                        d="M 50% 50% L 50% 75%" 
+                        stroke="#A8E6CF" 
+                        strokeWidth="3" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
+                      {/* 중앙에서 좌측으로 */}
+                      <path 
+                        d="M 50% 50% L 25% 50%" 
+                        stroke="#FFD93D" 
+                        strokeWidth="3" 
+                        fill="none" 
+                        strokeDasharray="8,4"
+                        className="opacity-80"
+                      />
+                    </svg>
+
+                    {/* 중앙 노드 - 시작점 */}
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                      <div className="w-14 h-14 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg border-4 border-white">
-                        💎
+                      <div className="w-16 h-16 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex flex-col items-center justify-center text-white font-bold text-xs shadow-lg border-4 border-white">
+                        <div className="text-lg">🌱</div>
+                        <div>시작</div>
                       </div>
                     </div>
                     
-                    {/* 다이아몬드 모양 배치 */}
-                    {/* 상단 - 귀여움 */}
-                    <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-                      <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border-2 border-white">
-                        😊
+                    {/* 다이아몬드 모양 배치 - 영상 카드들 */}
+                    {/* 상단 - 귀여움 영상 */}
+                    <div className="absolute top-2 left-1/2 transform -translate-x-1/2">
+                      <div className="w-20 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <Play className="w-4 h-4 text-white" />
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
+                            😊 귀여운 순간
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">귀여움</div>
                     </div>
                     
-                    {/* 우측 상단 - 섹시함 */}
-                    <div className="absolute top-8 right-6 transform">
-                      <div className="w-12 h-12 bg-pink-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border-2 border-white">
-                        💕
+                    {/* 우측 - 섹시함 영상 */}
+                    <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
+                      <div className="w-20 h-16 bg-gradient-to-br from-pink-400 to-rose-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <Play className="w-4 h-4 text-white" />
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
+                            💕 섹시한 순간
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">섹시함</div>
                     </div>
                     
-                    {/* 우측 하단 - 댄스 */}
-                    <div className="absolute bottom-8 right-6 transform">
-                      <div className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border-2 border-white">
-                        💃
+                    {/* 하단 - 댄스 영상 */}
+                    <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
+                      <div className="w-20 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <Play className="w-4 h-4 text-white" />
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
+                            💃 댄스 영상
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">댄스</div>
                     </div>
                     
-                    {/* 좌측 하단 - 보컬 */}
-                    <div className="absolute bottom-8 left-6 transform">
-                      <div className="w-12 h-12 bg-purple-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border-2 border-white">
-                        🎵
+                    {/* 좌측 - 보컬 영상 */}
+                    <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
+                      <div className="w-20 h-16 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <Play className="w-4 h-4 text-white" />
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
+                            🎵 보컬 영상
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">보컬</div>
                     </div>
                     
                     {/* 연결선들 (SVG) - 다이아몬드 모양 */}
@@ -740,11 +797,6 @@ export default function Home() {
                       <div className="flex items-start space-x-2">
                         <span className="text-purple-500">🏷️</span>
                         <span>태그별 정리 가능 (예: #귀여움, #섹시함)</span>
-                      </div>
-                      
-                      <div className="flex items-start space-x-2">
-                        <span className="text-orange-500">🎯</span>
-                        <span>자빠돌이/꼬돌이: 추천 러브트리로 입덕시킨 횟수 순위</span>
                       </div>
                     </div>
                     
