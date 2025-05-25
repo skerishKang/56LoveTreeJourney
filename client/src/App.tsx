@@ -9,6 +9,7 @@ import Home from "@/pages/home";
 import Discover from "@/pages/discover";
 import Community from "@/pages/community";
 import Profile from "@/pages/profile";
+import ProfileEdit from "@/pages/profile-edit";
 import AddContent from "@/pages/add-content";
 import CategoryHub from "@/pages/category-hub";
 import LoveTreeTemplates from "@/pages/love-tree-templates";
@@ -47,6 +48,7 @@ function Router() {
           <Route path="/templates" component={LoveTreeTemplates} />
           <Route path="/community" component={Community} />
           <Route path="/profile" component={Profile} />
+          <Route path="/profile/edit" component={ProfileEdit} />
           <Route path="/categories" component={CategoryHub} />
           <Route path="/community-tracker" component={CommunityTrackerPage} />
           <Route path="/goods-collection" component={GoodsCollectionPage} />

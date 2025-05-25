@@ -28,6 +28,7 @@ import {
 import SettingsMenu from "@/components/settings-menu";
 import SubscriptionModal from "@/components/subscription-modal";
 import ContinueLoveTreeModal from "@/components/continue-love-tree-modal";
+import BottomNavigation from "@/components/bottom-navigation";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Profile() {
@@ -142,7 +143,16 @@ export default function Profile() {
                 🌸
               </div>
               <h2 className="text-xl font-bold text-gray-800">Hye-Rim</h2>
-              <p className="text-gray-600">{user?.email}</p>
+              <p className="text-gray-600">{user?.email || "muphobia2@gmail.com"}</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-2"
+                onClick={() => window.location.href = '/profile/edit'}
+              >
+                <Edit3 className="w-4 h-4 mr-1" />
+                프로필 편집
+              </Button>
             </div>
 
             <div className="grid grid-cols-3 gap-4 text-center mb-4">
@@ -382,6 +392,9 @@ export default function Profile() {
           </CardContent>
         </Card>
       </main>
+
+      {/* 하단 네비게이션 */}
+      <BottomNavigation />
 
       {/* 모달들 */}
       <SettingsMenu 

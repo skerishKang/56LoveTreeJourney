@@ -236,6 +236,9 @@ export default function LoveTreeTemplates() {
           </CardContent>
         </Card>
       </div>
+
+      {/* 하단 네비게이션 */}
+      <BottomNavigation />
     </div>
   );
 }
