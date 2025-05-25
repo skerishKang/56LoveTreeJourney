@@ -40,6 +40,8 @@ export default function Profile() {
   const [showSubscription, setShowSubscription] = useState(false);
   const [showContinueTree, setShowContinueTree] = useState(false);
   const [selectedLoveTree, setSelectedLoveTree] = useState<any>(null);
+  const [showMindmap, setShowMindmap] = useState(false);
+  const [mindmapLoveTree, setMindmapLoveTree] = useState<any>(null);
 
   // 사용자 통계 데이터
   const userStats = {
@@ -269,13 +271,24 @@ export default function Profile() {
                       <Button 
                         size="sm" 
                         className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500"
-                        onClick={() => handleContinueTree(tree)}
+                        onClick={() => {
+                          setMindmapLoveTree(tree);
+                          setShowMindmap(true);
+                        }}
                       >
                         <Play className="w-4 h-4 mr-1" />
                         계속하기
                       </Button>
                     ) : (
-                      <Button size="sm" variant="outline" className="flex-1">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="flex-1 bg-green-50 text-green-700 hover:bg-green-100"
+                        onClick={() => {
+                          setMindmapLoveTree(tree);
+                          setShowMindmap(true);
+                        }}
+                      >
                         <Trophy className="w-4 h-4 mr-1" />
                         완성됨
                       </Button>
@@ -414,6 +427,20 @@ export default function Profile() {
         onClose={() => setShowContinueTree(false)}
         loveTree={selectedLoveTree}
       />
+
+      {/* 러브트리 마인드맵 전체화면 모달 */}
+      <Dialog open={showMindmap} onOpenChange={setShowMindmap}>
+        <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 border-0">
+          {mindmapLoveTree && (
+            <LoveTreeMindmap 
+              loveTree={mindmapLoveTree}
+              items={[]} // 실제 데이터 연결 시 아이템 전달
+              isFullscreen={true}
+              onClose={() => setShowMindmap(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
