@@ -627,182 +627,68 @@ export default function Home() {
                   )}
                 </div>
                 
-                {/* 러브트리 예시 */}
+                {/* 러브트리 예시 - 스트레이키즈 입덕기 */}
                 <div className="mt-6 p-4 bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl border border-pink-200">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="font-bold text-gray-800 flex items-center space-x-2">
                       <Sparkles className="w-5 h-5 text-pink-500" />
-                      <span>러브트리 예시</span>
+                      <span>러브트리 예시 - 스트레이키즈 입덕기</span>
                     </h4>
-                    <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                      4
-                    </div>
                   </div>
                   
-                  {/* 다이아몬드 모양 마인드맵 */}
-                  <div className="relative bg-white rounded-lg p-8 min-h-[240px] border border-gray-100">
+                  {/* 깔끔한 다이아몬드 러브트리 */}
+                  <div className="relative bg-white rounded-lg p-6 min-h-[200px] border border-gray-100">
                     {/* 연결선들 */}
-                    <svg className="absolute inset-0 w-full h-full">
-                      {/* 중앙에서 상단으로 */}
-                      <path 
-                        d="M 50% 50% L 50% 25%" 
-                        stroke="#FF6B9D" 
-                        strokeWidth="3" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
-                      {/* 중앙에서 우측으로 */}
-                      <path 
-                        d="M 50% 50% L 75% 50%" 
-                        stroke="#4ECDC4" 
-                        strokeWidth="3" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
-                      {/* 중앙에서 하단으로 */}
-                      <path 
-                        d="M 50% 50% L 50% 75%" 
-                        stroke="#A8E6CF" 
-                        strokeWidth="3" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
-                      {/* 중앙에서 좌측으로 */}
-                      <path 
-                        d="M 50% 50% L 25% 50%" 
-                        stroke="#FFD93D" 
-                        strokeWidth="3" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                      <path d="M 50% 50% L 50% 25%" stroke="#e0e0e0" strokeWidth="2" strokeDasharray="5,5" fill="none" />
+                      <path d="M 50% 50% L 75% 50%" stroke="#e0e0e0" strokeWidth="2" strokeDasharray="5,5" fill="none" />
+                      <path d="M 50% 50% L 50% 75%" stroke="#e0e0e0" strokeWidth="2" strokeDasharray="5,5" fill="none" />
+                      <path d="M 50% 50% L 25% 50%" stroke="#e0e0e0" strokeWidth="2" strokeDasharray="5,5" fill="none" />
                     </svg>
 
-                    {/* 중앙 노드 - 시작점 */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                      <div className="w-16 h-16 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex flex-col items-center justify-center text-white font-bold text-xs shadow-lg border-4 border-white">
-                        <div className="text-lg">🌱</div>
-                        <div>시작</div>
+                    {/* 중앙 노드 */}
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                      <div className="w-12 h-12 bg-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        시작
                       </div>
                     </div>
                     
-                    {/* 다이아몬드 모양 배치 - 영상 카드들 */}
-                    {/* 상단 - 귀여움 영상 */}
-                    <div className="absolute top-2 left-1/2 transform -translate-x-1/2">
-                      <div className="w-20 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
-                        <div className="relative w-full h-full flex items-center justify-center">
-                          <Play className="w-4 h-4 text-white" />
-                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
-                            😊 귀여운 순간
-                          </div>
-                        </div>
+                    {/* 상단 노드 - 귀여운 순간 */}
+                    <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+                      <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                        😊
                       </div>
+                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">귀여움</div>
                     </div>
                     
-                    {/* 우측 - 섹시함 영상 */}
-                    <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
-                      <div className="w-20 h-16 bg-gradient-to-br from-pink-400 to-rose-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
-                        <div className="relative w-full h-full flex items-center justify-center">
-                          <Play className="w-4 h-4 text-white" />
-                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
-                            💕 섹시한 순간
-                          </div>
-                        </div>
+                    {/* 우측 노드 - 섹시한 순간 */}
+                    <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10">
+                      <div className="w-10 h-10 bg-pink-400 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                        💕
                       </div>
+                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">섹시함</div>
                     </div>
                     
-                    {/* 하단 - 댄스 영상 */}
-                    <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
-                      <div className="w-20 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
-                        <div className="relative w-full h-full flex items-center justify-center">
-                          <Play className="w-4 h-4 text-white" />
-                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
-                            💃 댄스 영상
-                          </div>
-                        </div>
+                    {/* 하단 노드 - 댄스 */}
+                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+                      <div className="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                        💃
                       </div>
+                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">댄스</div>
                     </div>
                     
-                    {/* 좌측 - 보컬 영상 */}
-                    <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
-                      <div className="w-20 h-16 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-lg shadow-lg overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-transform">
-                        <div className="relative w-full h-full flex items-center justify-center">
-                          <Play className="w-4 h-4 text-white" />
-                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-1 py-0.5">
-                            🎵 보컬 영상
-                          </div>
-                        </div>
+                    {/* 좌측 노드 - 보컬 */}
+                    <div className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10">
+                      <div className="w-10 h-10 bg-purple-400 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                        🎵
                       </div>
-                    </div>
-                    
-                    {/* 연결선들을 더 명확하게 */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-                      {/* 중앙에서 상단 영상으로 */}
-                      <path 
-                        d="M 50% 50% L 50% 18%" 
-                        stroke="#FF6B9D" 
-                        strokeWidth="4" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
-                      {/* 중앙에서 우측 영상으로 */}
-                      <path 
-                        d="M 50% 50% L 85% 50%" 
-                        stroke="#4ECDC4" 
-                        strokeWidth="4" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
-                      {/* 중앙에서 하단 영상으로 */}
-                      <path 
-                        d="M 50% 50% L 50% 82%" 
-                        stroke="#A8E6CF" 
-                        strokeWidth="4" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
-                      {/* 중앙에서 좌측 영상으로 */}
-                      <path 
-                        d="M 50% 50% L 15% 50%" 
-                        stroke="#FFD93D" 
-                        strokeWidth="4" 
-                        fill="none" 
-                        strokeDasharray="8,4"
-                        className="opacity-80"
-                      />
-                    </svg>
-                    
-                    {/* 중앙 텍스트 */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-6 text-center">
-                      <p className="text-xs text-gray-500 font-medium">이렇게 식으로 러브트리가 만들어져요!</p>
-                      <p className="text-xs text-gray-400 mt-1">영상을 추가해서 지속으로 연결해보세요!</p>
+                      <div className="text-xs text-center mt-1 text-gray-600 font-medium">보컬</div>
                     </div>
                   </div>
                   
-                  {/* 범례 */}
-                  <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                      <span className="text-gray-600">귀여움</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-pink-400 rounded-full"></div>
-                      <span className="text-gray-600">섹시함</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                      <span className="text-gray-600">댄스</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
-                      <span className="text-gray-600">보컬</span>
-                    </div>
+                  {/* 간단한 안내 */}
+                  <div className="mt-3 text-center">
+                    <p className="text-xs text-gray-500">🌟 러브트리를 직접 만들어보세요!</p>
                   </div>
                   
 
@@ -1238,99 +1124,7 @@ export default function Home() {
             );
           }
 
-          // 러브트리 가드너 스테이터스 섹션
-          if (sectionId === "propagatorStats" && user) {
-            return (
-              <div 
-                key={`${sectionId}-${index}`}
-                className="px-4 py-4 bg-white border border-gray-100 rounded-lg mx-4 my-2"
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, index)}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
-                    <span className="text-2xl">🌱</span>
-                    <span>러브트리 가드너</span>
-                  </h3>
-                  <GripVertical className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" />
-                </div>
 
-                {/* 가드너 소개 */}
-                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200 mb-4">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">🌱</span>
-                    <div>
-                      <h4 className="font-bold text-gray-800">러브트리 가드너</h4>
-                      <p className="text-sm text-gray-600">트리를키우는 정원사! 🌱</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-green-500 text-white">새싹 가드너</Badge>
-                </div>
-                
-                {/* 스테이터스 카드들 */}
-                <div className="space-y-3">
-                  {/* 가드너 점수 */}
-                  <div className="flex items-center justify-between p-3 bg-pink-50 rounded-lg border border-pink-200">
-                    <div className="flex items-center space-x-3">
-                      <Sparkles className="w-5 h-5 text-pink-500" />
-                      <span className="font-medium text-gray-800">가드너 점수</span>
-                    </div>
-                    <span className="text-xl font-bold text-pink-600">0</span>
-                  </div>
-
-                  {/* 성공한 추천 */}
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
-                    <div className="flex items-center space-x-3">
-                      <Heart className="w-5 h-5 text-green-500" />
-                      <span className="font-medium text-gray-800">성공한 추천</span>
-                    </div>
-                    <span className="text-xl font-bold text-green-600">0</span>
-                  </div>
-
-                  {/* 총 시청 시간 */}
-                  <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                    <div className="flex items-center space-x-3">
-                      <Play className="w-5 h-5 text-yellow-500" />
-                      <span className="font-medium text-gray-800">총 시청 시간</span>
-                    </div>
-                    <span className="text-xl font-bold text-yellow-600">0시간</span>
-                  </div>
-                </div>
-
-                {/* 다음 등급까지 진행률 */}
-                <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-gray-800">다음 등급까지</span>
-                    <span className="text-sm font-bold text-pink-600">0 / 11</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full" style={{ width: '0%' }}></div>
-                  </div>
-                </div>
-
-                {/* 포인트 획득 방법 */}
-                <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                  <p className="text-center text-sm font-medium text-gray-800 mb-3">포인트 획득 방법:</p>
-                  <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div className="bg-white rounded-lg p-2 text-center">
-                      <div className="text-pink-500 font-bold mb-1">+2</div>
-                      <div className="text-gray-600">하트 누르기</div>
-                    </div>
-                    <div className="bg-white rounded-lg p-2 text-center">
-                      <div className="text-green-500 font-bold mb-1">+5</div>
-                      <div className="text-gray-600">영상 추가</div>
-                    </div>
-                    <div className="bg-white rounded-lg p-2 text-center">
-                      <div className="text-blue-500 font-bold mb-1">+10</div>
-                      <div className="text-gray-600">트리 생성</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          }
 
           // YouTube 확장 프로그램 안내 섹션
           if (sectionId === "recommendations") {
