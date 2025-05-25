@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { apiRequest } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/useAuth";
 import { Crown, Trophy, Medal, Star, Target, Heart, TrendingUp, Users, Calendar, Share2, BarChart3 } from "lucide-react";
+import { useState } from "react";
+import SNSShareModal from "./sns-share-modal";
+import RankingModal from "./ranking-modal";
+import MyRecordsModal from "./my-records-modal";
 
 interface PropagatorStats {
   totalConversions: number;
@@ -16,6 +20,9 @@ interface PropagatorStats {
 export default function PropagatorDashboard() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [showRankingModal, setShowRankingModal] = useState(false);
+  const [showRecordsModal, setShowRecordsModal] = useState(false);
 
   // 내 자빠돌이 통계 가져오기
   const { data: myStats, isLoading } = useQuery<PropagatorStats>({
@@ -200,23 +207,51 @@ export default function PropagatorDashboard() {
 
         {/* 행동 버튼들 */}
         <div className="space-y-3">
-          <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600">
+          <Button 
+            className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+            onClick={() => setShowShareModal(true)}
+          >
             <Share2 className="w-4 h-4 mr-2" />
             내 러브트리 공유하기
           </Button>
           
           <div className="grid grid-cols-2 gap-2">
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowRankingModal(true)}
+            >
               <Trophy className="w-4 h-4 mr-1" />
               순위 보기
             </Button>
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowRecordsModal(true)}
+            >
               <BarChart3 className="w-4 h-4 mr-1" />
               내 기록
             </Button>
           </div>
         </div>
       </CardContent>
+
+      {/* 모달들 */}
+      <SNSShareModal 
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        loveTree={{ id: 1, title: "내 첫 번째 러브트리", category: "K-pop" }}
+      />
+      
+      <RankingModal 
+        isOpen={showRankingModal}
+        onClose={() => setShowRankingModal(false)}
+      />
+      
+      <MyRecordsModal 
+        isOpen={showRecordsModal}
+        onClose={() => setShowRecordsModal(false)}
+      />
     </Card>
   );
 }
