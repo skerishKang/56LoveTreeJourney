@@ -405,6 +405,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // 러브트리에 "빠짐" 표시하고 전도사 포인트 지급
+  app.post("/api/love-trees/:id/convert", isAuthenticated, async (req, res) => {
+    try {
+      const loveTreeId = parseInt(req.params.id);
+      const convertedUserId = (req.user as any).claims.sub;
+      const { conversionType } = req.body; // "tree_complete" 또는 "single_video"
+      
+      const loveTree = await storage.getLoveTree(loveTreeId);
+      if (!loveTree) {
+        return res.status(404).json({ message: "Love tree not found" });
+      }
+
+      // 전도사 포인트 지급
+      const conversion = await storage.trackConversion(
+        loveTree.userId, 
+        convertedUserId, 
+        loveTreeId, 
+        conversionType
+      );
+
+      // 전도사 통계 업데이트
+      await storage.updatePropagatorStats(loveTree.userId);
+
+      // 전도사에게 알림 보내기
+      await storage.createNotification(
+        loveTree.userId,
+        "conversion",
+        "새로운 덕후 탄생! 🎉",
+        `누군가가 당신의 '${loveTree.title}' 러브트리로 덕후가 되었어요! 전도사 포인트 +10`,
+        loveTreeId
+      );
+
+      res.json({ 
+        success: true, 
+        message: "전도사 포인트가 지급되었습니다!",
+        conversion 
+      });
+    } catch (error) {
+      console.error("Error tracking conversion:", error);
+      res.status(500).json({ message: "Failed to track conversion" });
+    }
+  });
+
+  // 전도사 구독 기능  
+  app.post("/api/propagators/:userId/subscribe", isAuthenticated, async (req, res) => {
+    try {
+      const propagatorId = req.params.userId;
+      const subscriberId = (req.user as any).claims.sub;
+      
+      // 구독 알림
+      await storage.createNotification(
+        propagatorId,
+        "new_subscriber",
+        "새로운 구독자! 👥",
+        `새로운 덕후가 당신을 전도사로 구독했어요!`
+      );
+
+      res.json({ success: true, message: "전도사를 구독했습니다!" });
+    } catch (error) {
+      console.error("Error subscribing to propagator:", error);
+      res.status(500).json({ message: "Failed to subscribe" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
