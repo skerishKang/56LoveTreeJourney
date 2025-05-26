@@ -24,10 +24,13 @@ import {
   Bell,
   Send,
   Crown,
-  Star
+  Star,
+  Save,
+  Upload
 } from "lucide-react";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { saveLoveTree, addComment, subscribeToComments, updateUserPoints } from "@/services/loveTreeService";
 
 interface VideoNode {
   id: number;
@@ -68,6 +71,8 @@ export default function InteractiveLoveTree() {
   const [realTimeComments, setRealTimeComments] = useState<Comment[]>([]);
   const [showCommentNotification, setShowCommentNotification] = useState(false);
   const [newComment, setNewComment] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentTreeId, setCurrentTreeId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 중앙 최애 정보
@@ -267,7 +272,7 @@ export default function InteractiveLoveTree() {
   };
 
   // 새 영상 추가
-  const addNewVideo = (title: string, description: string) => {
+  const addNewVideo = async (title: string, description: string) => {
     const newNode: VideoNode = {
       id: Date.now(),
       title,
@@ -286,10 +291,108 @@ export default function InteractiveLoveTree() {
     setNodes(prev => [...prev, newNode]);
     setIsAddingVideo(false);
     
-    toast({
-      title: "영상이 추가되었어요! ✨",
-      description: "다른 영상과 연결하려면 영상을 드래그해보세요!",
-    });
+    // Firebase에 영상 추가 기록 (사용자가 Firebase 설정을 완료했을 때만)
+    if (user?.id && currentTreeId) {
+      try {
+        await updateUserPoints(user.id, 5, 'videoAdd'); // 영상 추가시 5포인트
+        toast({
+          title: "영상이 추가되었어요! ✨ (+5P)",
+          description: "다른 영상과 연결하려면 영상을 드래그해보세요!",
+        });
+      } catch (error) {
+        // Firebase 설정이 없어도 로컬에서는 정상 작동
+        toast({
+          title: "영상이 추가되었어요! ✨",
+          description: "다른 영상과 연결하려면 영상을 드래그해보세요!",
+        });
+      }
+    } else {
+      toast({
+        title: "영상이 추가되었어요! ✨",
+        description: "다른 영상과 연결하려면 영상을 드래그해보세요!",
+      });
+    }
+  };
+
+  // 러브트리 저장하기
+  const saveLoveTreeToFirebase = async () => {
+    if (!user?.id || nodes.length === 0) {
+      toast({
+        title: "저장할 수 없어요",
+        description: "로그인하고 최소 1개 이상의 영상을 추가해주세요.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const treeData = {
+        centerIdol,
+        nodes,
+        title: `${centerIdol.name} 러브트리`,
+        category: "K-POP",
+        description: `${centerIdol.description}`,
+        nodeCount: nodes.length
+      };
+
+      // Firebase 연동 시도
+      const treeId = await saveLoveTree(user.id, treeData);
+      setCurrentTreeId(treeId);
+      
+      toast({
+        title: "러브트리가 저장되었어요! 🌸",
+        description: "이제 다른 사람들과 공유할 수 있어요!",
+      });
+    } catch (error) {
+      toast({
+        title: "Firebase 설정이 필요해요",
+        description: "Firebase 연동을 위해 API 키를 설정해주세요!",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 실시간 댓글 보내기
+  const sendComment = async () => {
+    if (!newComment.trim() || !user?.id || !currentTreeId) return;
+
+    try {
+      await addComment(
+        currentTreeId, 
+        user.id, 
+        newComment, 
+        user.firstName || user.email?.split('@')[0] || '익명'
+      );
+      setNewComment("");
+      
+      // 댓글 작성시 포인트 지급
+      await updateUserPoints(user.id, 3, 'comment');
+      
+      toast({
+        title: "댓글이 전송되었어요! 💬 (+3P)",
+        description: "다른 팬들과 소통해보세요!",
+      });
+    } catch (error) {
+      // Firebase 없이도 로컬에서 댓글 시뮬레이션
+      const newCommentObj: Comment = {
+        id: Date.now(),
+        user: user.firstName || '나',
+        message: newComment,
+        timestamp: new Date().toLocaleTimeString(),
+        nodeId: 0
+      };
+      
+      setRealTimeComments(prev => [newCommentObj, ...prev.slice(0, 4)]);
+      setNewComment("");
+      
+      toast({
+        title: "댓글이 전송되었어요! 💬",
+        description: "Firebase 연동 시 실시간으로 공유됩니다!",
+      });
+    }
   };
 
   // 뷰포트 이동 (WASD 키보드 컨트롤)
@@ -332,15 +435,31 @@ export default function InteractiveLoveTree() {
           </div>
         </div>
 
-        {/* 미니맵 토글 */}
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={() => setShowMiniMap(!showMiniMap)}
-          className="rounded-full bg-white/90 backdrop-blur-sm"
-        >
-          <Map className="w-5 h-5" />
-        </Button>
+        <div className="flex items-center space-x-2">
+          {/* 저장 버튼 */}
+          <Button 
+            size="sm"
+            onClick={saveLoveTreeToFirebase}
+            disabled={isLoading || nodes.length === 0}
+            className="bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full"
+          >
+            {isLoading ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+          </Button>
+
+          {/* 미니맵 토글 */}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setShowMiniMap(!showMiniMap)}
+            className="rounded-full bg-white/90 backdrop-blur-sm"
+          >
+            <Map className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
 
       {/* 메인 캔버스 */}
