@@ -148,7 +148,7 @@ export default function Home() {
           </div>
           
           {/* Search Bar */}
-          <div className="relative">
+          <div className="relative mb-4">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
               placeholder="러브트리 검색..."
@@ -156,6 +156,45 @@ export default function Home() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 bg-gray-50 border-0 rounded-full"
             />
+          </div>
+
+          {/* 퀸 액세스 메뉴 */}
+          <div className="grid grid-cols-4 gap-3">
+            <Link href="/tree-shaped">
+              <div className="flex flex-col items-center p-3 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200 hover:shadow-md transition-all cursor-pointer">
+                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mb-2">
+                  🌳
+                </div>
+                <span className="text-xs font-medium text-gray-700">나무트리</span>
+              </div>
+            </Link>
+
+            <Link href="/idol-mosaic">
+              <div className="flex flex-col items-center p-3 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-200 hover:shadow-md transition-all cursor-pointer">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-2">
+                  🎨
+                </div>
+                <span className="text-xs font-medium text-gray-700">얼굴완성</span>
+              </div>
+            </Link>
+
+            <Link href="/propagator-subscription">
+              <div className="flex flex-col items-center p-3 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-200 hover:shadow-md transition-all cursor-pointer">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mb-2">
+                  📢
+                </div>
+                <span className="text-xs font-medium text-gray-700">전도사구독</span>
+              </div>
+            </Link>
+
+            <Link href="/reactflow-tree">
+              <div className="flex flex-col items-center p-3 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl border border-orange-200 hover:shadow-md transition-all cursor-pointer">
+                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full flex items-center justify-center mb-2">
+                  🎯
+                </div>
+                <span className="text-xs font-medium text-gray-700">전문트리</span>
+              </div>
+            </Link>
           </div>
         </div>
       </header>
