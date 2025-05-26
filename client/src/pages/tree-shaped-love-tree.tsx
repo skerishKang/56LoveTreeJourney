@@ -16,7 +16,9 @@ import {
   Crown,
   Star,
   Sparkles,
-  Trophy
+  Trophy,
+  Youtube,
+  ExternalLink
 } from "lucide-react";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
@@ -52,6 +54,28 @@ export default function TreeShapedLoveTree() {
   const [newVideoTimeStamp, setNewVideoTimeStamp] = useState("");
   const [treeCompleted, setTreeCompleted] = useState(false);
   const [showGoldenEffect, setShowGoldenEffect] = useState(false);
+  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<VideoFruit | null>(null);
+
+  // YouTube URL에서 비디오 ID 추출
+  const extractYouTubeId = (url: string): string | null => {
+    const patterns = [
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
+      /^([a-zA-Z0-9_-]{11})$/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return null;
+  };
+
+  // 영상 재생 함수
+  const playVideo = (fruit: VideoFruit) => {
+    setSelectedVideo(fruit);
+    setShowVideoPlayer(true);
+  };
 
   // 러브트리 영상들 (나무의 열매)
   const [videoFruits, setVideoFruits] = useState<VideoFruit[]>([
@@ -59,6 +83,7 @@ export default function TreeShapedLoveTree() {
       id: '1',
       title: "이 눈빛에 첫 빠짐 💕",
       description: "정국이 눈빛 레전드 순간",
+      youtubeUrl: "https://www.youtube.com/watch?v=3y-O-4IL-PU",
       category: "귀여움",
       stage: "첫만남",
       likeCount: 89,
@@ -364,14 +389,22 @@ export default function TreeShapedLoveTree() {
           <Card 
             className="w-40 h-32 hover:shadow-xl transition-all duration-300 border-2 cursor-pointer hover:scale-105"
             style={{ borderColor: fruit.color }}
+            onClick={() => playVideo(fruit)}
           >
             <CardContent className="p-2 h-full flex flex-col">
               {/* 썸네일 */}
               <div 
-                className="w-full h-16 rounded flex items-center justify-center text-white mb-1 relative"
+                className="w-full h-16 rounded flex items-center justify-center text-white mb-1 relative group"
                 style={{ backgroundColor: fruit.color }}
               >
-                <Play className="w-6 h-6" />
+                <Play className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                
+                {/* YouTube 아이콘 */}
+                {fruit.youtubeUrl && (
+                  <div className="absolute top-1 right-1">
+                    <Youtube className="w-3 h-3 text-red-500 bg-white rounded-sm p-0.5" />
+                  </div>
+                )}
                 
                 {/* 좋아요/댓글 */}
                 <div className="absolute bottom-1 right-1 flex items-center space-x-1 text-xs">
@@ -486,6 +519,152 @@ export default function TreeShapedLoveTree() {
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* YouTube 영상 재생 모달 */}
+      <Dialog open={showVideoPlayer} onOpenChange={setShowVideoPlayer}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <Youtube className="w-5 h-5 text-red-500" />
+              <span>{selectedVideo?.title}</span>
+              {selectedVideo?.timeStamp && (
+                <Badge className="bg-blue-100 text-blue-800 text-xs">
+                  ⏰ {selectedVideo.timeStamp}
+                </Badge>
+              )}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedVideo && (
+            <div className="space-y-4">
+              {/* YouTube 영상 플레이어 */}
+              {selectedVideo.youtubeUrl && extractYouTubeId(selectedVideo.youtubeUrl) ? (
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                    src={`https://www.youtube.com/embed/${extractYouTubeId(selectedVideo.youtubeUrl)}?autoplay=1&start=${
+                      selectedVideo.timeStamp?.includes('~') 
+                        ? parseInt(selectedVideo.timeStamp.split('~')[0].split(':').reduce((acc, time) => (60 * acc) + +time, 0).toString()) 
+                        : 0
+                    }`}
+                    title={selectedVideo.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              ) : (
+                <div 
+                  className="w-full h-64 rounded-lg flex items-center justify-center text-white relative"
+                  style={{ backgroundColor: selectedVideo.color }}
+                >
+                  <div className="text-center">
+                    <Play className="w-16 h-16 mx-auto mb-2" />
+                    <p className="text-lg font-medium">영상 미리보기</p>
+                    <p className="text-sm opacity-80">YouTube URL을 추가하면 실제 영상을 재생할 수 있어요</p>
+                  </div>
+                </div>
+              )}
+
+              {/* 감정 표현 */}
+              <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-4 border border-pink-200">
+                <h4 className="font-medium text-gray-800 mb-2 flex items-center space-x-2">
+                  <Heart className="w-4 h-4 text-red-500" />
+                  <span>내 감정 표현</span>
+                </h4>
+                <p className="text-gray-700 italic">"{selectedVideo.emotion}"</p>
+              </div>
+
+              {/* 실시간 댓글 섹션 */}
+              <div className="bg-white rounded-lg border border-gray-200">
+                <div className="border-b border-gray-200 p-4">
+                  <h4 className="font-medium text-gray-800 flex items-center space-x-2">
+                    <MessageCircle className="w-4 h-4 text-blue-500" />
+                    <span>실시간 댓글 ({selectedVideo.commentCount})</span>
+                    <Badge className="bg-green-100 text-green-800 text-xs">LIVE</Badge>
+                  </h4>
+                </div>
+                
+                {/* 댓글 목록 */}
+                <div className="max-h-48 overflow-y-auto p-4 space-y-3">
+                  {[
+                    { user: "민지팬", message: "이 부분 진짜 심쿵이야 💕", time: "방금", avatar: "👑" },
+                    { user: "하늘별", message: "정국이 눈빛 레전드다...", time: "1분 전", avatar: "🌟" },
+                    { user: "소라공주", message: "나도 이 순간에 빠졌어 ㅠㅠ", time: "2분 전", avatar: "🌊" },
+                    { user: "별빛나라", message: "이 영상으로 입덕했어요!", time: "3분 전", avatar: "✨" }
+                  ].map((comment, index) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white text-sm">
+                        {comment.avatar}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2">
+                          <span className="font-medium text-gray-800 text-sm">{comment.user}</span>
+                          <span className="text-xs text-gray-500">{comment.time}</span>
+                        </div>
+                        <p className="text-sm text-gray-700">{comment.message}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* 댓글 입력 */}
+                <div className="border-t border-gray-200 p-4">
+                  <div className="flex space-x-3">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white text-sm">
+                      😊
+                    </div>
+                    <div className="flex-1 flex space-x-2">
+                      <Input 
+                        placeholder={`"${selectedVideo.title}"에 대한 생각을 남겨보세요...`}
+                        className="flex-1"
+                      />
+                      <Button size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                        <MessageCircle className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2 ml-11">
+                    💡 댓글 작성시 3포인트 적립! 같은 덕후들과 이야기해보세요 ✨
+                  </p>
+                </div>
+              </div>
+
+              {/* 액션 버튼들 */}
+              <div className="flex justify-between items-center">
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => convertMutation.mutate({ loveTreeId: 1, conversionType: "single_video" })}
+                  >
+                    <Heart className="w-4 h-4 mr-1 text-red-500" />
+                    나도 빠짐! ({selectedVideo.likeCount})
+                  </Button>
+                  
+                  {selectedVideo.youtubeUrl && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open(selectedVideo.youtubeUrl, '_blank')}
+                    >
+                      <ExternalLink className="w-4 h-4 mr-1" />
+                      YouTube에서 보기
+                    </Button>
+                  )}
+                </div>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setShowVideoPlayer(false)}
+                >
+                  닫기
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
