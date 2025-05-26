@@ -745,6 +745,41 @@ export default function InteractiveLoveTree() {
         ))}
       </div>
 
+      {/* 실시간 댓글 입력창 */}
+      <div className="absolute bottom-4 right-4 w-80">
+        <Card className="bg-white/95 backdrop-blur-sm border-pink-200">
+          <CardContent className="p-3">
+            <div className="flex items-center space-x-2 mb-2">
+              <MessageCircle className="w-4 h-4 text-purple-500" />
+              <span className="text-sm font-medium text-gray-800">실시간 덕후들과 소통하기</span>
+              <Badge className="bg-gradient-to-r from-green-400 to-emerald-500 text-white text-xs">
+                LIVE
+              </Badge>
+            </div>
+            <div className="flex space-x-2">
+              <Input
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="이 러브트리 어때요? 댓글 남겨보세요..."
+                className="flex-1 text-sm"
+                onKeyPress={(e) => e.key === 'Enter' && sendComment()}
+              />
+              <Button 
+                size="sm" 
+                onClick={sendComment}
+                disabled={!newComment.trim()}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              💡 댓글 작성시 3포인트 적립! 다른 덕후들과 최애에 대해 이야기해보세요 ✨
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* 컨트롤 가이드 */}
       <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
         <p className="text-xs font-medium text-gray-800 mb-2">🎮 컨트롤</p>
