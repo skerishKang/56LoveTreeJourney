@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Plus, 
   Play, 
@@ -21,7 +22,9 @@ import {
   Music,
   Zap,
   Bell,
-  Send
+  Send,
+  Crown,
+  Star
 } from "lucide-react";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
@@ -67,90 +70,114 @@ export default function InteractiveLoveTree() {
   const [newComment, setNewComment] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // 튜토리얼 러브트리 노드들 (더 간단하고 직관적으로)
+  // 중앙 최애 정보
+  const [centerIdol, setCenterIdol] = useState({
+    name: "정국",
+    group: "BTS",
+    image: "🐰",
+    description: "황금막내의 매력에 빠져보세요",
+    totalVideos: 6,
+    totalLikes: 524
+  });
+
+  // 러브트리 노드들 (중앙을 기준으로 원형 배치)
   const [nodes, setNodes] = useState<VideoNode[]>([
     {
       id: 1,
-      title: "첫 만남 💕",
-      description: "운명적인 첫 영상",
+      title: "이 눈빛에 빠졌어 💕",
+      description: "첫 입덕 영상",
       x: 400,
-      y: 300,
-      connections: [2, 3],
-      color: "#FFB6C1",
-      category: "썸",
-      stage: "시작",
-      likeCount: 42,
-      commentCount: 8,
-      isNew: false
-    },
-    {
-      id: 2,
-      title: "무대 직캠 🎭",
-      description: "실력에 감탄",
-      x: 200,
-      y: 200,
-      connections: [1, 4],
-      color: "#87CEEB",
-      category: "댄스",
-      stage: "관심",
-      likeCount: 67,
+      y: 150,
+      connections: [0], // 0은 중앙 아이돌
+      color: "#FFD93D",
+      category: "귀여움",
+      stage: "첫만남",
+      likeCount: 89,
       commentCount: 12,
       isNew: false
     },
     {
-      id: 3,
-      title: "예능 모음 😄",
-      description: "웃음 포인트 발견",
+      id: 2,
+      title: "저 목소리는 반칙이야 🎤",
+      description: "라이브 무대의 감동",
       x: 600,
-      y: 200,
-      connections: [1, 5],
-      color: "#98FB98",
-      category: "예능",
-      stage: "관심",
-      likeCount: 54,
-      commentCount: 15,
-      isNew: false
-    },
-    {
-      id: 4,
-      title: "라이브 영상 🎤",
-      description: "진짜 실력 확인",
-      x: 100,
-      y: 400,
-      connections: [2, 6],
-      color: "#DDA0DD",
-      category: "보컬",
-      stage: "빠짐",
-      likeCount: 89,
+      y: 250,
+      connections: [0],
+      color: "#FF6B9D",
+      category: "섹시함",
+      stage: "감탄",
+      likeCount: 156,
       commentCount: 23,
       isNew: false
     },
     {
-      id: 5,
-      title: "브이로그 📹",
-      description: "일상의 매력",
-      x: 700,
+      id: 3,
+      title: "이 춤선 뭐야... 🕺",
+      description: "댄스 실력에 놀람",
+      x: 650,
       y: 400,
-      connections: [3, 6],
-      color: "#F0E68C",
-      category: "일상",
+      connections: [0],
+      color: "#4ECDC4",
+      category: "댄스",
       stage: "빠짐",
-      likeCount: 76,
-      commentCount: 18,
+      likeCount: 234,
+      commentCount: 34,
+      isNew: false
+    },
+    {
+      id: 4,
+      title: "예능감도 완벽해 😄",
+      description: "웃음 포인트 발견",
+      x: 500,
+      y: 550,
+      connections: [0],
+      color: "#F39C12",
+      category: "예능",
+      stage: "애정",
+      likeCount: 178,
+      commentCount: 28,
+      isNew: false
+    },
+    {
+      id: 5,
+      title: "일상도 완벽남 📹",
+      description: "브이로그의 매력",
+      x: 300,
+      y: 550,
+      connections: [0],
+      color: "#9B59B6",
+      category: "일상",
+      stage: "애정",
+      likeCount: 145,
+      commentCount: 19,
       isNew: false
     },
     {
       id: 6,
-      title: "콘서트 직캠 ✨",
+      title: "콘서트는 레전드 ✨",
       description: "완전한 입덕 순간",
-      x: 400,
-      y: 500,
-      connections: [4, 5],
-      color: "#FF6347",
+      x: 150,
+      y: 400,
+      connections: [0],
+      color: "#E74C3C",
       category: "콘서트",
       stage: "완전빠짐",
-      likeCount: 156,
-      commentCount: 34,
+      likeCount: 389,
+      commentCount: 67,
+      isNew: false
+    },
+    {
+      id: 7,
+      title: "팬서비스 천재 💖",
+      description: "팬들을 향한 사랑",
+      x: 150,
+      y: 250,
+      connections: [0],
+      color: "#1ABC9C",
+      category: "팬서비스",
+      stage: "완전빠짐",
+      likeCount: 267,
+      commentCount: 45,
       isNew: false
     }
   ]);
@@ -186,36 +213,33 @@ export default function InteractiveLoveTree() {
     return () => clearInterval(interval);
   }, [nodes]);
 
-  // 연결선 그리기
+  // 연결선 그리기 (중앙 아이돌을 기준으로)
   const renderConnections = () => {
-    return nodes.map(node => 
-      node.connections.map(connectionId => {
-        const targetNode = nodes.find(n => n.id === connectionId);
-        if (!targetNode) return null;
-
-        const startX = node.x;
-        const startY = node.y;
-        const endX = targetNode.x;
-        const endY = targetNode.y;
-
-        return (
-          <line
-            key={`${node.id}-${connectionId}`}
-            x1={startX}
-            y1={startY}
-            x2={endX}
-            y2={endY}
-            stroke={node.color}
-            strokeWidth="3"
-            strokeOpacity="0.6"
-            className="drop-shadow-sm"
-            style={{
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-            }}
-          />
-        );
-      })
-    ).flat();
+    const centerX = 400;
+    const centerY = 350;
+    
+    return nodes.map(node => {
+      return (
+        <motion.line
+          key={`connection-${node.id}`}
+          x1={centerX}
+          y1={centerY}
+          x2={node.x}
+          y2={node.y}
+          stroke={node.color}
+          strokeWidth="4"
+          strokeOpacity="0.7"
+          strokeDasharray="0"
+          className="drop-shadow-lg"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 0.7 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          style={{
+            filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.2))',
+          }}
+        />
+      );
+    });
   };
 
   // 노드 더블클릭으로 영상 추가
@@ -339,88 +363,196 @@ export default function InteractiveLoveTree() {
           </g>
         </svg>
 
-        {/* 비디오 노드들 */}
-        {nodes.map((node) => (
-          <div
-            key={node.id}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
-            style={{
-              left: `${node.x}px`,
-              top: `${node.y}px`,
-            }}
-            onClick={() => setSelectedNode(node)}
-            onDoubleClick={(e) => handleNodeDoubleClick(node, e)}
+        {/* 중앙 최애 아이돌 */}
+        <motion.div
+          className="absolute transform -translate-x-1/2 -translate-y-1/2"
+          style={{ left: '400px', top: '350px' }}
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ duration: 1, type: "spring", bounce: 0.5 }}
+        >
+          <motion.div
+            className="relative"
+            animate={{ rotate: [0, 2, -2, 2, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Card 
-              className={`w-40 h-32 hover:shadow-xl transition-all duration-300 hover:scale-110 group-hover:-translate-y-2 ${
-                node.isNew ? 'ring-2 ring-yellow-400 animate-pulse' : ''
-              }`}
-              style={{ 
-                borderColor: node.color, 
-                borderWidth: '3px',
-                backgroundColor: 'white'
+            <div className="w-32 h-32 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-500 rounded-full border-8 border-white shadow-2xl flex items-center justify-center text-6xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-400/20 to-purple-500/20 rounded-full animate-pulse"></div>
+              <span className="relative z-10">{centerIdol.image}</span>
+              
+              {/* 왕관 아이콘 */}
+              <div className="absolute -top-3 -right-1 bg-yellow-400 rounded-full p-1 border-2 border-white">
+                <Crown className="w-4 h-4 text-yellow-700" />
+              </div>
+              
+              {/* 하트 애니메이션 */}
+              <motion.div
+                className="absolute -top-2 -left-2"
+                animate={{ 
+                  scale: [1, 1.3, 1],
+                  rotate: [0, 10, -10, 0]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Heart className="w-6 h-6 text-red-500 fill-red-500" />
+              </motion.div>
+            </div>
+            
+            {/* 이름과 정보 */}
+            <div className="absolute top-36 left-1/2 transform -translate-x-1/2 text-center bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg min-w-max">
+              <h2 className="font-bold text-lg text-gray-800">{centerIdol.name}</h2>
+              <p className="text-sm text-gray-600">{centerIdol.group}</p>
+              <p className="text-xs text-gray-500 mt-1">{centerIdol.description}</p>
+              <div className="flex items-center justify-center space-x-3 mt-2 text-xs text-gray-500">
+                <div className="flex items-center space-x-1">
+                  <Video className="w-3 h-3" />
+                  <span>{centerIdol.totalVideos}개</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Heart className="w-3 h-3 text-red-400" />
+                  <span>{centerIdol.totalLikes}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 빛나는 효과 */}
+            <div className="absolute inset-0 rounded-full animate-ping bg-gradient-to-r from-pink-400 to-purple-500 opacity-20"></div>
+          </motion.div>
+        </motion.div>
+
+        {/* 비디오 노드들 */}
+        <AnimatePresence>
+          {nodes.map((node, index) => (
+            <motion.div
+              key={node.id}
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+              style={{
+                left: `${node.x}px`,
+                top: `${node.y}px`,
               }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.1, y: -10 }}
+              onClick={() => setSelectedNode(node)}
+              onDoubleClick={(e) => handleNodeDoubleClick(node, e)}
             >
-              <CardContent className="p-3 h-full flex flex-col">
-                {/* 썸네일 영역 */}
-                <div 
-                  className="w-full h-16 rounded-lg flex items-center justify-center text-white mb-2 relative"
-                  style={{ backgroundColor: node.color }}
-                >
-                  <Play className="w-6 h-6" />
-                  
-                  {/* 좋아요/댓글 오버레이 */}
-                  <div className="absolute bottom-1 right-1 flex items-center space-x-1 text-xs">
-                    <div className="flex items-center space-x-1 bg-black/50 rounded px-1">
-                      <Heart className="w-2 h-2" />
-                      <span>{node.likeCount}</span>
+              <Card 
+                className={`w-48 h-36 hover:shadow-2xl transition-all duration-300 ${
+                  node.isNew ? 'ring-2 ring-yellow-400 animate-pulse' : ''
+                }`}
+                style={{ 
+                  borderColor: node.color, 
+                  borderWidth: '3px',
+                  backgroundColor: 'white'
+                }}
+              >
+                <CardContent className="p-3 h-full flex flex-col">
+                  {/* 썸네일 영역 */}
+                  <div 
+                    className="w-full h-20 rounded-lg flex items-center justify-center text-white mb-2 relative overflow-hidden"
+                    style={{ backgroundColor: node.color }}
+                  >
+                    <Play className="w-8 h-8" />
+                    
+                    {/* YouTube 스타일 썸네일 효과 */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/20"></div>
+                    
+                    {/* 좋아요/댓글 오버레이 */}
+                    <div className="absolute bottom-2 right-2 flex items-center space-x-2 text-xs">
+                      <div className="flex items-center space-x-1 bg-black/70 rounded-full px-2 py-1">
+                        <Heart className="w-3 h-3 text-red-400" />
+                        <span>{node.likeCount}</span>
+                      </div>
+                      <div className="flex items-center space-x-1 bg-black/70 rounded-full px-2 py-1">
+                        <MessageCircle className="w-3 h-3 text-blue-400" />
+                        <span>{node.commentCount}</span>
+                      </div>
+                    </div>
+                    
+                    {/* 카테고리 태그 */}
+                    <div className="absolute top-2 left-2">
+                      <Badge 
+                        className="text-xs bg-white/90 text-gray-800"
+                      >
+                        #{node.category}
+                      </Badge>
                     </div>
                   </div>
-                </div>
-                
-                {/* 제목 */}
-                <h4 className="font-bold text-xs text-gray-800 line-clamp-2 flex-1">
-                  {node.title}
-                </h4>
-                
-                {/* 단계 뱃지 */}
-                <Badge 
-                  variant="outline" 
-                  className="text-xs mt-1"
-                  style={{ borderColor: node.color, color: node.color }}
+                  
+                  {/* 제목과 설명 */}
+                  <div className="flex-1">
+                    <h4 className="font-bold text-sm text-gray-800 line-clamp-2 mb-1">
+                      {node.title}
+                    </h4>
+                    <p className="text-xs text-gray-600 line-clamp-1">
+                      {node.description}
+                    </p>
+                  </div>
+                  
+                  {/* 단계 뱃지 */}
+                  <Badge 
+                    variant="outline" 
+                    className="text-xs mt-2 self-start"
+                    style={{ borderColor: node.color, color: node.color }}
+                  >
+                    {node.stage}
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              {/* 플러스 버튼 (호버시 표시) */}
+              <motion.div
+                className="absolute -top-3 -right-3"
+                initial={{ scale: 0 }}
+                whileHover={{ scale: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Button
+                  size="sm"
+                  className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg hover:shadow-xl"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNodeDoubleClick(node, e as any);
+                  }}
                 >
-                  {node.stage}
-                </Badge>
-              </CardContent>
-            </Card>
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </motion.div>
 
-            {/* 플러스 버튼 (호버시 표시) */}
-            <Button
-              size="sm"
-              className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleNodeDoubleClick(node, e as any);
-              }}
-            >
-              <Plus className="w-3 h-3" />
-            </Button>
-          </div>
-        ))}
+              {/* 인기 뱃지 */}
+              {node.likeCount > 200 && (
+                <motion.div
+                  className="absolute -top-2 -left-2"
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs px-2">
+                    🔥 HOT
+                  </Badge>
+                </motion.div>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
 
-        {/* 중앙 + 버튼 (새 러브트리 시작) */}
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        {/* 추가 영상 버튼 (빈 공간에) */}
+        <motion.div
+          className="absolute left-96 top-96 transform -translate-x-1/2 -translate-y-1/2"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
           <Button
             size="lg"
-            className="w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110"
+            className="w-20 h-20 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300 border-4 border-white/50"
             onClick={() => setIsAddingVideo(true)}
           >
-            <Plus className="w-8 h-8" />
+            <Plus className="w-10 h-10" />
           </Button>
-          <p className="text-center text-sm text-gray-600 mt-2 font-medium">
-            러브트리 시작하기
+          <p className="text-center text-sm text-gray-600 mt-3 font-medium bg-white/80 backdrop-blur-sm rounded-lg px-2 py-1">
+            영상 추가하기
           </p>
-        </div>
+        </motion.div>
       </div>
 
       {/* 미니맵 */}

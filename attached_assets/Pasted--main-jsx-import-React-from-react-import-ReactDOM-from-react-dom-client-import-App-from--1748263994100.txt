@@ -1,0 +1,119 @@
+// main.jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./styles.css";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+
+// App.jsx
+import React from "react";
+import Tree from "./Tree";
+
+function App() {
+  return (
+    <div className="app">
+      <h1>💘 Love Tree</h1>
+      <Tree />
+    </div>
+  );
+}
+
+export default App;
+
+// Tree.jsx
+import React, { useState } from "react";
+import YouTube from "react-youtube";
+import { v4 as uuidv4 } from "uuid";
+
+function Tree() {
+  const [nodes, setNodes] = useState([]);
+  const [url, setUrl] = useState("");
+  const [start, setStart] = useState("");
+  const [comment, setComment] = useState("");
+  const [emotion, setEmotion] = useState("귀여움");
+
+  const addNode = () => {
+    const videoId = url.split("v=")[1]?.substring(0, 11);
+    if (!videoId) return alert("URL 오류");
+
+    setNodes([
+      ...nodes,
+      {
+        id: uuidv4(),
+        videoId,
+        start,
+        comment,
+        emotion,
+        color: emotion === "귀여움" ? "#FFD700" : emotion === "섹시함" ? "#FF4B5C" : "#6AC1FF"
+      }
+    ]);
+  };
+
+  return (
+    <div className="tree">
+      <input placeholder="YouTube URL" onChange={(e) => setUrl(e.target.value)} />
+      <input placeholder="시작 시간 (초)" onChange={(e) => setStart(e.target.value)} />
+      <input placeholder="감상평" onChange={(e) => setComment(e.target.value)} />
+      <select onChange={(e) => setEmotion(e.target.value)}>
+        <option>귀여움</option>
+        <option>섹시함</option>
+        <option>감동</option>
+      </select>
+      <button onClick={addNode}>추가</button>
+
+      <div className="nodes">
+        {nodes.map((n) => (
+          <div key={n.id} className="node" style={{ borderColor: n.color }}>
+            <YouTube videoId={n.videoId} opts={{ playerVars: { start: Number(n.start) } }} />
+            <p>{n.comment}</p>
+            <span>{n.emotion}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Tree;
+
+// styles.css
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #fff0f6;
+}
+.app h1 {
+  color: #e91e63;
+}
+.tree input,
+.tree select {
+  margin: 5px;
+  padding: 5px;
+  border-radius: 8px;
+}
+.tree button {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.nodes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+.node {
+  margin: 10px;
+  border: 5px solid #ffd700;
+  border-radius: 12px;
+  padding: 8px;
+  background: white;
+  width: 220px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}

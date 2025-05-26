@@ -1,0 +1,156 @@
+# Love Tree App Plan
+
+## 🎯 목표
+
+덕질의 시작과 과정을 시각화하고 공유할 수 있는 팬 기반 콘텐츠 트리 플랫폼 **러브트리(LoveTree)** 구축.
+
+---
+
+## 1️⃣ 리플릿용 React 코드 샘플 (기초 러브트리 UI + 유튜브 노드)
+
+### 📁 파일 구조 (MVP 기준)
+
+```
+love-tree-app/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Tree.jsx
+│   │   ├── VideoNode.jsx
+│   ├── App.jsx
+│   ├── index.js
+│   ├── firebaseConfig.js
+├── package.json
+```
+
+### ✅ 주요 라이브러리
+
+```bash
+npm install react-flow-renderer firebase react-youtube uuid
+```
+
+### 🧩 `App.jsx`
+
+```jsx
+import React, { useState } from 'react';
+import Tree from './components/Tree';
+
+function App() {
+  return (
+    <div>
+      <h1>❤️ Love Tree ❤️</h1>
+      <Tree />
+    </div>
+  );
+}
+
+export default App;
+```
+
+### 🌿 `Tree.jsx`
+
+```jsx
+import React, { useState } from 'react';
+import YouTube from 'react-youtube';
+import { v4 as uuidv4 } from 'uuid';
+
+function Tree() {
+  const [nodes, setNodes] = useState([]);
+  const [url, setUrl] = useState('');
+  const [start, setStart] = useState('');
+  const [comment, setComment] = useState('');
+
+  const addNode = () => {
+    const videoId = url.split('v=')[1]?.substring(0, 11);
+    if (!videoId) return alert("URL 오류");
+
+    setNodes([...nodes, {
+      id: uuidv4(),
+      videoId,
+      start,
+      comment
+    }]);
+  };
+
+  return (
+    <div>
+      <input placeholder="YouTube URL" onChange={e => setUrl(e.target.value)} />
+      <input placeholder="시작 시간(초)" onChange={e => setStart(e.target.value)} />
+      <input placeholder="감상평" onChange={e => setComment(e.target.value)} />
+      <button onClick={addNode}>영상 추가</button>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
+        {nodes.map(n => (
+          <div key={n.id} style={{ margin: '10px' }}>
+            <YouTube videoId={n.videoId} opts={{ playerVars: { start: Number(n.start) }}} />
+            <p>{n.comment}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Tree;
+```
+
+---
+
+## 2️⃣ 러브트리 UI 디자인 (정국/필릭스 테마)
+
+### 🎨 디자인 설명
+
+* 각 유튜브 영상은 열매 모양 (동그란 노드)으로 표현
+* 선(branch)은 감정별 색상으로 구분 (노랑=귀여움, 빨강=섹시, 파랑=감동)
+* 정국 or 필릭스 이미지를 나무 중심에 배치하여 트리 전체가 인물 중심으로 퍼짐
+* 완성 시 반짝이 애니메이션 적용 (예: CSS glow 효과)
+
+### 📷 이미지 UI 요소 제안 (AI 이미지 생성 가능)
+
+1. **중앙 인물 이미지**: 정국 or 필릭스 (배경을 투명하게 한 PNG)
+2. **노드 이미지 스타일**: 동그란 썸네일 + 감정 색상 배경
+3. **트리 연결선**: 베지어 곡선 + CSS 색상 지정 + 라벨(감정 태그)
+
+---
+
+## 3️⃣ Firebase 포함 전체 기능 구현 구조 (베타)
+
+### 📦 주요 기능 모듈
+
+* Firebase Authentication (비공개/공개 트리 설정)
+* Firestore DB (유저별 Tree 저장)
+* Cloud Functions (알림, 추천 처리)
+
+### 데이터 예시 구조
+
+```json
+{
+  "userId": "abc123",
+  "trees": [
+    {
+      "id": "tree1",
+      "title": "정국 입덕 러브트리",
+      "nodes": [
+        {
+          "videoId": "123ABC",
+          "start": 85,
+          "comment": "이 눈빛에 빠졌어",
+          "emotion": "귀여움",
+          "color": "yellow"
+        },
+        ...
+      ]
+    }
+  ]
+}
+```
+
+### 보너스 기능
+
+* 추천 받은 수에 따라 포인트 쌓이기 (ex. 전도사 등급)
+* 추천 알림 기능: 내가 만든 트리에서 누군가 입덕하면 알림 받기
+* "빠짐" 클릭 시 상호작용적 반응 (하트 애니메이션)
+
+---
+
+📌 다음 단계: UI 목업, 리플릿 배포용 zip, GitHub 템플릿 생성도 지원 가능합니다. 원하시면 바로 진행드릴게요!
