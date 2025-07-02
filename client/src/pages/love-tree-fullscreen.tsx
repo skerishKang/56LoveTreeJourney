@@ -15,6 +15,23 @@ interface LoveTreeFullscreenProps {
 export default function LoveTreeFullscreen() {
   const [, params] = useRoute("/love-tree/:id");
   const [, setLocation] = useLocation();
+  
+  // 뒤로가기 핸들러
+  const handleGoBack = () => {
+    setLocation("/");
+  };
+  
+  // 키보드 ESC 키로 닫기
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleGoBack();
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
   const [isAddingVideo, setIsAddingVideo] = useState(false);
   const [isAddingText, setIsAddingText] = useState(false);
   const [isVideoEditing, setIsVideoEditing] = useState(false);
@@ -260,7 +277,14 @@ export default function LoveTreeFullscreen() {
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center space-x-4">
             <button 
-              onClick={() => setLocation("/")}
+              onClick={handleGoBack}
+              className="fixed top-4 right-4 z-50 p-3 bg-white/90 hover:bg-white border border-gray-200 rounded-full transition-all shadow-lg hover:shadow-xl"
+              title="닫기 (ESC)"
+            >
+              <X className="w-6 h-6 text-gray-700" />
+            </button>
+            <button 
+              onClick={handleGoBack}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
               <X className="w-5 h-5 text-gray-600" />

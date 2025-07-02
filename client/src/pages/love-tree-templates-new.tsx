@@ -4,12 +4,30 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, TrendingUp, Play, BookOpen, Heart, Sparkles, Star, Crown, Target, Gamepad2, Music } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import BottomNavigation from "@/components/bottom-navigation";
 
 export default function LoveTreeTemplates() {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string>("popular");
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 템플릿 선택 핸들러
+  const handleTemplateSelect = async (templateId: string) => {
+    setSelectedTemplate(templateId);
+    setIsLoading(true);
+    
+    // 로딩 시뮬레이션 (1초)
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // 러브트리 편집 페이지로 이동
+    setLocation(`/love-tree/${templateId}`);
+    
+    setIsLoading(false);
+    setSelectedTemplate(null);
+  };
 
   const templates = [
     {
@@ -160,7 +178,12 @@ export default function LoveTreeTemplates() {
             {filteredTemplates.map((template) => (
               <Card 
                 key={template.id} 
-                className={`hover:shadow-lg transition-all duration-300 cursor-pointer ${template.borderColor} group`}
+                className={`hover:shadow-lg transition-all duration-300 cursor-pointer ${template.borderColor} group ${
+                  selectedTemplate === template.id ? 'ring-2 ring-pink-500 scale-105' : ''
+                } ${
+                  isLoading && selectedTemplate === template.id ? 'opacity-80' : ''
+                }`}
+                onClick={() => handleTemplateSelect(template.id)}
               >
                 <CardContent className="p-0 overflow-hidden">
                   {/* Template Header */}
@@ -210,9 +233,23 @@ export default function LoveTreeTemplates() {
                       <Button 
                         size="sm"
                         className={`bg-gradient-to-r ${template.gradient} hover:opacity-90 text-white`}
+                        disabled={isLoading}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTemplateSelect(template.id);
+                        }}
                       >
-                        <Sparkles className="w-4 h-4 mr-1" />
-                        시작하기
+                        {isLoading && selectedTemplate === template.id ? (
+                          <>
+                            <div className="w-4 h-4 mr-1 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            로딩중...
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-4 h-4 mr-1" />
+                            시작하기
+                          </>
+                        )}
                       </Button>
                     </div>
                   </div>

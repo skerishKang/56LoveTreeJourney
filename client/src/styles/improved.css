@@ -1,0 +1,222 @@
+/* 개선된 색상 팔레트 - Tailwind CSS 확장 */
+
+/* 기존 강한 노란색 배경을 부드러운 그라데이션으로 변경 */
+:root {
+  /* 메인 브랜드 컬러 - 기존 러브 핑크 유지하되 채도 조정 */
+  --love-pink: #f472b6;
+  --love-pink-light: #fce7f3;
+  --love-pink-dark: #ec4899;
+  
+  /* 트리 그린 - 자연스러운 그린으로 조정 */
+  --tree-green: #10b981;
+  --tree-green-light: #d1fae5;
+  --tree-green-dark: #059669;
+  
+  /* 새로운 부드러운 배경 컬러 */
+  --soft-cream: #fefef9;
+  --warm-white: #fefefe;
+  --gentle-pink: #fef7f7;
+  --light-lavender: #faf7ff;
+  --soft-mint: #f7fffe;
+  
+  /* 그라데이션 배경들 */
+  --gradient-soft: linear-gradient(135deg, var(--soft-cream) 0%, var(--gentle-pink) 25%, var(--light-lavender) 75%, var(--soft-mint) 100%);
+  --gradient-warm: linear-gradient(135deg, var(--warm-white) 0%, var(--gentle-pink) 50%, var(--soft-cream) 100%);
+  --gradient-subtle: linear-gradient(180deg, var(--warm-white) 0%, var(--soft-cream) 100%);
+  
+  /* 카드 및 컴포넌트 배경 */
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(236, 72, 153, 0.1);
+  --card-hover-bg: rgba(255, 255, 255, 0.95);
+  
+  /* 그림자 효과 개선 */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-pink: 0 4px 16px rgba(244, 114, 182, 0.15);
+  
+  /* 텍스트 컬러 개선 */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+}
+
+/* 메인 배경 클래스들 */
+.bg-soft-gradient {
+  background: var(--gradient-soft);
+}
+
+.bg-warm-gradient {
+  background: var(--gradient-warm);
+}
+
+.bg-subtle-gradient {
+  background: var(--gradient-subtle);
+}
+
+/* 카드 스타일 개선 */
+.card-soft {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.card-soft:hover {
+  background: var(--card-hover-bg);
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+.card-elevated {
+  background: var(--warm-white);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-medium);
+  transition: all 0.3s ease;
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-strong);
+  transform: translateY(-1px);
+}
+
+/* 전체화면 버튼 z-index 개선 */
+.btn-gradient-primary {
+  background: linear-gradient(135deg, var(--love-pink) 0%, var(--love-pink-dark) 100%);
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-pink);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 30;
+}
+
+.btn-gradient-primary:hover {
+  background: linear-gradient(135deg, var(--love-pink-dark) 0%, #db2777 100%);
+  box-shadow: 0 6px 20px rgba(244, 114, 182, 0.25);
+  transform: translateY(-1px);
+}
+
+/* 글래스모피즘 효과 */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 상태별 배지 스타일 */
+.badge-hot {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+.badge-new {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+.badge-official {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+}
+
+/* 애니메이션 개선 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+/* 프로그레스 바 개선 */
+.progress-bar {
+  background: linear-gradient(90deg, var(--love-pink) 0%, #8b5cf6 100%);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 2s infinite;
+}
+
+/* 부드러운 스크롤바 */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--love-pink-light) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--love-pink-light);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--love-pink);
+}
+
+/* 호버 효과 */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-strong);
+}
+
+/* 섹션 구분선 */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--card-border) 50%, transparent 100%);
+  margin: 2rem 0;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 768px) {
+  .card-soft,
+  .card-elevated {
+    border-radius: 12px;
+  }
+  
+  .btn-gradient-primary {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* 접근성 개선 */
+.focus-visible {
+  outline: 2px solid var(--love-pink);
+  outline-offset: 2px;
+}
