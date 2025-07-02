@@ -32,6 +32,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Love Tree routes
+  
+  // Popular route MUST come before :id route to avoid conflict
+  app.get('/api/love-trees/popular', async (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 10;
+      const popularTrees = await storage.getPopularLoveTrees(limit);
+      res.json(popularTrees);
+    } catch (error) {
+      console.error("Error fetching popular love trees:", error);
+      res.status(500).json({ message: "Failed to fetch popular love trees" });
+    }
+  });
+
   app.get('/api/love-trees', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
@@ -84,17 +97,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching love tree:", error);
       res.status(500).json({ message: "Failed to fetch love tree" });
-    }
-  });
-
-  app.get('/api/love-trees/popular', async (req, res) => {
-    try {
-      const limit = parseInt(req.query.limit as string) || 10;
-      const popularTrees = await storage.getPopularLoveTrees(limit);
-      res.json(popularTrees);
-    } catch (error) {
-      console.error("Error fetching popular love trees:", error);
-      res.status(500).json({ message: "Failed to fetch popular love trees" });
     }
   });
 

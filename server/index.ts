@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -56,10 +57,10 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
+  // serve the app on configured port
+  // 리플릿: 5000 (고정), 로컬: 3000 (기본값)
+  const defaultPort = process.env.REPLIT_DB_URL ? 5000 : 3000;
+  const port = parseInt(process.env.PORT || defaultPort.toString(), 10);
   server.listen({
     port,
     host: "0.0.0.0",

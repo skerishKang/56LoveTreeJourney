@@ -12,6 +12,27 @@ if (!process.env.REPLIT_DOMAINS) {
   throw new Error("Environment variable REPLIT_DOMAINS not provided");
 }
 
+// 🔍 환경 자동 감지
+function detectEnvironment() {
+  // 리플릿 환경 감지 방법들
+  const isReplit = !!(
+    process.env.REPLIT_DB_URL ||  // 리플릿 DB URL
+    process.env.REPL_SLUG ||      // 리플릿 슬러그
+    process.env.REPL_OWNER ||     // 리플릿 소유자
+    process.env.REPLIT ||         // 리플릿 환경 변수
+    process.platform === 'linux' && process.env.HOME?.includes('/home/runner') // 리플릿 런너
+  );
+  
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isLocalDev = isDevelopment && !isReplit;
+  
+  console.log(`🌍 환경 감지: ${isReplit ? '리플릿' : '로컬'} (개발모드: ${isDevelopment})`);
+  
+  return { isReplit, isLocalDev, isDevelopment };
+}
+
+const { isReplit, isLocalDev } = detectEnvironment();
+
 const getOidcConfig = memoize(
   async () => {
     return await client.discovery(
@@ -38,7 +59,7 @@ export function getSession() {
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: isReplit, // 리플릿에서는 secure, 로컬에서는 false
       maxAge: sessionTtl,
     },
   });
@@ -54,9 +75,7 @@ function updateUserSession(
   user.expires_at = user.claims?.exp;
 }
 
-async function upsertUser(
-  claims: any,
-) {
+async function upsertUser(claims: any) {
   await storage.upsertUser({
     id: claims["sub"],
     email: claims["email"],
@@ -72,6 +91,36 @@ export async function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // 🔧 로컬 개발 환경에서는 더미 인증 사용
+  if (isLocalDev) {
+    console.log('🔧 로컬 개발 모드: 더미 인증 활성화');
+    
+    // 로컬용 더미 라우트
+    app.get("/api/login", (req, res) => {
+      console.log('🔑 로컬 더미 로그인');
+      res.redirect("/");
+    });
+    
+    app.get("/api/logout", (req, res) => {
+      req.logout(() => {
+        res.redirect("/");
+      });
+    });
+    
+    app.get("/api/callback", (req, res) => {
+      res.redirect("/");
+    });
+    
+    // passport serialization
+    passport.serializeUser((user: Express.User, cb) => cb(null, user));
+    passport.deserializeUser((user: Express.User, cb) => cb(null, user));
+    
+    return;
+  }
+
+  // 🚀 리플릿 환경: 정상적인 OIDC 인증
+  console.log('🚀 리플릿 모드: OIDC 인증 활성화');
+  
   const config = await getOidcConfig();
 
   const verify: VerifyFunction = async (
@@ -84,14 +133,16 @@ export async function setupAuth(app: Express) {
     verified(null, user);
   };
 
-  for (const domain of process.env
-    .REPLIT_DOMAINS!.split(",")) {
+  for (const domain of process.env.REPLIT_DOMAINS!.split(",")) {
+    const trimmedDomain = domain.trim();
+    if (!trimmedDomain) continue;
+    
     const strategy = new Strategy(
       {
-        name: `replitauth:${domain}`,
+        name: `replitauth:${trimmedDomain}`,
         config,
         scope: "openid email profile offline_access",
-        callbackURL: `https://${domain}/api/callback`,
+        callbackURL: `https://${trimmedDomain}/api/callback`,
       },
       verify,
     );
@@ -102,14 +153,22 @@ export async function setupAuth(app: Express) {
   passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
   app.get("/api/login", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    const hostname = req.hostname;
+    const strategyName = `replitauth:${hostname}`;
+    
+    console.log(`🔑 로그인 시도: ${strategyName}`);
+    
+    passport.authenticate(strategyName, {
       prompt: "login consent",
       scope: ["openid", "email", "profile", "offline_access"],
     })(req, res, next);
   });
 
   app.get("/api/callback", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    const hostname = req.hostname;
+    const strategyName = `replitauth:${hostname}`;
+    
+    passport.authenticate(strategyName, {
       successReturnToOrRedirect: "/",
       failureRedirect: "/api/login",
     })(req, res, next);
@@ -128,9 +187,36 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
+  // 🔧 로컬 개발 환경에서는 더미 사용자 자동 생성
+  if (isLocalDev) {
+    const dummyUser = {
+      claims: {
+        sub: 'local-dev-user',
+        email: 'dev@localhost.com',
+        first_name: 'Local',
+        last_name: 'Developer',
+        exp: Math.floor(Date.now() / 1000) + 3600
+      },
+      access_token: 'dummy-token',
+      refresh_token: 'dummy-refresh-token',
+      expires_at: Math.floor(Date.now() / 1000) + 3600
+    };
+    
+    // 더미 사용자를 DB에 한 번만 생성
+    try {
+      await upsertUser(dummyUser.claims);
+    } catch (error) {
+      // 이미 존재하는 경우 무시
+    }
+    
+    (req as any).user = dummyUser;
+    return next();
+  }
+  
+  // 🚀 리플릿 환경: 정상적인 인증 로직
   const user = req.user as any;
 
-  if (!req.isAuthenticated() || !user.expires_at) {
+  if (!req.isAuthenticated() || !user?.expires_at) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 

@@ -1,0 +1,116 @@
+# 프로젝트 폴더 구조 (2024-05-26 기준)
+
+- server/
+  - routes.ts (475 lines) [리팩토링 필요]
+  - storage.ts (650 lines) [리팩토링 필요]
+  - replitAuth.ts (156 lines)
+  - db.ts (15 lines)
+  - index.ts (71 lines)
+  - vite.ts (86 lines)
+- client/
+  - index.html (13 lines)
+  - src/
+    - App.tsx (90 lines)
+    - index.css (189 lines)
+    - main.tsx (6 lines)
+    - pages/
+      - home.tsx (1246 lines) [리팩토링 필요]
+      - propagator-subscription.tsx (376 lines) [리팩토링 필요]
+      - tree-shaped-love-tree.tsx (730 lines) [리팩토링 필요]
+      - idol-face-mosaic.tsx (380 lines) [리팩토링 필요]
+      - reactflow-love-tree.tsx (456 lines) [리팩토링 필요]
+      - interactive-love-tree.tsx (904 lines) [리팩토링 필요]
+      - popular-love-trees.tsx (367 lines) [리팩토링 필요]
+      - community-tracker-page.tsx (61 lines)
+      - profile.tsx (446 lines) [리팩토링 필요]
+      - love-tree-templates-new.tsx (263 lines) [리팩토링 필요]
+      - love-tree-templates.tsx (245 lines)
+      - profile-edit.tsx (259 lines) [리팩토링 필요]
+      - love-tree-fullscreen.tsx (746 lines) [리팩토링 필요]
+      - shorts.tsx (11 lines)
+      - subscription-manager-page.tsx (35 lines)
+      - fan-activities-page.tsx (35 lines)
+      - goods-collection-page.tsx (35 lines)
+      - community.tsx (386 lines) [리팩토링 필요]
+      - category-hub.tsx (225 lines)
+      - discover.tsx (168 lines)
+      - add-content.tsx (419 lines) [리팩토링 필요]
+      - landing.tsx (116 lines)
+      - not-found.tsx (22 lines)
+    - components/
+      - bottom-navigation.tsx (55 lines)
+      - popular-trees.tsx (350 lines) [리팩토링 필요]
+      - love-tree-mindmap.tsx (368 lines) [리팩토링 필요]
+      - post-write-modal.tsx (258 lines) [리팩토링 필요]
+      - love-tree-heart.tsx (156 lines)
+      - settings-menu.tsx (339 lines) [리팩토링 필요]
+      - continue-love-tree-modal.tsx (308 lines) [리팩토링 필요]
+      - subscription-modal.tsx (271 lines) [리팩토링 필요]
+      - category-request-modal.tsx (189 lines)
+      - enhanced-love-tree.tsx (414 lines) [리팩토링 필요]
+      - propagator-dashboard.tsx (257 lines) [리팩토링 필요]
+      - my-records-modal.tsx (281 lines) [리팩토링 필요]
+      - ranking-modal.tsx (189 lines)
+      - sns-share-modal.tsx (169 lines)
+      - tag-filter.tsx (220 lines)
+      - interactive-mindmap.tsx (479 lines) [리팩토링 필요]
+      - propagator-rankings.tsx (171 lines)
+      - enhanced-love-gauge.tsx (321 lines) [리팩토링 필요]
+      - love-gauge.tsx (216 lines)
+      - enhanced-video-editor.tsx (342 lines) [리팩토링 필요]
+      - video-editor.tsx (294 lines) [리팩토링 필요]
+      - official-love-tree.tsx (265 lines) [리팩토링 필요]
+      - diary-love-tree.tsx (308 lines) [리팩토링 필요]
+      - recommended-shorts.tsx (439 lines) [리팩토링 필요]
+      - video-comments.tsx (213 lines)
+      - horizontal-love-tree.tsx (581 lines) [리팩토링 필요]
+      - new-seed-alert.tsx (163 lines)
+      - propagator-stats.tsx (118 lines)
+      - mindmap-love-tree.tsx (541 lines) [리팩토링 필요]
+      - drama-love-tree.tsx (500 lines) [리팩토링 필요]
+      - learning-love-tree.tsx (495 lines) [리팩토링 필요]
+      - youtuber-love-tree.tsx (497 lines) [리팩토링 필요]
+      - investment-love-tree.tsx (470 lines) [리팩토링 필요]
+      - subscription-manager.tsx (473 lines) [리팩토링 필요]
+      - fan-activity-journal.tsx (459 lines) [리팩토링 필요]
+      - goods-collection.tsx (461 lines) [리팩토링 필요]
+      - community-tracker.tsx (338 lines) [리팩토링 필요]
+      - sample-love-tree.tsx (206 lines)
+      - youtube-extension-guide.tsx (146 lines)
+      - share-love-tree.tsx (162 lines)
+      - love-tree-timeline.tsx (246 lines) [리팩토링 필요]
+      - love-tree-progress.tsx (95 lines)
+      - ui/
+        - ... (생략, 200줄 이상 sidebar.tsx (772 lines) [리팩토링 필요], chart.tsx (366 lines) [리팩토링 필요] 등)
+    - services/
+      - loveTreeService.ts (151 lines)
+    - lib/
+      - firebase.ts (33 lines)
+      - api.ts (53 lines)
+      - queryClient.ts (58 lines)
+      - utils.ts (7 lines)
+    - hooks/
+      - useAuth.ts (15 lines)
+      - use-mobile.tsx (20 lines)
+      - use-toast.ts (192 lines)
+- shared/
+  - schema.ts (495 lines) [리팩토링 필요]
+- attached_assets/
+  - 러브트리 모양.JPG (830 lines)
+  - 럽트3.JPG (920 lines)
+  - ... (생략)
+- .git/ (생략)
+- package.json (114 lines)
+- package-lock.json (10811 lines)
+- tailwind.config.ts (97 lines)
+- .replit (37 lines)
+- .gitignore (6 lines)
+- components.json (20 lines)
+- drizzle.config.ts (15 lines)
+- postcss.config.js (7 lines)
+- tsconfig.json (24 lines)
+- vite.config.ts (32 lines)
+
+---
+- [리팩토링 필요] : 200줄이 넘는 파일로, 모듈 분리 및 리팩토링 필요
+- 일부 asset, .git 등은 생략 
