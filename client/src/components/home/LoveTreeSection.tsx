@@ -34,19 +34,19 @@ export default function LoveTreeSection({
         className="hidden sm:flex"
       />
       
-      <Button variant="outline" size="sm" onClick={onAddContent}>
-        <Plus className="w-4 h-4 mr-1" />
-        추가
+      <Button variant="outline" size="sm" onClick={onAddContent} className="px-2 sm:px-3">
+        <Plus className="w-4 h-4 sm:mr-1" />
+        <span className="hidden sm:inline">추가</span>
       </Button>
       
-      <Button variant="outline" size="sm" onClick={onShare}>
-        <Share2 className="w-4 h-4 mr-1" />
-        공유
+      <Button variant="outline" size="sm" onClick={onShare} className="px-2 sm:px-3">
+        <Share2 className="w-4 h-4 sm:mr-1" />
+        <span className="hidden sm:inline">공유</span>
       </Button>
       
-      <Button variant="outline" size="sm" onClick={onFullscreen}>
-        <Play className="w-4 h-4 mr-1" />
-        전체화면
+      <Button variant="outline" size="sm" onClick={onFullscreen} className="px-2 sm:px-3">
+        <Play className="w-4 h-4 sm:mr-1" />
+        <span className="hidden sm:inline">전체화면</span>
       </Button>
     </>
   );

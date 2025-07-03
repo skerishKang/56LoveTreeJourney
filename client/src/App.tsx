@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
+import { ThemeProvider } from "@/contexts/theme-context";
 import { useGlobalScrollRestoration } from "@/hooks/useScrollRestoration";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { SkipLink } from "@/hooks/useAccessibility";
@@ -110,19 +111,21 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        {/* 접근성 스킵 링크 */}
-        <SkipLink href="#main-content">메인 컨텐츠로 이동</SkipLink>
-        
-        <div id="main-content">
-          <Router />
-        </div>
-        
-        <Toaster />
-        
-        {/* 성능 모니터 (개발 모드에서만 표시) */}
-        <PerformanceMonitor />
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          {/* 접근성 스킵 링크 */}
+          <SkipLink href="#main-content">메인 컨텐츠로 이동</SkipLink>
+          
+          <div id="main-content">
+            <Router />
+          </div>
+          
+          <Toaster />
+          
+          {/* 성능 모니터 (개발 모드에서만 표시) */}
+          <PerformanceMonitor />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

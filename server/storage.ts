@@ -113,6 +113,13 @@ export interface IStorage {
   getPropagatorStats(userId: string): Promise<PropagatorStats | undefined>;
   updatePropagatorStats(userId: string): Promise<PropagatorStats>;
   getPropagatorRankings(limit?: number): Promise<(PropagatorStats & { user: User })[]>;
+  
+  // Search operations
+  searchAll(query: string, category?: string): Promise<{
+    loveTrees: LoveTree[];
+    users: User[];
+    tags: { name: string; count: number }[];
+  }>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -643,6 +650,64 @@ export class DatabaseStorage implements IStorage {
       .limit(limit);
 
     return rankings;
+  }
+
+  // Search operations
+  async searchAll(query: string, category?: string): Promise<{
+    loveTrees: LoveTree[];
+    users: User[];
+    tags: { name: string; count: number }[];
+  }> {
+    const searchTerm = `%${query}%`;
+    
+    // Search love trees
+    let loveTreesQuery = db
+      .select()
+      .from(loveTrees)
+      .where(
+        and(
+          eq(loveTrees.isPublic, true),
+          or(
+            sql`${loveTrees.title} ILIKE ${searchTerm}`,
+            sql`${loveTrees.description} ILIKE ${searchTerm}`
+          ),
+          category ? eq(loveTrees.category, category) : undefined
+        )
+      )
+      .limit(20);
+    
+    const loveTreeResults = await loveTreesQuery;
+    
+    // Search users
+    const userResults = await db
+      .select()
+      .from(users)
+      .where(
+        or(
+          sql`${users.firstName} ILIKE ${searchTerm}`,
+          sql`${users.email} ILIKE ${searchTerm}`
+        )
+      )
+      .limit(10);
+    
+    // Search tags
+    const tagResults = await db
+      .select({
+        name: tags.name,
+        count: sql<number>`count(distinct ${loveTreeTags.loveTreeId})`,
+      })
+      .from(tags)
+      .leftJoin(loveTreeTags, eq(tags.id, loveTreeTags.tagId))
+      .where(sql`${tags.name} ILIKE ${searchTerm}`)
+      .groupBy(tags.id)
+      .orderBy(desc(sql`count(distinct ${loveTreeTags.loveTreeId})`))
+      .limit(10);
+    
+    return {
+      loveTrees: loveTreeResults,
+      users: userResults,
+      tags: tagResults,
+    };
   }
 }
 

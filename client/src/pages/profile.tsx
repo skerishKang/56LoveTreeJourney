@@ -169,7 +169,7 @@ export default function Profile() {
                 <div className="text-xs text-gray-600">전파/입덕 트리</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-yellow-600">{userStats.totalLikes}</div>
+                <div className="text-2xl font-bold text-amber-600">{userStats.totalLikes}</div>
                 <div className="text-xs text-gray-600">받은 하트</div>
               </div>
             </div>
@@ -194,19 +194,19 @@ export default function Profile() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Star className="w-5 h-5 text-yellow-500" />
+              <Star className="w-5 h-5 text-amber-500" />
               <span>러브트리 가드너</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <Badge className="bg-gray-100 text-gray-700 mb-2">{userStats.gardenerLevel}</Badge>
-                <p className="text-sm text-gray-600">{userStats.gardenerPoints}/{userStats.nextLevelPoints} 포인트</p>
+                <Badge className="bg-gray-100 text-gray-700 mb-1 sm:mb-2 text-xs sm:text-sm">{userStats.gardenerLevel}</Badge>
+                <p className="text-xs sm:text-sm text-gray-600">{userStats.gardenerPoints}/{userStats.nextLevelPoints} 포인트</p>
               </div>
               <div className="text-right">
-                <div className="text-lg font-bold text-green-600">{userStats.gardenerPoints}P</div>
-                <div className="text-xs text-gray-500">현재 포인트</div>
+                <div className="text-base sm:text-lg font-bold text-green-600">{userStats.gardenerPoints}P</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">현재 포인트</div>
               </div>
             </div>
             
@@ -222,11 +222,11 @@ export default function Profile() {
 
         {/* 내 러브트리 목록 */}
         <Card>
-          <CardHeader>
+          <CardHeader className="pb-3 sm:pb-4">
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Sparkles className="w-5 h-5 text-pink-500" />
-                <span>내 러브트리</span>
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+                <span className="text-base sm:text-lg">내 러브트리</span>
               </div>
               <Badge variant="outline">{myLoveTrees.length}개</Badge>
             </CardTitle>
@@ -234,21 +234,21 @@ export default function Profile() {
           <CardContent className="space-y-3">
             {myLoveTrees.map((tree) => (
               <Card key={tree.id} className="border border-gray-100">
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-xl">
+                <CardContent className="p-3 sm:p-4">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-lg sm:text-xl">
                       {tree.thumbnail}
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <h4 className="font-medium text-gray-800">{tree.title}</h4>
+                      <div className="flex items-center space-x-1 sm:space-x-2 mb-1">
+                        <h4 className="font-medium text-gray-800 text-sm sm:text-base">{tree.title}</h4>
                         <Badge 
-                          className={tree.status === "완성" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"}
+                          className={`${tree.status === "완성" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"} text-[10px] sm:text-xs`}
                         >
                           {tree.status}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">{tree.category} • {tree.videoCount}개 영상</p>
+                      <p className="text-xs sm:text-sm text-gray-600 mb-1.5 sm:mb-2">{tree.category} • {tree.videoCount}개 영상</p>
                       
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-gray-500">진행률</span>
@@ -266,11 +266,11 @@ export default function Profile() {
                     </div>
                   </div>
                   
-                  <div className="flex space-x-2 mt-3">
+                  <div className="flex space-x-1.5 sm:space-x-2 mt-2 sm:mt-3">
                     {tree.status === "진행중" ? (
                       <Button 
                         size="sm" 
-                        className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500"
+                        className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5"
                         onClick={() => {
                           setMindmapLoveTree(tree);
                           setShowMindmap(true);
@@ -321,7 +321,7 @@ export default function Profile() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Award className="w-5 h-5 text-yellow-500" />
+              <Award className="w-5 h-5 text-amber-500" />
               <span>성취 배지</span>
             </CardTitle>
           </CardHeader>
@@ -332,7 +332,7 @@ export default function Profile() {
                   key={index}
                   className={`text-center p-3 rounded-lg border ${
                     achievement.unlocked 
-                      ? "bg-yellow-50 border-yellow-200" 
+                      ? "bg-amber-50 border-amber-200" 
                       : "bg-gray-50 border-gray-200"
                   }`}
                 >

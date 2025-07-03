@@ -1,7 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { storage as originalStorage } from "./storage";
+import { cachedStorage } from "./storage-cached";
+import { cache } from "./redis";
+
+// Redis가 사용 가능하면 캐시된 스토리지 사용, 아니면 일반 스토리지 사용
+const storage = cache.isReady() ? cachedStorage : originalStorage;
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { authLimiter, createLimiter, apiLimiter } from "./middleware/rateLimiter";
 import {
   insertLoveTreeSchema,
   insertLoveTreeItemSchema,
@@ -20,7 +26,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   await storage.initializeStages();
 
   // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  app.get('/api/auth/user', authLimiter, isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
@@ -287,6 +293,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error selecting recommendation:", error);
       res.status(500).json({ message: "Failed to select recommendation" });
+    }
+  });
+
+  // Search routes
+  app.get('/api/search', apiLimiter, async (req, res) => {
+    try {
+      const query = req.query.q as string;
+      const category = req.query.category as string | undefined;
+      
+      if (!query || query.length < 2) {
+        return res.json({ loveTrees: [], users: [], tags: [] });
+      }
+      
+      const results = await storage.searchAll(query, category);
+      res.json(results);
+    } catch (error) {
+      console.error("Error searching:", error);
+      res.status(500).json({ message: "Failed to search" });
     }
   });
 

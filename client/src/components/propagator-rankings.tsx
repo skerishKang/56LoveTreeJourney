@@ -26,7 +26,7 @@ export default function PropagatorRankings() {
   });
 
   const getRankIcon = (position: number) => {
-    if (position === 1) return <Crown className="w-6 h-6 text-yellow-500" />;
+    if (position === 1) return <Crown className="w-6 h-6 text-amber-500" />;
     if (position === 2) return <Trophy className="w-6 h-6 text-gray-400" />;
     if (position === 3) return <Medal className="w-6 h-6 text-orange-500" />;
     return <Star className="w-5 h-5 text-blue-500" />;
@@ -36,7 +36,7 @@ export default function PropagatorRankings() {
     if (rank.includes("레전드")) return "bg-gradient-to-r from-purple-500 to-pink-500";
     if (rank.includes("마스터")) return "bg-gradient-to-r from-blue-500 to-purple-500";
     if (rank.includes("베테랑")) return "bg-gradient-to-r from-green-500 to-blue-500";
-    if (rank.includes("중급")) return "bg-gradient-to-r from-yellow-500 to-orange-500";
+    if (rank.includes("중급")) return "bg-gradient-to-r from-amber-400 to-orange-500";
     return "bg-gradient-to-r from-gray-400 to-gray-500";
   };
 
@@ -65,7 +65,7 @@ export default function PropagatorRankings() {
         <Card 
           key={user.id} 
           className={`relative overflow-hidden ${
-            index < 3 ? 'border-2 border-yellow-200 bg-gradient-to-r from-yellow-50 to-orange-50' : ''
+            index < 3 ? 'border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50' : ''
           }`}
         >
           <CardContent className="p-4">
@@ -120,7 +120,7 @@ export default function PropagatorRankings() {
             {/* 특별 효과 - 상위 3위 */}
             {index < 3 && (
               <div className="absolute top-0 right-0 w-16 h-16 opacity-10">
-                {index === 0 && <Crown className="w-full h-full text-yellow-500" />}
+                {index === 0 && <Crown className="w-full h-full text-amber-500" />}
                 {index === 1 && <Trophy className="w-full h-full text-gray-400" />}
                 {index === 2 && <Medal className="w-full h-full text-orange-500" />}
               </div>
@@ -139,7 +139,7 @@ export default function PropagatorRankings() {
       <Card className="mt-6">
         <CardHeader>
           <CardTitle className="text-sm flex items-center space-x-2">
-            <Star className="w-4 h-4 text-yellow-500" />
+            <Star className="w-4 h-4 text-amber-500" />
             <span>자빠돌이/꼬돌이 등급 시스템</span>
           </CardTitle>
         </CardHeader>

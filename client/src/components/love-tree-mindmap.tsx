@@ -34,7 +34,7 @@ export default function LoveTreeMindmap({ loveTree, items = [], isFullscreen = f
   // 카테고리별 색상 매핑
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
-      "귀여움": "#FFD93D", // 노란색
+      "귀여움": "#FCD34D", // 연한 노란색
       "섹시함": "#FF6B9D", // 핑크색
       "댄스": "#4ECDC4", // 민트색
       "보컬": "#9B59B6", // 보라색
@@ -193,13 +193,13 @@ export default function LoveTreeMindmap({ loveTree, items = [], isFullscreen = f
 
   return (
     <>
-      <div className={`relative ${isFullscreen ? 'h-screen w-screen bg-gradient-to-br from-love-light via-white to-love-light' : 'h-96 bg-gradient-to-br from-purple-50 to-pink-50'} rounded-xl overflow-hidden`}>
+      <div className={`relative ${isFullscreen ? 'h-screen w-screen bg-gradient-to-br from-love-light via-white to-love-light dark:from-gray-900 dark:via-gray-800 dark:to-purple-900/20' : 'h-96 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-purple-900/20'} rounded-xl overflow-hidden transition-colors`}>
         {/* 전체화면 헤더 */}
         {isFullscreen && (
           <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">{loveTree?.title || "러브트리"}</h2>
-              <p className="text-sm text-gray-600">{loveTree?.category} • {nodes.length}개 영상</p>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{loveTree?.title || "러브트리"}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300">{loveTree?.category} • {nodes.length}개 영상</p>
             </div>
             <Button variant="ghost" size="sm" onClick={onClose} className="rounded-full">
               <X className="w-5 h-5" />
@@ -229,28 +229,28 @@ export default function LoveTreeMindmap({ loveTree, items = [], isFullscreen = f
             >
               <Card 
                 className={`hover:shadow-lg transition-all duration-300 hover:scale-110 ${
-                  isFullscreen ? 'w-32 h-32' : 'w-20 h-20'
+                  isFullscreen ? 'w-24 h-24 sm:w-32 sm:h-32' : 'w-16 h-16 sm:w-20 sm:h-20'
                 }`}
                 style={{ borderColor: node.color, borderWidth: '2px' }}
               >
-                <CardContent className="p-2 h-full flex flex-col items-center justify-center text-center">
+                <CardContent className="p-1.5 sm:p-2 h-full flex flex-col items-center justify-center text-center">
                   {/* 영상 썸네일 또는 아이콘 */}
                   <div 
-                    className={`${isFullscreen ? 'w-8 h-8 mb-2' : 'w-6 h-6 mb-1'} rounded-full flex items-center justify-center text-white font-bold`}
+                    className={`${isFullscreen ? 'w-6 h-6 sm:w-8 sm:h-8 mb-1 sm:mb-2' : 'w-5 h-5 sm:w-6 sm:h-6 mb-0.5 sm:mb-1'} rounded-full flex items-center justify-center text-white font-bold`}
                     style={{ backgroundColor: node.color }}
                   >
-                    <Play className={`${isFullscreen ? 'w-4 h-4' : 'w-3 h-3'}`} />
+                    <Play className={`${isFullscreen ? 'w-3 h-3 sm:w-4 sm:h-4' : 'w-2.5 h-2.5 sm:w-3 sm:h-3'}`} />
                   </div>
                   
                   {/* 제목 */}
-                  <h4 className={`font-medium text-gray-800 line-clamp-2 ${isFullscreen ? 'text-xs' : 'text-[10px]'}`}>
+                  <h4 className={`font-medium text-gray-800 line-clamp-2 ${isFullscreen ? 'text-[10px] sm:text-xs' : 'text-[8px] sm:text-[10px]'}`}>
                     {node.title}
                   </h4>
                   
                   {/* 단계 뱃지 */}
                   <Badge 
                     variant="outline" 
-                    className={`mt-1 ${isFullscreen ? 'text-[10px]' : 'text-[8px]'}`}
+                    className={`mt-0.5 sm:mt-1 ${isFullscreen ? 'text-[8px] sm:text-[10px]' : 'text-[7px] sm:text-[8px]'}`}
                     style={{ borderColor: node.color, color: node.color }}
                   >
                     {node.stage}
@@ -274,8 +274,8 @@ export default function LoveTreeMindmap({ loveTree, items = [], isFullscreen = f
 
               {/* HOT 뱃지 (인기 노드) */}
               {(node.likeCount || 0) > 30 && (
-                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-[8px] px-1">
-                  🔥 HOT
+                <Badge className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-gradient-to-r from-amber-100 to-orange-500 text-white text-[7px] sm:text-[8px] px-0.5 sm:px-1">
+                  🔥
                 </Badge>
               )}
             </div>

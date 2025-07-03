@@ -501,7 +501,7 @@ export default function InteractiveLoveTree() {
               
               {/* 왕관 아이콘 */}
               <div className="absolute -top-3 -right-1 bg-yellow-400 rounded-full p-1 border-2 border-white">
-                <Crown className="w-4 h-4 text-yellow-700" />
+                <Crown className="w-4 h-4 text-amber-700" />
               </div>
               
               {/* 하트 애니메이션 */}
@@ -646,7 +646,7 @@ export default function InteractiveLoveTree() {
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs px-2">
+                  <Badge className="bg-gradient-to-r from-amber-100 to-orange-500 text-white text-xs px-2">
                     🔥 HOT
                   </Badge>
                 </motion.div>
@@ -709,7 +709,7 @@ export default function InteractiveLoveTree() {
       {/* 실시간 댓글 알림 */}
       {showCommentNotification && realTimeComments.length > 0 && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50">
-          <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-xl animate-bounce">
+          <Card className="bg-gradient-to-r from-amber-100 to-orange-500 text-white shadow-xl animate-bounce">
             <CardContent className="p-3 flex items-center space-x-2">
               <Bell className="w-4 h-4" />
               <div>

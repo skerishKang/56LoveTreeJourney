@@ -63,7 +63,7 @@ export default function FanActivityJournal() {
     { name: "팬사인회", icon: "✍️", color: "bg-pink-100 text-pink-800" },
     { name: "팬미팅", icon: "👋", color: "bg-blue-100 text-blue-800" },
     { name: "성지순례", icon: "📍", color: "bg-green-100 text-green-800" },
-    { name: "굿즈샵 방문", icon: "🛍️", color: "bg-yellow-100 text-yellow-800" },
+    { name: "굿즈샵 방문", icon: "🛍️", color: "bg-amber-50 text-amber-800" },
     { name: "커피차 응원", icon: "☕", color: "bg-orange-100 text-orange-800" },
     { name: "기타", icon: "💝", color: "bg-gray-100 text-gray-800" },
   ];
@@ -137,7 +137,7 @@ export default function FanActivityJournal() {
           <div className="text-sm text-gray-600">총 활동</div>
         </Card>
         
-        <Card className="text-center p-4 bg-gradient-to-r from-yellow-50 to-orange-50">
+        <Card className="text-center p-4 bg-gradient-to-r from-amber-50 to-orange-50">
           <Sparkles className="w-8 h-8 mx-auto mb-2 text-orange-600" />
           <div className="text-2xl font-bold text-orange-600">{specialCount}</div>
           <div className="text-sm text-gray-600">특별한 순간</div>
@@ -186,7 +186,7 @@ export default function FanActivityJournal() {
           filteredActivities
             .sort((a: FanActivity, b: FanActivity) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
             .map((activity: FanActivity) => (
-            <Card key={activity.id} className={`hover:shadow-lg transition-shadow ${activity.isSpecial ? 'border-yellow-300 bg-gradient-to-r from-yellow-50/50 to-orange-50/50' : ''}`}>
+            <Card key={activity.id} className={`hover:shadow-lg transition-shadow ${activity.isSpecial ? 'border-amber-300 bg-gradient-to-r from-amber-50/50 to-orange-50/50' : ''}`}>
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
@@ -197,7 +197,7 @@ export default function FanActivityJournal() {
                           {activity.activityType}
                         </Badge>
                         {activity.isSpecial && (
-                          <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+                          <Badge className="bg-gradient-to-r from-amber-100 to-orange-500 text-white">
                             ✨ 특별한 순간
                           </Badge>
                         )}
@@ -238,12 +238,12 @@ export default function FanActivityJournal() {
                   
                   {activity.rating > 0 && (
                     <div className="flex items-center space-x-2">
-                      <Star className="w-4 h-4 text-yellow-600" />
+                      <Star className="w-4 h-4 text-amber-600" />
                       <div className="flex space-x-1">
                         {[1, 2, 3, 4, 5].map(star => (
                           <Star
                             key={star}
-                            className={`w-3 h-3 ${star <= activity.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                            className={`w-3 h-3 ${star <= activity.rating ? 'text-amber-400 fill-current' : 'text-gray-300'}`}
                           />
                         ))}
                       </div>
@@ -434,7 +434,7 @@ function AddActivityForm({ onSubmit }: { onSubmit: (data: any) => void }) {
               className="focus:outline-none"
             >
               <Star
-                className={`w-6 h-6 ${star <= formData.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                className={`w-6 h-6 ${star <= formData.rating ? 'text-amber-400 fill-current' : 'text-gray-300'}`}
               />
             </button>
           ))}

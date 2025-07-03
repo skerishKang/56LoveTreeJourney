@@ -79,7 +79,7 @@ export default function LoveTreeTemplates() {
       name: "음악 발견 여정",
       description: "새로운 아티스트나 장르를 발견하는 과정",
       icon: "🎵",
-      gradient: "from-orange-400 via-amber-400 to-yellow-400",
+      gradient: "from-orange-400 via-amber-400 to-amber-400",
       bgGradient: "from-orange-50 to-amber-50",
       borderColor: "border-orange-200",
       category: "music",

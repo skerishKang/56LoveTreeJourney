@@ -121,7 +121,7 @@ export default function PopularLoveTrees() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "쉬움": return "bg-green-100 text-green-700";
-      case "보통": return "bg-yellow-100 text-yellow-700";
+      case "보통": return "bg-amber-50 text-amber-700";
       case "어려움": return "bg-red-100 text-red-700";
       default: return "bg-gray-100 text-gray-700";
     }
@@ -216,7 +216,7 @@ export default function PopularLoveTrees() {
                         <div className="flex items-center space-x-2 mb-1">
                           <h3 className="font-bold text-gray-800 line-clamp-1">{tree.title}</h3>
                           {tree.isHot && (
-                            <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs">
+                            <Badge className="bg-gradient-to-r from-amber-100 to-orange-500 text-white text-xs">
                               🔥 HOT
                             </Badge>
                           )}
@@ -245,7 +245,7 @@ export default function PopularLoveTrees() {
                             <span>{tree.viewCount}</span>
                           </div>
                           <div className="flex items-center space-x-1">
-                            <Star className="w-3 h-3 text-yellow-400" />
+                            <Star className="w-3 h-3 text-amber-400" />
                             <span>{tree.completionRate}%</span>
                           </div>
                         </div>

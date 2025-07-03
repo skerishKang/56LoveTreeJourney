@@ -158,7 +158,7 @@ export default function IdolFaceMosaic() {
             </Link>
             <div>
               <h1 className="font-bold text-xl text-gray-800 flex items-center space-x-2">
-                <Crown className="w-6 h-6 text-yellow-500" />
+                <Crown className="w-6 h-6 text-amber-500" />
                 <span>정국 얼굴 모자이크</span>
               </h1>
               <p className="text-sm text-gray-600">전세계 아미들의 러브트리로 완성하는 정국 얼굴 🐰</p>
@@ -192,7 +192,7 @@ export default function IdolFaceMosaic() {
               style={{ width: `${mosaicProgress}%` }}
             >
               {mosaicCompleted && (
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/50 to-white/30 animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-100/50 to-white/30 animate-pulse"></div>
               )}
             </div>
           </div>
@@ -205,9 +205,9 @@ export default function IdolFaceMosaic() {
           <CardContent className="p-6">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center justify-center space-x-2">
-                <Sparkles className="w-6 h-6 text-yellow-500" />
+                <Sparkles className="w-6 h-6 text-amber-500" />
                 <span>정국 🐰 Love Tree Mosaic</span>
-                <Sparkles className="w-6 h-6 text-yellow-500" />
+                <Sparkles className="w-6 h-6 text-amber-500" />
               </h2>
               <p className="text-gray-600">
                 각 작은 사각형은 한 명의 아미가 만든 러브트리예요. 마우스를 올려보세요! ✨
@@ -240,7 +240,7 @@ export default function IdolFaceMosaic() {
 
             {/* 완성 메시지 */}
             {mosaicCompleted && (
-              <div className="mt-8 text-center bg-gradient-to-r from-yellow-100 to-orange-100 rounded-lg p-6 border-2 border-yellow-300">
+              <div className="mt-8 text-center bg-gradient-to-r from-amber-50 to-orange-100 rounded-lg p-6 border-2 border-amber-300">
                 <div className="text-4xl mb-3">🎉✨🎉</div>
                 <h3 className="text-2xl font-bold text-orange-800 mb-2">
                   정국 얼굴 모자이크 완성!

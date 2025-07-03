@@ -197,8 +197,8 @@ export default function InvestmentLoveTree({ items }: InvestmentLoveTreeProps) {
               <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-md"></div>
               <span className="text-gray-700 font-semibold text-xs">초기 관심</span>
             </div>
-            <div className="flex items-center space-x-2 p-3 bg-yellow-50 rounded-xl">
-              <div className="w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-md"></div>
+            <div className="flex items-center space-x-2 p-3 bg-amber-50 rounded-xl">
+              <div className="w-4 h-4 bg-amber-500 rounded-full border-2 border-white shadow-md"></div>
               <span className="text-gray-700 font-semibold text-xs">실사</span>
             </div>
             <div className="flex items-center space-x-2 p-3 bg-purple-50 rounded-xl">

@@ -135,9 +135,9 @@ export default function OfficialLoveTree({ artistName, agencyName }: OfficialLov
                   <div className="text-lg font-bold text-green-600">{path.videos.length}개</div>
                   <div className="text-xs text-gray-600">영상</div>
                 </div>
-                <div className="bg-yellow-50 rounded-lg p-3">
-                  <TrendingUp className="w-5 h-5 mx-auto mb-1 text-yellow-500" />
-                  <div className="text-lg font-bold text-yellow-600">급상승</div>
+                <div className="bg-amber-50 rounded-lg p-3">
+                  <TrendingUp className="w-5 h-5 mx-auto mb-1 text-amber-500" />
+                  <div className="text-lg font-bold text-amber-600">급상승</div>
                   <div className="text-xs text-gray-600">인기도</div>
                 </div>
               </div>
@@ -226,7 +226,7 @@ export default function OfficialLoveTree({ artistName, agencyName }: OfficialLov
               {/* 성공 스토리 */}
               <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-2">
-                  <Crown className="w-5 h-5 text-yellow-500" />
+                  <Crown className="w-5 h-5 text-amber-500" />
                   <span className="font-medium text-gray-800">성공 후기</span>
                 </div>
                 <div className="text-sm text-gray-600">

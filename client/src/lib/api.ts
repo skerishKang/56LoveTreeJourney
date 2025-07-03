@@ -1,4 +1,12 @@
 import { apiRequest } from "./queryClient";
+import type { 
+  CreateLoveTreeData, 
+  CreateLoveTreeItemData, 
+  CreateCommentData, 
+  CreateRecommendationData,
+  LoveTree,
+  LoveTreeItem
+} from "@/types";
 
 export const api = {
   // Auth
@@ -6,7 +14,7 @@ export const api = {
 
   // Love Trees
   getLoveTrees: () => fetch("/api/love-trees", { credentials: "include" }).then(res => res.json()),
-  createLoveTree: (data: any) => apiRequest("POST", "/api/love-trees", data),
+  createLoveTree: (data: CreateLoveTreeData) => apiRequest("POST", "/api/love-trees", data),
   getLoveTree: (id: number) => fetch(`/api/love-trees/${id}`, { credentials: "include" }).then(res => res.json()),
   getPopularLoveTrees: (limit?: number) => 
     fetch(`/api/love-trees/popular?limit=${limit || 10}`, { credentials: "include" }).then(res => res.json()),
@@ -14,7 +22,7 @@ export const api = {
   // Love Tree Items
   getLoveTreeItems: (loveTreeId: number) => 
     fetch(`/api/love-trees/${loveTreeId}/items`, { credentials: "include" }).then(res => res.json()),
-  createLoveTreeItem: (loveTreeId: number, data: any) => 
+  createLoveTreeItem: (loveTreeId: number, data: CreateLoveTreeItemData) => 
     apiRequest("POST", `/api/love-trees/${loveTreeId}/items`, data),
 
   // Stages
@@ -23,7 +31,7 @@ export const api = {
   // Comments
   getItemComments: (itemId: number) => 
     fetch(`/api/items/${itemId}/comments`, { credentials: "include" }).then(res => res.json()),
-  createComment: (itemId: number, data: any) => 
+  createComment: (itemId: number, data: CreateCommentData) => 
     apiRequest("POST", `/api/items/${itemId}/comments`, data),
 
   // Likes
@@ -33,9 +41,9 @@ export const api = {
   // Recommendations
   getItemRecommendations: (itemId: number) => 
     fetch(`/api/items/${itemId}/recommendations`, { credentials: "include" }).then(res => res.json()),
-  createRecommendation: (itemId: number, data: any) => 
+  createRecommendation: (itemId: number, data: CreateRecommendationData) => 
     apiRequest("POST", `/api/items/${itemId}/recommendations`, data),
-  selectRecommendation: (recommendationId: number, data: any) => 
+  selectRecommendation: (recommendationId: number, data: { itemId: number }) => 
     apiRequest("POST", `/api/recommendations/${recommendationId}/select`, data),
 
   // Notifications

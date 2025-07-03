@@ -145,7 +145,7 @@ export default function SampleLoveTree() {
               >
                 {node.isFirst && <Crown className="w-3 h-3 text-sparkle-gold absolute -top-6" />}
                 {getCategoryIcon(node.category)}
-                {node.isShining && <Sparkles className="w-2 h-2 text-yellow-300 absolute -top-1 -right-1 animate-bounce" />}
+                {node.isShining && <Sparkles className="w-2 h-2 text-amber-300 absolute -top-1 -right-1 animate-bounce" />}
               </div>
 
               {/* 호버 툴팁 */}

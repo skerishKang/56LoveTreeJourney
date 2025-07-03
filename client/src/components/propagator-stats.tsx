@@ -17,7 +17,7 @@ export default function PropagatorStats({ user }: PropagatorStatsProps) {
       case "마스터 가드너":
         return { icon: "🌳", text: "마스터 가드너", color: "from-purple-400 to-purple-600", nextThreshold: 151 };
       case "레전드 가드너":
-        return { icon: "🏆", text: "레전드 가드너", color: "from-yellow-400 to-yellow-600", nextThreshold: 999 };
+        return { icon: "🏆", text: "레전드 가드너", color: "from-amber-300 to-amber-500", nextThreshold: 999 };
       default:
         return { icon: "🌱", text: "새싹 가드너", color: "from-green-400 to-green-600", nextThreshold: 11 };
     }
@@ -66,7 +66,7 @@ export default function PropagatorStats({ user }: PropagatorStatsProps) {
         </div>
 
         {/* 총 시청 시간 */}
-        <div className="flex items-center justify-between p-3 bg-gradient-to-r from-sparkle-gold/10 to-yellow-600/10 rounded-xl">
+        <div className="flex items-center justify-between p-3 bg-gradient-to-r from-sparkle-gold/10 to-amber-100/10 rounded-xl">
           <div className="flex items-center space-x-2">
             <Users className="w-4 h-4 text-sparkle-gold" />
             <span className="text-sm font-medium text-gray-700">총 시청 시간</span>

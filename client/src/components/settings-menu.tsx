@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useTheme } from "@/contexts/theme-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -41,7 +42,8 @@ interface SettingsMenuProps {
 
 export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const [darkMode, setDarkMode] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const darkMode = theme === "dark";
   const [notifications, setNotifications] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
   const { toast } = useToast();
@@ -110,7 +112,7 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
       case "uncommon": return "bg-green-100 text-green-700 border-green-200";
       case "rare": return "bg-blue-100 text-blue-700 border-blue-200";
       case "epic": return "bg-purple-100 text-purple-700 border-purple-200";
-      case "legendary": return "bg-gradient-to-r from-yellow-100 to-orange-100 text-orange-700 border-orange-200";
+      case "legendary": return "bg-gradient-to-r from-amber-100 to-orange-100 text-orange-700 border-orange-200";
       default: return "bg-gray-100 text-gray-700 border-gray-200";
     }
   };
@@ -147,7 +149,7 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
       icon: <Settings className="w-5 h-5" />,
       items: [
         { label: "알림 설정", toggle: { value: notifications, onChange: setNotifications } },
-        { label: "다크모드", toggle: { value: darkMode, onChange: setDarkMode } },
+        { label: "다크모드", toggle: { value: darkMode, onChange: toggleTheme } },
         { label: "사운드 효과", toggle: { value: soundEffects, onChange: setSoundEffects } },
         { label: "개인정보 보호", action: () => setActiveSection("privacy") },
         { label: "구독 관리", action: () => toast({ title: "구독 관리", description: "프로필에서 구독 서비스를 이용하세요!" }) }
@@ -179,20 +181,20 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
   ];
 
   const renderMainMenu = () => (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* 사용자 정보 */}
       <Card>
-        <CardContent className="p-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xl">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white text-lg sm:text-xl">
               🌸
             </div>
             <div>
-              <h3 className="font-bold text-gray-800">러브트리 가드너</h3>
-              <p className="text-sm text-gray-600">새싹 가드너 · 레벨 1</p>
-              <div className="flex items-center space-x-1 mt-1">
-                <Badge className="bg-gray-100 text-gray-700 text-xs">첫 트리</Badge>
-                <Badge className="bg-green-100 text-green-700 text-xs">완성자</Badge>
+              <h3 className="font-bold text-gray-800 text-sm sm:text-base">러브트리 가드너</h3>
+              <p className="text-xs sm:text-sm text-gray-600">새싹 가드너 · 레벨 1</p>
+              <div className="flex items-center space-x-1 mt-0.5 sm:mt-1">
+                <Badge className="bg-gray-100 text-gray-700 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0 sm:py-0.5">첫 트리</Badge>
+                <Badge className="bg-green-100 text-green-700 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0 sm:py-0.5">완성자</Badge>
               </div>
             </div>
           </div>
@@ -202,18 +204,18 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
       {/* 메뉴 섹션들 */}
       {menuSections.map((section) => (
         <div key={section.id}>
-          <div className="flex items-center space-x-2 mb-3">
-            {section.icon}
-            <h4 className="font-bold text-gray-800">{section.title}</h4>
+          <div className="flex items-center space-x-2 mb-2 sm:mb-3">
+            {React.cloneElement(section.icon as React.ReactElement, { className: "w-4 h-4 sm:w-5 sm:h-5" })}
+            <h4 className="font-bold text-gray-800 text-sm sm:text-base">{section.title}</h4>
           </div>
           <div className="space-y-1">
             {section.items.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100 hover:bg-gray-50 cursor-pointer"
+                className="flex items-center justify-between p-2.5 sm:p-3 bg-white rounded-lg border border-gray-100 hover:bg-gray-50 cursor-pointer"
                 onClick={item.action}
               >
-                <span className="text-gray-700">{item.label}</span>
+                <span className="text-gray-700 text-sm sm:text-base">{item.label}</span>
                 <div className="flex items-center space-x-2">
                   {item.toggle ? (
                     <Switch
@@ -233,14 +235,14 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
 
       {/* SNS 연결 */}
       <div>
-        <h4 className="font-bold text-gray-800 mb-3 flex items-center space-x-2">
-          <MessageCircle className="w-5 h-5" />
-          <span>SNS 연결</span>
+        <h4 className="font-bold text-gray-800 mb-2 sm:mb-3 flex items-center space-x-2">
+          <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-sm sm:text-base">SNS 연결</span>
         </h4>
-        <div className="grid grid-cols-3 gap-3">
-          <Button variant="outline" size="sm" className="flex flex-col items-center p-3 h-auto">
-            <Instagram className="w-5 h-5 mb-1" />
-            <span className="text-xs">인스타그램</span>
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <Button variant="outline" size="sm" className="flex flex-col items-center p-2 sm:p-3 h-auto">
+            <Instagram className="w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1" />
+            <span className="text-[10px] sm:text-xs">인스타그램</span>
           </Button>
           <Button variant="outline" size="sm" className="flex flex-col items-center p-3 h-auto">
             <MessageCircle className="w-5 h-5 mb-1" />
@@ -277,7 +279,7 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
 
       <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-4 border border-pink-200">
         <div className="text-center">
-          <Trophy className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
+          <Trophy className="w-8 h-8 text-amber-500 mx-auto mb-2" />
           <h4 className="font-bold text-gray-800">성취도 현황</h4>
           <p className="text-sm text-gray-600 mt-1">
             {achievements.filter(a => a.unlocked).length}/{achievements.length} 달성

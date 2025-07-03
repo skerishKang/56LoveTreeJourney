@@ -245,7 +245,7 @@ export default function EnhancedLoveGauge({ loveTreeId, artist = "아티스트" 
         <Card className="border-pink-200">
           <CardContent className="pt-4">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
                 <Star className="w-5 h-5 text-white" />
               </div>
               <div>

@@ -63,13 +63,13 @@ export default function GoodsCollection() {
     { name: "포토카드", icon: "📷", color: "bg-pink-100 text-pink-800" },
     { name: "의류", icon: "👕", color: "bg-blue-100 text-blue-800" },
     { name: "액세서리", icon: "💎", color: "bg-green-100 text-green-800" },
-    { name: "문구류", icon: "✏️", color: "bg-yellow-100 text-yellow-800" },
+    { name: "문구류", icon: "✏️", color: "bg-amber-100 text-amber-800" },
     { name: "기타", icon: "🎁", color: "bg-gray-100 text-gray-800" },
   ];
 
   const rarityColors = {
     "일반": "bg-gray-100 text-gray-800",
-    "한정판": "bg-yellow-100 text-yellow-800",
+    "한정판": "bg-amber-100 text-amber-800",
     "사인": "bg-red-100 text-red-800",
     "희귀": "bg-purple-100 text-purple-800",
   };
@@ -145,7 +145,7 @@ export default function GoodsCollection() {
           <div className="text-sm text-gray-600">보유 굿즈</div>
         </Card>
         
-        <Card className="text-center p-4 bg-gradient-to-r from-yellow-50 to-orange-50">
+        <Card className="text-center p-4 bg-gradient-to-r from-amber-50 to-orange-50">
           <Heart className="w-8 h-8 mx-auto mb-2 text-orange-600" />
           <div className="text-2xl font-bold text-orange-600">{wishlistCount}</div>
           <div className="text-sm text-gray-600">위시리스트</div>
@@ -194,10 +194,10 @@ export default function GoodsCollection() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredGoods.length > 0 ? (
           filteredGoods.map((item: GoodsItem) => (
-            <Card key={item.id} className={`hover:shadow-lg transition-shadow ${item.isWishlist ? 'border-yellow-300 bg-yellow-50/30' : ''}`}>
+            <Card key={item.id} className={`hover:shadow-lg transition-shadow ${item.isWishlist ? 'border-amber-300 bg-amber-50/30' : ''}`}>
               <CardContent className="p-6">
                 {item.isWishlist && (
-                  <Badge className="mb-3 bg-yellow-100 text-yellow-800">
+                  <Badge className="mb-3 bg-amber-100 text-amber-800">
                     💝 위시리스트
                   </Badge>
                 )}

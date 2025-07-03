@@ -41,14 +41,14 @@ export default function RankingModal({ isOpen, onClose }: RankingModalProps) {
   };
 
   const getRankIcon = (rank: number) => {
-    if (rank === 1) return <Crown className="w-5 h-5 text-yellow-500" />;
+    if (rank === 1) return <Crown className="w-5 h-5 text-amber-500" />;
     if (rank === 2) return <Trophy className="w-5 h-5 text-gray-400" />;
     if (rank === 3) return <Medal className="w-5 h-5 text-orange-500" />;
     return <Star className="w-4 h-4 text-blue-500" />;
   };
 
   const getRankColor = (rank: number) => {
-    if (rank === 1) return "bg-gradient-to-r from-yellow-400 to-yellow-500";
+    if (rank === 1) return "bg-gradient-to-r from-amber-100 to-amber-500";
     if (rank === 2) return "bg-gradient-to-r from-gray-300 to-gray-400";
     if (rank === 3) return "bg-gradient-to-r from-orange-400 to-orange-500";
     return "bg-gradient-to-r from-blue-400 to-blue-500";
@@ -58,7 +58,7 @@ export default function RankingModal({ isOpen, onClose }: RankingModalProps) {
     if (badge.includes("레전드")) return "bg-gradient-to-r from-purple-500 to-pink-500";
     if (badge.includes("마스터")) return "bg-gradient-to-r from-blue-500 to-purple-500";
     if (badge.includes("베테랑")) return "bg-gradient-to-r from-green-500 to-blue-500";
-    if (badge.includes("중급")) return "bg-gradient-to-r from-yellow-500 to-orange-500";
+    if (badge.includes("중급")) return "bg-gradient-to-r from-amber-500 to-orange-500";
     return "bg-gradient-to-r from-gray-400 to-gray-500";
   };
 
@@ -67,7 +67,7 @@ export default function RankingModal({ isOpen, onClose }: RankingModalProps) {
       <DialogContent className="sm:max-w-lg max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <Trophy className="w-5 h-5 text-yellow-500" />
+            <Trophy className="w-5 h-5 text-amber-500" />
             <span>자빠돌이/꼬돌이 순위</span>
           </DialogTitle>
         </DialogHeader>
@@ -110,7 +110,7 @@ export default function RankingModal({ isOpen, onClose }: RankingModalProps) {
               <div
                 key={user.rank}
                 className={`flex items-center space-x-3 p-3 rounded-lg border ${
-                  user.rank <= 3 ? "bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200" : "bg-white border-gray-100"
+                  user.rank <= 3 ? "bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200" : "bg-white border-gray-100"
                 }`}
               >
                 {/* 순위 */}

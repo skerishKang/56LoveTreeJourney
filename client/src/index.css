@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './styles/dark-mode.css';
+
 :root {
-  --background: 254 243 248; /* #FEF3F8 (soft-pink) */
+  --background: 0 0% 98%; /* #FAFAFA (거의 흰색에 가까운 밝은 회색) */
   --foreground: 20 14.3% 4.1%;
   --muted: 60 4.8% 95.9%;
   --muted-foreground: 25 5.3% 44.7%;
@@ -17,20 +19,20 @@
   --primary-foreground: 0 0% 100%;
   --secondary: 177 62% 68%; /* #4ECDC4 (tree-green) */
   --secondary-foreground: 0 0% 100%;
-  --accent: 49 100% 60%; /* #FFD93D (sparkle-gold) */
-  --accent-foreground: 0 0% 100%;
+  --accent: 49 90% 96%; /* #FEF9E7 (매우 연한 노란색) */
+  --accent-foreground: 20 14.3% 4.1%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 60 9.1% 97.8%;
   --ring: 20 14.3% 4.1%;
   --radius: 0.75rem;
   
-  /* Custom love tree colors - Apple Music inspired */
+  /* Custom love tree colors - Soft & Elegant */
   --love-pink: 323 87% 68%; /* #FF6B9D */
   --love-dark: 330 60% 20%; /* #523344 */
   --tree-green: 177 62% 68%; /* #4ECDC4 */
-  --sparkle-gold: 280 100% 85%; /* 파스텔 라벤더 */
-  --soft-pink: 314 100% 96%; /* #FFEEF8 */
-  --diary-beige: 320 100% 96%; /* 파스텔 핑크 베이지 */
+  --sparkle-gold: 49 90% 96%; /* #FEF9E7 (연한 노란색) */
+  --soft-pink: 314 100% 98%; /* #FFFAFB (매우 연한 핑크) */
+  --diary-beige: 30 50% 98%; /* #FEFCFA (매우 연한 베이지) */
 }
 
 .dark {
@@ -48,11 +50,19 @@
   --primary-foreground: 0 0% 100%;
   --secondary: 177 62% 68%;
   --secondary-foreground: 0 0% 100%;
-  --accent: 49 100% 60%;
-  --accent-foreground: 0 0% 100%;
+  --accent: 49 70% 40%; /* 다크모드에서 더 어두운 노란색 */
+  --accent-foreground: 0 0% 98%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
   --ring: 240 4.9% 83.9%;
+  
+  /* Custom love tree colors - Dark Mode */
+  --love-pink: 323 70% 58%; /* 다크모드에서 더 어두운 핑크 */
+  --love-dark: 330 50% 70%; /* 다크모드에서 더 밝은 보라 */
+  --tree-green: 177 50% 55%; /* 다크모드에서 더 어두운 그린 */
+  --sparkle-gold: 49 70% 40%; /* 다크모드에서 더 어두운 골드 */
+  --soft-pink: 314 30% 20%; /* 다크모드에서 매우 어두운 핑크 */
+  --diary-beige: 30 20% 15%; /* 다크모드에서 매우 어두운 베이지 */
 }
 
 @layer base {

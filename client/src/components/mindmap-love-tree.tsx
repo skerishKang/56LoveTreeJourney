@@ -202,8 +202,8 @@ export default function MindmapLoveTree({ items }: MindmapLoveTreeProps) {
         <div className="mt-6 space-y-4">
           <h4 className="text-lg font-bold text-gray-800 text-center">🎥 영상 콘텐츠 카테고리</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="flex items-center space-x-2 p-3 bg-yellow-50 rounded-xl">
-              <div className="w-4 h-4 bg-yellow-400 rounded-full border-2 border-white shadow-md"></div>
+            <div className="flex items-center space-x-2 p-3 bg-amber-50 rounded-xl">
+              <div className="w-4 h-4 bg-amber-400 rounded-full border-2 border-white shadow-md"></div>
               <span className="text-gray-700 font-semibold text-xs">귀여움</span>
             </div>
             <div className="flex items-center space-x-2 p-3 bg-pink-50 rounded-xl">
@@ -278,7 +278,7 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "귀여움": return "#FFD93D";
+      case "귀여움": return "#FCD34D";
       case "섹시함": return "#FF6B9D"; 
       case "댄스": return "#4ECDC4";
       case "보컬": return "#9B59B6";
@@ -502,7 +502,7 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
               {/* 반짝이는 효과 */}
               {node.isShining && !node.isPopular && (
                 <div className="absolute -top-2 -right-2 z-40 pointer-events-none">
-                  <Sparkles className={`${isLargeView ? 'w-5 h-5' : 'w-4 h-4'} text-yellow-300 animate-bounce`} />
+                  <Sparkles className={`${isLargeView ? 'w-5 h-5' : 'w-4 h-4'} text-amber-300 animate-bounce`} />
                 </div>
               )}
 
@@ -527,7 +527,7 @@ function MindmapRenderer({ nodes, isLargeView }: { nodes: TreeNode[], isLargeVie
                 <span className="text-green-400 text-xs font-bold">🔥 여러 명이 선택한 핫한 영상!</span>
               )}
               {node.isShining && !node.isPopular && (
-                <span className="text-yellow-300 text-xs">✨ 다른 분도 추천!</span>
+                <span className="text-amber-300 text-xs">✨ 다른 분도 추천!</span>
               )}
               {node.isFirstContent && (
                 <span className="text-sparkle-gold text-xs">👑 입덕 시작점</span>

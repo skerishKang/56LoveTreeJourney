@@ -326,7 +326,7 @@ export default function TreeShapedLoveTree() {
             size="sm"
             onClick={completeTree}
             disabled={treeCompleted}
-            className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-full"
+            className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full"
           >
             <Trophy className="w-4 h-4 mr-1" />
             {treeCompleted ? "완성됨" : "완성하기"}
@@ -344,7 +344,7 @@ export default function TreeShapedLoveTree() {
       >
         <div className={`w-24 h-24 rounded-full border-4 flex items-center justify-center text-4xl relative overflow-hidden transition-all duration-1000 ${
           treeCompleted 
-            ? 'bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 border-yellow-300 shadow-2xl shadow-yellow-400/50' 
+            ? 'bg-gradient-to-br from-amber-100 via-orange-500 to-red-500 border-amber-300 shadow-2xl shadow-amber-100/50' 
             : 'bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-500 border-white shadow-xl'
         }`}>
           <span className="relative z-10">🐰</span>
@@ -352,14 +352,14 @@ export default function TreeShapedLoveTree() {
           {/* 완성시 황금 반짝이 효과 */}
           {treeCompleted && (
             <>
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-300/70 to-orange-400/70 rounded-full animate-pulse"></div>
-              <div className="absolute -inset-2 bg-yellow-400/30 rounded-full animate-ping"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-50/70 to-orange-400/70 rounded-full animate-pulse"></div>
+              <div className="absolute -inset-2 bg-amber-400/30 rounded-full animate-ping"></div>
             </>
           )}
           
           {/* 왕관 */}
-          <div className="absolute -top-3 -right-1 bg-yellow-400 rounded-full p-1 border-2 border-white">
-            <Crown className="w-4 h-4 text-yellow-700" />
+          <div className="absolute -top-3 -right-1 bg-amber-400 rounded-full p-1 border-2 border-white">
+            <Crown className="w-4 h-4 text-amber-700" />
           </div>
         </div>
         
@@ -368,7 +368,7 @@ export default function TreeShapedLoveTree() {
           <h2 className="font-bold text-lg text-gray-800">정국 🐰</h2>
           <p className="text-sm text-gray-600">BTS 황금막내</p>
           {treeCompleted && (
-            <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs mt-1 animate-pulse">
+            <Badge className="bg-gradient-to-r from-amber-100 to-orange-500 text-white text-xs mt-1 animate-pulse">
               러브트리 완성! ✨
             </Badge>
           )}

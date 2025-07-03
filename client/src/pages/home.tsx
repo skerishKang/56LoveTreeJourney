@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect, memo, useCallback } from "react";
 import BottomNavigation from "@/components/bottom-navigation";
+import { SearchModal } from "@/components/search-modal";
 import "../styles/improved.css";
 
 // 최적화된 헤더 컴포넌트
@@ -19,6 +20,7 @@ const OptimizedHeader = memo(() => {
   const { isMobile } = useBreakpoint();
   const scrollDirection = useScrollDirection();
   const { user } = useAuth();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   const headerHidden = isMobile && scrollDirection === 'down';
 
@@ -63,10 +65,14 @@ const OptimizedHeader = memo(() => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             placeholder="러브트리 검색..."
-            className="pl-10 bg-white/80 border-0 rounded-full shadow-sm focus:ring-2 focus:ring-pink-200 transition-all"
+            className="pl-10 bg-white/80 border-0 rounded-full shadow-sm focus:ring-2 focus:ring-pink-200 transition-all cursor-pointer"
+            onClick={() => setIsSearchOpen(true)}
+            readOnly
           />
         </div>
       </div>
+      
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 });

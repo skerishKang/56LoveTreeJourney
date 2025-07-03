@@ -510,8 +510,8 @@ export default function LoveTreeFullscreen() {
 
               {/* 영상 편집 도구들 */}
               <div className="space-y-4">
-                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                  <h4 className="font-medium text-yellow-800 mb-3">💝 영상 편집 - 이춘문 업리프트</h4>
+                <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                  <h4 className="font-medium text-amber-800 mb-3">💝 영상 편집 - 이춘문 업리프트</h4>
                   
                   {/* 사랑에 빠진 순간 스위치 */}
                   <div className="flex items-center justify-between mb-4">
@@ -653,8 +653,8 @@ export default function LoveTreeFullscreen() {
 
               {/* 영상 편집 도구들 */}
               <div className="space-y-4">
-                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                  <h4 className="font-medium text-yellow-800 mb-3">💝 사랑에 빠진 순간 설정</h4>
+                <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                  <h4 className="font-medium text-amber-800 mb-3">💝 사랑에 빠진 순간 설정</h4>
                   
                   {/* 사랑에 빠진 순간 스위치 */}
                   <div className="flex items-center justify-between mb-4">
@@ -730,7 +730,7 @@ export default function LoveTreeFullscreen() {
               <Button variant="outline" onClick={() => setIsVideoEditing(false)}>
                 취소
               </Button>
-              <Button onClick={handleSaveVideoEdit} className="bg-yellow-500 hover:bg-yellow-600">
+              <Button onClick={handleSaveVideoEdit} className="bg-amber-500 hover:bg-yellow-600">
                 ✂️ 편집 완료
               </Button>
             </div>
